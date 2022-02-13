@@ -1,0 +1,99 @@
+###############################
+# Git Line Endings            #
+
+# Default normalize line endings to LF on checkin and
+# prevent conversion to CRLF when the file is checked out.
+*                 text eol=lf
+# Exceptions to default EOL handling
+*.{cmd,[cC][mM][dD]} text eol=crlf
+*.{bat,[bB][aA][tT]} text eol=crlf
+*.ps1             text eol=crlf
+# Diff Helpers
+*.htm             text diff=html
+*.html            text diff=html
+*.php             text diff=php
+*.py              text diff=python
+*.rb              text diff=ruby
+*.scss            text diff=css
+*.xhtml           text diff=html
+# Disable diff
+*.lock            text -diff
+*.map             text -diff
+package-lock.json text -diff
+# LFS support (optional)      #
+# If using, best to do it at beginning
+# of a project before any LFS files added.
+# Macro for files that should use Git LFS.
+#[attr]lfs -text filter=lfs diff=lfs merge=lfs
+# Binary
+# Explicit examples here as a convenience
+# if LFS were to be used. In that case,
+# would switch from 'binary' to 'lfs'.
+# 3D
+*.glb             binary
+# Graphics
+*.ai              binary
+*.bmp             binary
+*.eps             binary
+*.gif             binary
+*.gifv            binary
+*.ico             binary
+*.jng             binary
+*.jp2             binary
+*.jpg             binary
+*.jpeg            binary
+*.jpx             binary
+*.jxr             binary
+*.pdf             binary
+*.png             binary
+*.psb             binary
+*.psd             binary
+# *.svg           binary
+*.svgz            binary
+*.tif             binary
+*.tiff            binary
+*.wbmp            binary
+*.webp            binary
+# Audio
+*.kar             binary
+*.m4a             binary
+*.mid             binary
+*.midi            binary
+*.mp3             binary
+*.ogg             binary
+*.ra              binary
+# Video
+*.3gpp            binary
+*.3gp             binary
+*.as              binary
+*.asf             binary
+*.asx             binary
+*.fla             binary
+*.flv             binary
+*.m4v             binary
+*.mng             binary
+*.mov             binary
+*.mp4             binary
+*.mpeg            binary
+*.mpg             binary
+*.ogv             binary
+*.swc             binary
+*.swf             binary
+*.webm            binary
+# Archives
+*.7z              binary
+*.gz              binary
+*.jar             binary
+*.rar             binary
+*.tar             binary
+*.zip             binary
+# Fonts
+*.ttf             binary
+*.eot             binary
+*.otf             binary
+*.woff            binary
+*.woff2           binary
+# Executables
+*.exe             binary
+*.pyc             binary
+. text !filter !merge !diff
