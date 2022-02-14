@@ -1,4 +1,10 @@
 import { createApp } from 'vue'
 import App from './App.vue'
+import router from './router'
 
-createApp(App).mount('#app')
+import 'bootstrap'
+
+// prettier-ignore
+createApp(App)
+  .use(router)
+  .mount('#app')

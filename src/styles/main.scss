@@ -1,0 +1,19 @@
+@charset "UTF-8";
+@import '_variables.scss';
+@import '../../node_modules/bootstrap/scss/bootstrap.scss';
+
+main {
+  outline: transparent;
+  margin-top: $bootstrap-navbar-height;
+}
+
+footer.home-footer {
+  @extend .py-2;
+  margin-top: 1rem;
+  color: $navbar-light-color;
+  text-align: center;
+}
+
+//#renderCanvas {
+//  border: 1px solid red;
+//}

@@ -1,0 +1,11 @@
+@charset "UTF-8";
+$font-size-base: 0.8rem;
+
+@import '../../node_modules/bootstrap/scss/_functions.scss';
+@import '../../node_modules/bootstrap/scss/_variables.scss';
+
+$enable-gradients: true;
+//$body-bg: $gray-500;
+
+$bootstrap-navbar-height: 56px;
+$main-footer-height: 54px;

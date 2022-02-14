@@ -36,10 +36,13 @@ module.exports = {
   ],
   overrides: [
     {
-      files: ["*.ts", "*.vue"],
+      files: [
+        '*.ts',
+        '*.vue',
+      ],
       rules: {
-        "no-undef": "off" // https://stackoverflow.com/questions/60743389/eslint-defined-global-extensions-still-not-defined-no-undef
-      }
+        'no-undef': 'off', // https://stackoverflow.com/questions/60743389/eslint-defined-global-extensions-still-not-defined-no-undef
+      },
     },
     {
       files: [
