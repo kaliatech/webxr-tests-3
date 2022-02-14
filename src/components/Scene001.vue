@@ -7,84 +7,59 @@
     </div>
     <p v-if="!data.asyncChecksDone">Checking WebXR support...</p>
     <div v-show="data.asyncChecksDone" class="container-render">
-      <p v-if="!data.isImmersiveVrSupported">WebXR with immersive-vr sessions not supported by this browser.</p>
+      <p v-if="!data.isWebXrSupported">WebXR with immersive-vr sessions not supported by this browser.</p>
       <p v-if="data.errorMsg">Error: {{ data.errorMsg }}</p>
       <canvas v-else ref="renderCanvas" class="renderCanvas"></canvas>
     </div>
   </div>
 </template>
 <script lang="ts" setup>
-// Vue hooks, etc
 import { onMounted, onUnmounted, reactive, ref } from 'vue'
 
-// These are needed to workaround navigator.xr seemingly not being typed correctly in @types/webxr
-import { Navigator as NavigatorXR, XRSystem } from 'webxr'
-import { Engine } from '@babylonjs/core/Engines/engine.js'
-import { TestScene001 } from '../js/TestScene001'
+import { Nullable } from '@babylonjs/core'
 
-let xrSystem: XRSystem | null
+import * as ErrorUtils from '../js/utils/ErrorUtils'
+import * as WebXrUtils from '../js/utils/WebXrUtils'
 
-// Vue 3 composition API handles refs in a very specific way
-const renderCanvas = ref<HTMLCanvasElement | null>(null)
+import { GameManager } from '../js/GameManager'
 
-// Variable to store onResize event handler so we can explicitly remove it later
-let onResize: EventListener | null = null
+const renderCanvas = ref<Nullable<HTMLCanvasElement>>(null)
+let appManager: Nullable<GameManager> = null
 
 // Reactive page data
 const data = reactive({
   asyncChecksDone: false,
   errorMsg: '',
   isWebXrSupported: false,
-  isImmersiveVrSupported: false,
 })
 
 onMounted(() => {
-  // Check that navigator.xr exists
-  // Multiple ways to do this, and babylon has some built-in support to do it
-  data.isWebXrSupported = 'xr' in window.navigator
-  if (!data.isWebXrSupported) {
-    data.asyncChecksDone = true
-    return
-  }
-
-  // Check that immersive-vr is supported
-  // Store xrSystem to workaround navigator.xr typing problems
-  xrSystem = (navigator as unknown as NavigatorXR).xr
-  xrSystem
-    ?.isSessionSupported('immersive-vr')
-    .then((result: boolean) => {
-      if (result) {
-        data.isImmersiveVrSupported = result
-        init()
-      }
-    })
-    .catch((reason: string) => {
-      data.errorMsg = reason
-      //eslint-disable-next-line no-console
-      console.error(reason)
-    })
-    .finally(() => {
-      data.asyncChecksDone = true
-    })
+  initAsync()
 })
+
+async function initAsync() {
+  try {
+    const xrSystem = await WebXrUtils.checkXrSupport(window.navigator, 'immersive-vr')
+    if (!renderCanvas.value) {
+      throw new Error('Missing render canvas reference.')
+    }
+    data.isWebXrSupported = true
+    appManager = new GameManager(renderCanvas.value, xrSystem)
+    appManager.init(window)
+  } catch (e) {
+    data.errorMsg = ErrorUtils.getErrorMessage(e)
+
+    //eslint-disable-next-line no-console
+    console.error(e)
+
+  } finally {
+    data.asyncChecksDone = true
+  }
+}
 
 onUnmounted(() => {
-  if (onResize) {
-    window.removeEventListener('resize', onResize)
-  }
+  appManager?.onDestroy(window)
 })
-
-function init() {
-  const test001 = new TestScene001(renderCanvas.value as HTMLCanvasElement)
-  test001.setup().then((babylonEngine: Engine) => {
-    onResize = () => {
-      if (babylonEngine) {
-        babylonEngine.resize()
-      }
-    }
-    window.addEventListener('resize', onResize)
-  })
-}
 </script>
 <style lang="scss">
 @use '../styles/_variables' as vars;
@@ -103,14 +78,14 @@ function init() {
 .container-render {
   display: flex;
   flex: 1;
-  border: 1px solid red;
+  //border: 1px solid red;
   min-height: 0; /* https://stackoverflow.com/questions/36247140/why-dont-flex-items-shrink-past-content-size */
   min-width: 0;
 }
 
 .renderCanvas {
   flex: 1;
-  border: 1px solid black;
+  //border: 1px solid black;
   min-height: 0;
   min-width: 0;
 }
