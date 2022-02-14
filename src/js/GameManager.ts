@@ -1,7 +1,7 @@
 import { Engine } from '@babylonjs/core/Engines/engine'
 import { Nullable } from '@babylonjs/core'
 import { XRSystem } from 'webxr'
-import { Scene001 } from "./scene001/Scene001";
+import { Scene001 } from './scene001/Scene001'
 
 // Required for loading controller models from WebXR registry
 import '@babylonjs/loaders/glTF'
@@ -11,7 +11,7 @@ import '@babylonjs/loaders/glTF'
 //  "Uncaught (in promise) Build of NodeMaterial failed: input rgba from block FragmentOutput[FragmentOutputBlock] is not connected and is not optional."
 import '@babylonjs/core/Materials/Node/Blocks'
 
-import { WebXRDefaultExperience } from "@babylonjs/core/XR/webXRDefaultExperience";
+import { WebXRDefaultExperience } from '@babylonjs/core/XR/webXRDefaultExperience'
 
 export class GameManager {
   canvas: HTMLCanvasElement
@@ -27,7 +27,6 @@ export class GameManager {
   }
 
   init(window?: Window) {
-
     if (window) {
       window.addEventListener('resize', this.onResizeHandle)
     }
@@ -42,7 +41,7 @@ export class GameManager {
     // eslint-disable-next-line no-unused-vars, @typescript-eslint/no-unused-vars
     WebXRDefaultExperience.CreateAsync(scene001.babylonScene!, {
       floorMeshes: [
-        scene001.floorMesh!
+        scene001.floorMesh!,
       ],
       optionalFeatures: true,
     }).then(() => {

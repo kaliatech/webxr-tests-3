@@ -1,4 +1,1 @@
-export class GameObject {
-
-
-}
+export class GameObject {}

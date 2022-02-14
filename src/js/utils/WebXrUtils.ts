@@ -10,7 +10,7 @@ import { Navigator as NavigatorXR, XRSessionMode, XRSystem } from 'webxr'
 //   message: 'XRSystem does not exist.',
 // } as XrSupportResult)
 
-export async function checkXrSupport(navigator:Navigator, mode: XRSessionMode): Promise<XRSystem> {
+export async function checkXrSupport(navigator: Navigator, mode: XRSessionMode): Promise<XRSystem> {
   if (!('xr' in navigator)) {
     throw new Error('XRSystem does not exist.')
   }

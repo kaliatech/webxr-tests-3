@@ -51,7 +51,6 @@ async function initAsync() {
 
     //eslint-disable-next-line no-console
     console.error(e)
-
   } finally {
     data.asyncChecksDone = true
   }
