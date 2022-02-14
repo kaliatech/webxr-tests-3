@@ -19,6 +19,8 @@ export class GameManager {
 
   babylonEngine: Nullable<Engine> = null
 
+  onResizeHandle = this.onResize.bind(this)
+
   constructor(canvas: HTMLCanvasElement, xrSystem: XRSystem) {
     this.canvas = canvas
     this.xrSystem = xrSystem
@@ -27,7 +29,7 @@ export class GameManager {
   init(window?: Window) {
 
     if (window) {
-      window.addEventListener('resize', this.onResize)
+      window.addEventListener('resize', this.onResizeHandle)
     }
 
     const antiAlias = true
@@ -43,7 +45,7 @@ export class GameManager {
         scene001.floorMesh!
       ],
       optionalFeatures: true,
-    }).then((result) => {
+    }).then(() => {
       // An initial resize seems to be required with the current canvas setup. Not sure why. Subsequent window
       // resizes are handled by event handler.
       this.babylonEngine?.resize()
@@ -60,6 +62,6 @@ export class GameManager {
   }
 
   onDestroy(window?: Window) {
-    window?.removeEventListener('resize', this.onResize)
+    window?.removeEventListener('resize', this.onResizeHandle)
   }
 }
