@@ -6,7 +6,10 @@ import eslintPlugin from 'vite-plugin-eslint'
 export default defineConfig({
   plugins: [
     vue(),
-    eslintPlugin(),
+    // Disable eslint cache
+    // https://stackoverflow.com/a/70662931/123378
+    // https://github.com/gxmari007/vite-plugin-eslint/issues/17
+    eslintPlugin({ cache: false }),
   ],
   server: {
     port: 3443,
