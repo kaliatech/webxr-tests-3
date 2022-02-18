@@ -1,5 +1,5 @@
-import { createRouter, createWebHistory, RouterOptions } from 'vue-router'
 import type { RouteRecordRaw } from 'vue-router'
+import { createRouter, createWebHistory, RouterOptions } from 'vue-router'
 import HomePage from './views/HomeView.vue'
 import Test01View from './views/Test01View.vue'
 

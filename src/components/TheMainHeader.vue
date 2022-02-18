@@ -17,8 +17,28 @@
         </button>
         <div id="navbarCollapse" class="collapse navbar-collapse">
           <ul class="navbar-nav me-auto mb-2 mb-md-0">
-            <li class="nav-item">
-              <router-link class="nav-link" to="/test01">Test 1</router-link>
+            <!--            <li class="nav-item">-->
+            <!--              <router-link class="nav-link" to="/test01">Test 1</router-link>-->
+            <!--            </li>-->
+            <li class="nav-item dropdown">
+              <a
+                class="nav-link dropdown-toggle"
+                href="#"
+                id="navbarDropdown"
+                role="button"
+                data-bs-toggle="dropdown"
+                aria-haspopup="true"
+                aria-expanded="false"
+              >
+                Tests
+              </a>
+              <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                <!--                <a class="dropdown-item" href="#">Test 1</a>-->
+                <router-link class="dropdown-item" to="/test01">Test 1</router-link>
+                <!--                <a class="dropdown-item" href="#">Another action</a>-->
+                <!--                <div class="dropdown-divider"></div>-->
+                <!--                <a class="dropdown-item" href="#">Something else here</a>-->
+              </div>
             </li>
           </ul>
           <!-- <form class="d-flex">

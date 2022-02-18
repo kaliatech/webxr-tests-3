@@ -1,15 +1,20 @@
 <template>
-  <div class="container-outer">
-    <div class="container">
-      <div class="row">
-        <div class="col">This is a lot of text that could be above the render area.</div>
+  <div class="container">
+    <div class="container-outer">
+      <div class="container">
+        <div class="row">
+          <div class="col">
+            <h1>Test 1 - Simple WebXR Scene</h1>
+            A simplistic scene showing mirrored ground and basic animation.
+          </div>
+        </div>
       </div>
-    </div>
-    <p v-if="!data.asyncChecksDone">Checking WebXR support...</p>
-    <div v-show="data.asyncChecksDone" class="container-render">
-      <p v-if="!data.isWebXrSupported">WebXR with immersive-vr sessions not supported by this browser.</p>
-      <p v-if="data.errorMsg">Error: {{ data.errorMsg }}</p>
-      <canvas v-else ref="renderCanvas" class="renderCanvas"></canvas>
+      <p v-if="!data.asyncChecksDone">Checking WebXR support...</p>
+      <div v-show="data.asyncChecksDone" class="container-render mt-2">
+        <p v-if="!data.isWebXrSupported">WebXR with immersive-vr sessions not supported by this browser.</p>
+        <p v-if="data.errorMsg">Error: {{ data.errorMsg }}</p>
+        <canvas v-else ref="renderCanvas" class="renderCanvas"></canvas>
+      </div>
     </div>
   </div>
 </template>
@@ -57,7 +62,7 @@ async function initAsync() {
 }
 
 onUnmounted(() => {
-  appManager?.onDestroy(window)
+  appManager?.destroy(window)
 })
 </script>
 <style lang="scss">
@@ -65,13 +70,15 @@ onUnmounted(() => {
 
 .container-outer {
   align-content: center;
-  bottom: 1rem;
+  //bottom: 1rem;
   display: flex;
   flex-direction: column;
+
   left: 1rem;
   position: absolute;
   right: 1rem;
   top: vars.$bootstrap-navbar-height;
+  bottom: 1rem;
 }
 
 .container-render {

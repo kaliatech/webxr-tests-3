@@ -1,5 +1,4 @@
 import { Engine } from '@babylonjs/core/Engines/engine'
-import { Nullable } from '@babylonjs/core'
 import { XRSystem } from 'webxr'
 import { Scene001 } from './scene001/Scene001'
 
@@ -12,14 +11,15 @@ import '@babylonjs/loaders/glTF'
 import '@babylonjs/core/Materials/Node/Blocks'
 
 import { WebXRDefaultExperience } from '@babylonjs/core/XR/webXRDefaultExperience'
+import { GameScene } from './GameScene'
+import { Mesh } from '@babylonjs/core/Meshes/mesh'
 
 export class GameManager {
   canvas: HTMLCanvasElement
   xrSystem: XRSystem
+  babylonEngine: Maybe<Engine>
 
-  babylonEngine: Nullable<Engine> = null
-
-  onResizeHandle = this.onResize.bind(this)
+  private onResizeHandle = this.onResize.bind(this)
 
   constructor(canvas: HTMLCanvasElement, xrSystem: XRSystem) {
     this.canvas = canvas
@@ -27,40 +27,50 @@ export class GameManager {
   }
 
   init(window?: Window) {
-    if (window) {
-      window.addEventListener('resize', this.onResizeHandle)
-    }
+    window?.addEventListener('resize', this.onResizeHandle)
 
-    const antiAlias = true
-    this.babylonEngine = new Engine(this.canvas, antiAlias)
+    this.babylonEngine = new Engine(this.canvas, true)
 
-    const scene001 = new Scene001(this.babylonEngine)
-    scene001.init()
+    const scene001 = this.initScene(this.babylonEngine)
 
     // Setup default WebXR experience
     // eslint-disable-next-line no-unused-vars, @typescript-eslint/no-unused-vars
-    WebXRDefaultExperience.CreateAsync(scene001.babylonScene!, {
-      floorMeshes: [
-        scene001.floorMesh!,
-      ],
-      optionalFeatures: true,
-    }).then(() => {
-      // An initial resize seems to be required with the current canvas setup. Not sure why. Subsequent window
-      // resizes are handled by event handler.
+    this.initWebXr(scene001).then(() => {
+      // An initial resize seems to be required with the current canvas setup. Not sure why.
       this.babylonEngine?.resize()
 
       // Run render loop to render future frames.
-      this.babylonEngine?.runRenderLoop(function () {
-        scene001.babylonScene?.render()
+      this.babylonEngine?.runRenderLoop(() => {
+        scene001.scene?.render()
       })
     })
   }
 
-  onResize(evt: Event) {
+  private initScene(babylonEngine: Engine): GameScene {
+    const scene001 = new Scene001(babylonEngine)
+    return scene001
+  }
+
+  private async initWebXr(gameScene: GameScene): Promise<WebXRDefaultExperience> {
+    const floorMeshes: Mesh[] = []
+    if (gameScene.floorMesh) {
+      floorMeshes.push(gameScene.floorMesh)
+    }
+    if (!gameScene.scene) {
+      throw new Error('Scene is required')
+    }
+    return WebXRDefaultExperience.CreateAsync(gameScene.scene, {
+      floorMeshes,
+      optionalFeatures: true,
+    })
+  }
+
+  onResize() {
     this.babylonEngine?.resize(true)
   }
 
-  onDestroy(window?: Window) {
+  destroy(window?: Window) {
+    this.babylonEngine?.dispose()
     window?.removeEventListener('resize', this.onResizeHandle)
   }
 }
