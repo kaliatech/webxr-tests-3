@@ -4,8 +4,8 @@
       <div class="container">
         <div class="row">
           <div class="col">
-            <h1>Test 1 - Simple WebXR Scene</h1>
-            A simplistic scene showing mirrored ground and basic animation.
+            <h1>Test 2 - Simple WebXR Interactions</h1>
+            Interactions and GUI elements.
           </div>
         </div>
       </div>
@@ -27,7 +27,6 @@ import * as ErrorUtils from '../js/utils/ErrorUtils'
 import * as WebXrUtils from '../js/utils/WebXrUtils'
 
 import { GameManager } from '../js/GameManager'
-import { Scene001 } from '../js/scene001/Scene001'
 
 const renderCanvas = ref<Nullable<HTMLCanvasElement>>(null)
 let appManager: Nullable<GameManager> = null
@@ -51,7 +50,7 @@ async function initAsync() {
     }
     data.isWebXrSupported = true
     appManager = new GameManager(renderCanvas.value, xrSystem, window)
-    appManager.loadScene001()
+    appManager.loadScene002()
   } catch (e) {
     data.errorMsg = ErrorUtils.getErrorMessage(e)
 

@@ -13,42 +13,45 @@ import '@babylonjs/core/Materials/Node/Blocks'
 import { WebXRDefaultExperience } from '@babylonjs/core/XR/webXRDefaultExperience'
 import { GameScene } from './GameScene'
 import { Mesh } from '@babylonjs/core/Meshes/mesh'
+import { Scene002 } from './scene001/Scene002'
 
 export class GameManager {
   canvas: HTMLCanvasElement
+
+  babylonEngine: Engine
   xrSystem: XRSystem
-  babylonEngine: Maybe<Engine>
 
   private onResizeHandle = this.onResize.bind(this)
 
-  constructor(canvas: HTMLCanvasElement, xrSystem: XRSystem) {
+  constructor(canvas: HTMLCanvasElement, xrSystem: XRSystem, window?: Window) {
     this.canvas = canvas
     this.xrSystem = xrSystem
+
+    window?.addEventListener('resize', this.onResizeHandle)
+    this.babylonEngine = new Engine(this.canvas, true, { stencil: true })
   }
 
-  init(window?: Window) {
-    window?.addEventListener('resize', this.onResizeHandle)
+  loadScene001() {
+    const gameScene = new Scene001(this.babylonEngine)
+    this.init(gameScene)
+  }
 
-    this.babylonEngine = new Engine(this.canvas, true)
+  loadScene002() {
+    const gameScene = new Scene002(this.babylonEngine)
+    this.init(gameScene)
+  }
 
-    const scene001 = this.initScene(this.babylonEngine)
-
+  init(gameScene: GameScene) {
     // Setup default WebXR experience
     // eslint-disable-next-line no-unused-vars, @typescript-eslint/no-unused-vars
-    this.initWebXr(scene001).then(() => {
+    this.initWebXr(gameScene).then(() => {
       // An initial resize seems to be required with the current canvas setup. Not sure why.
-      this.babylonEngine?.resize()
+      this.babylonEngine.resize()
 
-      // Run render loop to render future frames.
-      this.babylonEngine?.runRenderLoop(() => {
-        scene001.scene?.render()
+      this.babylonEngine.runRenderLoop(() => {
+        gameScene.scene.render()
       })
     })
-  }
-
-  private initScene(babylonEngine: Engine): GameScene {
-    const scene001 = new Scene001(babylonEngine)
-    return scene001
   }
 
   private async initWebXr(gameScene: GameScene): Promise<WebXRDefaultExperience> {
@@ -66,11 +69,12 @@ export class GameManager {
   }
 
   onResize() {
-    this.babylonEngine?.resize(true)
+    console.log('onResize')
+    this.babylonEngine.resize(true)
   }
 
   destroy(window?: Window) {
-    this.babylonEngine?.dispose()
     window?.removeEventListener('resize', this.onResizeHandle)
+    this.babylonEngine.dispose()
   }
 }

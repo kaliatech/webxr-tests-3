@@ -19,3 +19,12 @@ export function green(scene: Scene): StandardMaterial {
   }
   return (scene.getMaterialByName('green-material') as StandardMaterial) ?? create(scene)
 }
+
+export function blue(scene: Scene): StandardMaterial {
+  function create(scene: Scene) {
+    const m = new StandardMaterial('blue-material', scene)
+    m.diffuseColor = Color3.Blue()
+    return m
+  }
+  return (scene.getMaterialByName('blue-material') as StandardMaterial) ?? create(scene)
+}
