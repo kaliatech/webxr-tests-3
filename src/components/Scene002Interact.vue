@@ -8,6 +8,9 @@
             Interactions and GUI elements.
           </div>
         </div>
+        <div class="row">
+          <div class="col"><a href="https://github.com/BabylonJS/Babylon.js/pull/11514">https://github.com/BabylonJS/Babylon.js/pull/11514</a></div>
+        </div>
       </div>
       <p v-if="!data.asyncChecksDone">Checking WebXR support...</p>
       <div v-show="data.asyncChecksDone" class="container-render mt-2">

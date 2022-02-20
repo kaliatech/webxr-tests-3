@@ -1,20 +1,29 @@
-import { Engine } from '@babylonjs/core/Engines/engine.js'
-import { Scene } from '@babylonjs/core/scene.js'
-import { Color3 } from '@babylonjs/core/Maths/math.color'
-import { EnvironmentHelper } from '@babylonjs/core/Helpers/environmentHelper'
 
+import { AbstractMesh } from '@babylonjs/core/Meshes/abstractMesh'
 import { ArcRotateCamera } from '@babylonjs/core/Cameras/arcRotateCamera'
-import { Mesh } from '@babylonjs/core/Meshes/mesh'
-import { Vector3 } from '@babylonjs/core/Maths/math.vector'
-import { HemisphericLight } from '@babylonjs/core/Lights/hemisphericLight'
-import { MeshBuilder } from '@babylonjs/core/Meshes/meshBuilder'
-
+import { Color3 } from '@babylonjs/core/Maths/math.color'
 import { DefaultCollisionCoordinator } from '@babylonjs/core/Collisions/collisionCoordinator'
+import { Engine } from '@babylonjs/core/Engines/engine.js'
+import { EnvironmentHelper } from '@babylonjs/core/Helpers/environmentHelper'
+import { HemisphericLight } from '@babylonjs/core/Lights/hemisphericLight'
+import { Mesh } from '@babylonjs/core/Meshes/mesh'
+import { MeshBuilder } from '@babylonjs/core/Meshes/meshBuilder'
+import { Scene } from '@babylonjs/core/scene.js'
+import { Vector3 } from '@babylonjs/core/Maths/math.vector'
+
+import { DeviceSourceManager, HighlightLayer, PointerEventTypes, PointerInfo } from '@babylonjs/core'
+
+import * as GUI from '@babylonjs/gui'
 
 import '@babylonjs/core/Materials/Textures/Loaders'
-import * as ColorMaterials from '../materials/ColorMaterials'
+
 import { GameScene } from '../GameScene.js'
-import { AbstractMesh, HighlightLayer, PointerEventTypes, PointerInfo } from '@babylonjs/core'
+import * as ColorMaterials from '../materials/ColorMaterials'
+
+
+// Temporary:
+import "@babylonjs/core/Debug/debugLayer"; // Augments the scene with the debug methods
+import "@babylonjs/inspector"; // Injects a local ES6 version of the inspector to prevent automatically relying on the none compatible version
 
 export class Scene002 extends GameScene {
   scene: Scene
@@ -29,11 +38,13 @@ export class Scene002 extends GameScene {
   private mesh: Mesh | null = null
 
   private highlightLayer: HighlightLayer | undefined
+  private highlightedGuiPanel: Mesh | undefined
 
   constructor(engine: Engine) {
     super(engine)
     this.scene = new Scene(engine)
     new DefaultCollisionCoordinator()
+    const dm = new DeviceSourceManager(engine)
     this.init(this.scene)
   }
 
@@ -66,6 +77,7 @@ export class Scene002 extends GameScene {
     sphere.material = ColorMaterials.red(scene)
     sphere.checkCollisions = true
     sphere.enablePointerMoveEvents = true
+
     this.mesh = sphere
 
     const sphere3 = sphere.clone('ySphere', null)
@@ -115,13 +127,71 @@ export class Scene002 extends GameScene {
     //console.log('envHelper', this.envHelper)
     if (this.floorMesh) this.floorMesh.checkCollisions = true
 
-    this.highlightLayer = new HighlightLayer('hl1', scene)
-
     this.scene = scene
-
+    this.scene.debugLayer.show({embedMode:true})
     this._setupPick(scene)
 
+
+    this.highlightLayer = new HighlightLayer('hl1', scene)
+
     scene.registerBeforeRender(this.beforeRenderHandle)
+  }
+
+  _createGui2D(scene: Scene, parent:Mesh, headerTxt: string): Mesh {
+    const plane = MeshBuilder.CreatePlane('plane', { size: 4 }, scene)
+    plane.parent = parent
+
+    plane.isPickable = false
+    plane.position = new Vector3(0, 2.0, -0.1)
+
+    // https://forum.babylonjs.com/t/not-really-sure-how-to-use-billboardmode-use-position-properly/12477/4
+    plane.rotation.y = Math.PI;
+    plane.bakeCurrentTransformIntoVertices()
+    plane.billboardMode = Mesh.BILLBOARDMODE_Y | Mesh.BILLBOARDMODE_USE_POSITION
+
+    const advancedTexture = GUI.AdvancedDynamicTexture.CreateForMesh(plane) as GUI.AdvancedDynamicTexture
+
+    // if (advancedTexture.layer) advancedTexture.layer.layerMask = 2;
+
+    const panel = new GUI.StackPanel()
+    panel.isHighlighted = false
+    //panel.isHitTestVisible = false
+    const header = new GUI.TextBlock()
+    header.text = 'headerTxt'
+    header.height = '100px'
+    header.color = 'white'
+    //header.textHorizontalAlignment = GUI.HORIZONTAL_ALIGNMENT_CENTER;
+    header.fontSize = '50'
+    panel.addControl(header)
+    advancedTexture.addControl(panel)
+
+    const keyboard = new GUI.VirtualKeyboard()
+    keyboard.addKeysRow([
+      '1',
+      '2',
+      '3',
+      '4',
+      '5',
+      '6',
+      '7',
+      '8',
+      '9',
+      '0',
+      '\u2190',
+    ])
+    panel.addControl(keyboard)
+
+    return plane
+  }
+
+  _setupGui3D(scene: Scene) {
+    const guiManager = new GUI.GUI3DManager(scene)
+    guiManager.useRealisticScaling = true
+    const panel = new GUI.StackPanel3D()
+    guiManager.addControl(panel)
+
+    const button = new GUI.Button3D('click me')
+    panel.addControl(button)
   }
 
   _setupPick(scene: Scene) {
@@ -152,12 +222,13 @@ export class Scene002 extends GameScene {
     if (!pickResult?.hit) {
       if (this.highlightedMesh) {
         this.highlightLayer?.removeMesh(this.highlightedMesh as Mesh)
+        this.highlightedGuiPanel.dispose()
         this.highlightedMesh.position.y = 1.0
         this.highlightedMesh = undefined
       }
-    }
-    else if (pickResult?.pickedMesh && this.highlightedMesh && this.highlightedMesh !== pickResult?.pickedMesh) {
+    } else if (pickResult?.pickedMesh && this.highlightedMesh && this.highlightedMesh !== pickResult?.pickedMesh) {
       this.highlightLayer?.removeMesh(this.highlightedMesh as Mesh)
+      this.highlightedGuiPanel?.dispose()
       this.highlightedMesh.position.y = 1.0
       this.highlightedMesh = undefined
     }
@@ -165,6 +236,9 @@ export class Scene002 extends GameScene {
     if (pickResult?.pickedMesh && !this.highlightedMesh) {
       this.highlightLayer?.addMesh(pickResult.pickedMesh as Mesh, Color3.White())
       this.highlightedMesh = pickResult.pickedMesh
+      this.highlightedGuiPanel = this._createGui2D(this.scene, pickResult.pickedMesh, "Hover " + pickResult.pickedMesh.name)
+      this.highlightLayer?.addExcludedMesh(this.highlightedGuiPanel)
+
     }
   }
 
@@ -172,7 +246,7 @@ export class Scene002 extends GameScene {
     const pickResult = pointerInfo.pickInfo
     if (pickResult?.hit && pickResult?.pickedMesh) {
       pickResult.pickedMesh.position.y += 0.25
-      pickResult.pickedMesh.scaling = new Vector3(1.1,1.1,1.1)
+      pickResult.pickedMesh.scaling = new Vector3(1.1, 1.1, 1.1)
     }
   }
 

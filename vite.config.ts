@@ -16,5 +16,13 @@ export default defineConfig({
     https: true,
     // Uncomment to allow access from network (or use `npm run dev -- -- host=0.0.0.0`)
     // host: '0.0.0.0',
+
+    // TBD
+    // https://github.com/vitejs/vite/pull/5617
+    hmr: {
+      host: '10.9.22.222',
+      port: 3443,
+      protocol: 'wss'
+    }
   },
 })
