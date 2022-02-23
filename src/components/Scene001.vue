@@ -21,16 +21,14 @@
 <script lang="ts" setup>
 import { onMounted, onUnmounted, reactive, ref } from 'vue'
 
-import { Nullable } from '@babylonjs/core'
-
 import * as ErrorUtils from '../js/utils/ErrorUtils'
 import * as WebXrUtils from '../js/utils/WebXrUtils'
 
-import { GameManager } from '../js/GameManager'
+import { GameEngine } from '../js/GameEngine'
 import { Scene001 } from '../js/scene001/Scene001'
 
-const renderCanvas = ref<Nullable<HTMLCanvasElement>>(null)
-let appManager: Nullable<GameManager> = null
+const renderCanvas = ref<HTMLCanvasElement | undefined>()
+let gameEngine: GameEngine | undefined
 
 // Reactive page data
 const data = reactive({
@@ -50,8 +48,12 @@ async function initAsync() {
       throw new Error('Missing render canvas reference.')
     }
     data.isWebXrSupported = true
-    appManager = new GameManager(renderCanvas.value, xrSystem, window)
-    appManager.loadScene001()
+    gameEngine = new GameEngine(renderCanvas.value, xrSystem, window)
+    const scene1 = new Scene001(gameEngine.scene)
+
+    gameEngine.initWebXr().then(() => {
+      gameEngine?.loadScene(scene1)
+    })
   } catch (e) {
     data.errorMsg = ErrorUtils.getErrorMessage(e)
 
@@ -63,7 +65,7 @@ async function initAsync() {
 }
 
 onUnmounted(() => {
-  appManager?.destroy(window)
+  gameEngine?.dispose(window)
 })
 </script>
 <style lang="scss">

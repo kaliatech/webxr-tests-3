@@ -9,7 +9,11 @@
           </div>
         </div>
         <div class="row">
-          <div class="col"><a href="https://github.com/BabylonJS/Babylon.js/pull/11514">https://github.com/BabylonJS/Babylon.js/pull/11514</a></div>
+          <div class="col">
+            <a href="https://github.com/BabylonJS/Babylon.js/pull/11514"
+              >https://github.com/BabylonJS/Babylon.js/pull/11514</a
+            >
+          </div>
         </div>
       </div>
       <p v-if="!data.asyncChecksDone">Checking WebXR support...</p>
@@ -24,15 +28,16 @@
 <script lang="ts" setup>
 import { onMounted, onUnmounted, reactive, ref } from 'vue'
 
-import { Nullable } from '@babylonjs/core'
+import { Nullable } from '@babylonjs/core/types'
 
 import * as ErrorUtils from '../js/utils/ErrorUtils'
 import * as WebXrUtils from '../js/utils/WebXrUtils'
 
-import { GameManager } from '../js/GameManager'
+import { GameEngine } from '../js/GameEngine'
+import { Scene002 } from '../js/scene001/Scene002'
 
 const renderCanvas = ref<Nullable<HTMLCanvasElement>>(null)
-let appManager: Nullable<GameManager> = null
+let gameEngine: Nullable<GameEngine> = null
 
 // Reactive page data
 const data = reactive({
@@ -52,8 +57,13 @@ async function initAsync() {
       throw new Error('Missing render canvas reference.')
     }
     data.isWebXrSupported = true
-    appManager = new GameManager(renderCanvas.value, xrSystem, window)
-    appManager.loadScene002()
+
+    gameEngine = new GameEngine(renderCanvas.value, xrSystem, window)
+    const scene = new Scene002(gameEngine.scene)
+
+    gameEngine.initWebXr().then(() => {
+      gameEngine?.loadScene(scene)
+    })
   } catch (e) {
     data.errorMsg = ErrorUtils.getErrorMessage(e)
 
@@ -65,7 +75,7 @@ async function initAsync() {
 }
 
 onUnmounted(() => {
-  appManager?.destroy(window)
+  gameEngine?.dispose(window)
 })
 </script>
 <style lang="scss">

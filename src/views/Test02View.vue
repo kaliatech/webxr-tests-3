@@ -6,16 +6,17 @@
   </main-layout>
 </template>
 <script setup lang="ts">
-import { onMounted } from 'vue'
+
 
 import MainLayout from './layouts/MainLayout.vue'
 import Scene002Interact from '../components/Scene002Interact.vue'
 
-import * as Core from '@babylonjs/core'
+// import { onMounted } from 'vue'
+// import * as Core from '@babylonjs/core'
+// import '@babylonjs/core/Materials/Textures/Loaders'
+//
+// onMounted(() => {
+//   window.BABYLON = { ...Core }
+// })
 
-import '@babylonjs/core/Materials/Textures/Loaders'
-
-onMounted(() => {
-  window.BABYLON = { ...Core }
-})
 </script>
