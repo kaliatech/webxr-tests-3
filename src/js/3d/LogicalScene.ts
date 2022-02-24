@@ -3,8 +3,8 @@ import { Mesh } from '@babylonjs/core/Meshes/mesh'
 import { AssetContainer } from '@babylonjs/core/assetContainer'
 import { Nullable } from '@babylonjs/core/types'
 import { Observer } from '@babylonjs/core/Misc/observable'
-//import { EnvironmentHelper } from '@babylonjs/core/Helpers/environmentHelper'
-import { EnvironmentHelper } from '../3d/utils/customEnvHelper'
+import { EnvironmentHelper } from '@babylonjs/core/Helpers/environmentHelper'
+//import { EnvironmentHelper } from '../3d/utils/customEnvHelper'
 import { initDefaultEnvHelper } from './default-environment'
 
 export abstract class LogicalScene {

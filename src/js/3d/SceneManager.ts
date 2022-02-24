@@ -25,10 +25,15 @@ import '@babylonjs/core/Materials/Node/Blocks'
 import '@babylonjs/core/Materials/Textures/Loaders'
 import '@babylonjs/core/Layers/effectLayerSceneComponent'
 
+// Imports required for debug/inspector
+//import "@babylonjs/core/Legacy/legacy";
+//import '@babylonjs/core/Debug/debugLayer'
+//import '@babylonjs/inspector'
+
 // Imports required for WebXRLayers and Multiview
 // Experimental and currently problematic.
-// import '@babylonjs/core/XR/features/WebXRLayers'
-// import '@babylonjs/core/Engines/Extensions/engine.multiview'
+//import '@babylonjs/core/XR/features/WebXRLayers'
+//import '@babylonjs/core/Engines/Extensions/engine.multiview'
 
 // ----------------------
 
@@ -52,6 +57,13 @@ export class SceneManager {
 
     this.babylonEngine = new Engine(this.canvas, true, { stencil: true })
     this.scene = new Scene(this.babylonEngine)
+
+    // Debug/Inspector
+    // this.scene.debugLayer.show({
+    //   embedMode: true,
+    //   overlay: true
+    // });
+
     this.defaultCamera = initDefaultCamera(this.scene)
 
     window?.addEventListener('resize', this.onResizeHandle)
@@ -65,7 +77,6 @@ export class SceneManager {
     return WebXRDefaultExperience.CreateAsync(this.scene, {
       optionalFeatures: true,
     }).then((webXrDefaultExp) => {
-
       // Enable WebXRLayers and Multiview
       // webXrDefaultExp.baseExperience.featuresManager.enableFeature(
       //   WebXRFeatureName.LAYERS,

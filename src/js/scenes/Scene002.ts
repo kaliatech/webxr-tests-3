@@ -20,10 +20,6 @@ import { LogicalScene } from '../3d/LogicalScene.js'
 import * as ColorMaterials from '../3d/materials/ColorMaterials'
 import { XmlLoader } from '@babylonjs/gui/2D'
 
-// Temporary:
-// import '@babylonjs/core/Debug/debugLayer' // Augments the scene with the debug methods
-// import '@babylonjs/inspector'
-
 export class Scene002 extends LogicalScene {
   private highlightLayer: HighlightLayer | undefined
   private highlightedGuiPanel: Mesh | undefined
