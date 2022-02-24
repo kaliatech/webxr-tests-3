@@ -21,10 +21,14 @@ import '@babylonjs/loaders/glTF'
 //  "Uncaught (in promise) Build of NodeMaterial failed: input rgba from block FragmentOutput[FragmentOutputBlock] is not connected and is not optional."
 import '@babylonjs/core/Materials/Node/Blocks'
 
-// Side effects required by various scenes
+// Miscellaneous side effects required by various scenes
 import '@babylonjs/core/Materials/Textures/Loaders'
-
 import '@babylonjs/core/Layers/effectLayerSceneComponent'
+
+// Imports required for WebXRLayers and Multiview
+// Experimental and currently problematic.
+// import '@babylonjs/core/XR/features/WebXRLayers'
+// import '@babylonjs/core/Engines/Extensions/engine.multiview'
 
 // ----------------------
 
@@ -61,6 +65,16 @@ export class SceneManager {
     return WebXRDefaultExperience.CreateAsync(this.scene, {
       optionalFeatures: true,
     }).then((webXrDefaultExp) => {
+
+      // Enable WebXRLayers and Multiview
+      // webXrDefaultExp.baseExperience.featuresManager.enableFeature(
+      //   WebXRFeatureName.LAYERS,
+      //   'latest',
+      //   { preferMultiviewOnInit: true },
+      //   true,
+      //   false,
+      // )
+
       this._startRenderLoop()
       this.webXrDefaultExp = webXrDefaultExp
       return webXrDefaultExp
