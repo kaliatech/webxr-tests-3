@@ -1,4 +1,5 @@
 import { EnvironmentHelper, IEnvironmentHelperOptions } from '@babylonjs/core/Helpers/environmentHelper'
+//import { EnvironmentHelper, IEnvironmentHelperOptions } from '../3d/utils/customEnvHelper'
 import { Color3 } from '@babylonjs/core/Maths/math.color'
 import { Scene } from '@babylonjs/core/scene.js'
 
@@ -17,6 +18,7 @@ export function getDefaultEnvHelperOpts(): Partial<IEnvironmentHelperOptions> {
     groundMirrorSizeRatio: 0.5,
     groundOpacity: 1.0,
     groundMirrorBlurKernel: 32,
+    setupImageProcessing: true
     //groundTexture: grndImg
   }
 }
