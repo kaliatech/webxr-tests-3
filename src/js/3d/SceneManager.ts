@@ -5,9 +5,8 @@ import { XRSystem } from 'webxr'
 import { WebXRDefaultExperience } from '@babylonjs/core/XR/webXRDefaultExperience'
 import { WebXRFeatureName } from '@babylonjs/core/XR/webXRFeaturesManager'
 
-import { GameScene } from './GameScene'
-import { initDefaultCamera } from './scene-shared/DefaultCamera'
-
+import { LogicalScene } from './LogicalScene'
+import { initDefaultCamera } from './default-camera'
 
 // Side Effect Imports for Babylon.js
 // Import any side effects at the game engine level that _might_ be needed by scenes.
@@ -28,7 +27,7 @@ import '@babylonjs/core/Layers/effectLayerSceneComponent'
 
 // ----------------------
 
-export class GameEngine {
+export class SceneManager {
   canvas: HTMLCanvasElement
 
   babylonEngine: Engine
@@ -40,7 +39,7 @@ export class GameEngine {
   private onResizeHandle = this.onResize.bind(this)
 
   private webXrDefaultExp: WebXRDefaultExperience | undefined
-  private activeGameScene: GameScene | undefined
+  private activeGameScene: LogicalScene | undefined
 
   constructor(canvas: HTMLCanvasElement, xrSystem: XRSystem, window?: Window) {
     this.canvas = canvas
@@ -78,7 +77,7 @@ export class GameEngine {
    * TODO: eventually could add a transition here
    * @param gameScene
    */
-  loadScene(gameScene: GameScene) {
+  loadScene(gameScene: LogicalScene) {
     // Disable teleportation feature to clear any floor meshes
     if (this.webXrDefaultExp) {
       const featuresManager = this.webXrDefaultExp.baseExperience.featuresManager
@@ -92,7 +91,7 @@ export class GameEngine {
 
     // Load new scene
     this.activeGameScene = gameScene
-    this.activeGameScene.load()
+    gameScene.load()
 
     // Re-enable teleportation with new floor meshes (if any)
     if (this.webXrDefaultExp) {
@@ -105,17 +104,19 @@ export class GameEngine {
   }
 
   /**
-   * For testing purposes.
+   * Generally, no reason to explicitly unload a scene. Simply calling loadScene will unload any currently active scene.
    * @param gameScene
    */
-  unloadScene(gameScene: GameScene) {
+  unloadScene(gameScene: LogicalScene) {
     if (this.webXrDefaultExp) {
       const featuresManager = this.webXrDefaultExp.baseExperience.featuresManager
       featuresManager.disableFeature(WebXRFeatureName.TELEPORTATION)
     }
 
-    if (this.activeGameScene) {
-      this.activeGameScene.unload()
+    gameScene.unload()
+
+    if (this.activeGameScene === gameScene) {
+      this.activeGameScene = undefined
     }
     // console.log('postUnload', this.scene)
   }

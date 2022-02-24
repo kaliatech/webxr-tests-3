@@ -4,10 +4,9 @@ import { AssetContainer } from '@babylonjs/core/assetContainer'
 import { Nullable } from '@babylonjs/core/types'
 import { Observer } from '@babylonjs/core/Misc/observable'
 import { EnvironmentHelper } from '@babylonjs/core/Helpers/environmentHelper'
+import { initDefaultEnvHelper } from './default-environment'
 
-import { initDefaultEnvHelper } from './scene-shared/DefaultEnvironment'
-
-export abstract class GameScene {
+export abstract class LogicalScene {
   public assetContainer: AssetContainer
   protected beforeRenderObv: Nullable<Observer<Scene>> = null
 
@@ -51,6 +50,7 @@ export abstract class GameScene {
     this.elapsedTime += deltaMs
 
     if (this.elapsedTime - this.lastFpsLogTime > 5000) {
+      // eslint-disable-next-line no-console
       console.log(engine.getFps().toFixed() + ' fps')
       this.lastFpsLogTime = this.elapsedTime
     }

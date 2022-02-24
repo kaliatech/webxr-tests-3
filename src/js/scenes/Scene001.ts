@@ -11,11 +11,11 @@ import { StandardMaterial } from '@babylonjs/core/Materials/standardMaterial'
 
 import { DefaultCollisionCoordinator } from '@babylonjs/core/Collisions/collisionCoordinator'
 
-import * as ColorMaterials from '../materials/ColorMaterials'
+import * as ColorMaterials from '../3d/materials/ColorMaterials'
 
-import { GameScene } from '../GameScene.js'
+import { LogicalScene } from '../3d/LogicalScene.js'
 
-export class Scene001 extends GameScene {
+export class Scene001 extends LogicalScene {
   private xSphere: Mesh | null = null
   private axesViewer1: AxesViewer | undefined
   private axesViewer2: AxesViewer | undefined

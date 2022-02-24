@@ -16,15 +16,15 @@ import { Vector3 } from '@babylonjs/core/Maths/math.vector'
 // This adds about ~300k
 import * as GUI from '@babylonjs/gui/2D'
 
-import { GameScene } from '../GameScene.js'
-import * as ColorMaterials from '../materials/ColorMaterials'
+import { LogicalScene } from '../3d/LogicalScene.js'
+import * as ColorMaterials from '../3d/materials/ColorMaterials'
 import { XmlLoader } from '@babylonjs/gui/2D'
 
 // Temporary:
 // import '@babylonjs/core/Debug/debugLayer' // Augments the scene with the debug methods
 // import '@babylonjs/inspector'
 
-export class Scene002 extends GameScene {
+export class Scene002 extends LogicalScene {
   private highlightLayer: HighlightLayer | undefined
   private highlightedGuiPanel: Mesh | undefined
   private highlightedMesh: AbstractMesh | undefined
@@ -118,7 +118,7 @@ export class Scene002 extends GameScene {
     panel.isHighlighted = false
     //panel.isHitTestVisible = false
     const header = new GUI.TextBlock()
-    header.text = 'headerTxt'
+    header.text = headerTxt
     header.height = '100px'
     header.color = 'white'
     //header.textHorizontalAlignment = GUI.HORIZONTAL_ALIGNMENT_CENTER;
@@ -245,7 +245,7 @@ export class Scene002 extends GameScene {
       this.highlightedGuiPanel = this._createGui2D(
         this.scene,
         pickResult.pickedMesh as Mesh,
-        'Hover ' + pickResult.pickedMesh.name,
+        pickResult.pickedMesh.name,
       )
       this.highlightLayer?.addExcludedMesh(this.highlightedGuiPanel)
     }

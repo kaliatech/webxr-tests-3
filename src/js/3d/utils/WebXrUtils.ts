@@ -23,6 +23,6 @@ export async function checkXrSupport(navigator: Navigator, mode: XRSessionMode):
   if (await xrSystem.isSessionSupported(mode)) {
     return xrSystem
   } else {
-    throw new Error(`Mode:${mode} is not supported.`)
+    throw new Error(`${mode} is not supported.`)
   }
 }

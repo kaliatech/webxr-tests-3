@@ -14,6 +14,22 @@ footer.home-footer {
   text-align: center;
 }
 
-//#renderCanvas {
-//  border: 1px solid red;
-//}
+.render-cont-outer {
+  align-content: center;
+  //bottom: 1rem;
+  display: flex;
+  flex-direction: column;
+
+  left: 1rem;
+  position: absolute;
+  right: 1rem;
+  top: $bootstrap-navbar-height;
+  bottom: 1rem;
+}
+
+.render-canvas {
+  flex: 1;
+  //border: 1px solid black;
+  min-height: 0;
+  min-width: 0;
+}
