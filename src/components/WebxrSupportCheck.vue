@@ -13,9 +13,10 @@
 <script setup lang="ts">
 import { onMounted, reactive } from 'vue'
 
+import type { XRSystem } from 'webxr'
+
 import * as ErrorUtils from '../js/3d/utils/ErrorUtils'
 import * as WebXrUtils from '../js/3d/utils/WebXrUtils'
-import { XRSystem } from 'webxr'
 
 const emit = defineEmits<{
   (e: 'webxrChecked', xrSystem: XRSystem | undefined, errorMsg: string | undefined): void

@@ -1,4 +1,4 @@
-import { Navigator as NavigatorXR, XRSessionMode, XRSystem } from 'webxr'
+import type { Navigator as NavigatorXR, XRSystem } from 'webxr'
 
 // interface XrSupportResult {
 //   isSupported: boolean
@@ -15,7 +15,7 @@ export async function checkXrSupport(navigator: Navigator, mode: XRSessionMode):
     throw new Error('XRSystem does not exist.')
   }
 
-  const xrSystem = (navigator as unknown as NavigatorXR).xr
+  const xrSystem = (navigator as unknown as NavigatorXR).xr as XRSystem
   if (xrSystem === null) {
     throw new Error('XRSystem is null')
   }

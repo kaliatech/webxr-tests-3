@@ -22,13 +22,14 @@
 </template>
 <script setup lang="ts">
 import { onUnmounted, reactive, ref } from 'vue'
-import { XRSystem } from 'webxr'
 
 import MainLayout from './layouts/MainLayout.vue'
 import WebxrSupportCheck from '../components/WebxrSupportCheck.vue'
 
 import { SceneManager } from '../js/3d/SceneManager'
 import { Scene002 } from '../js/scenes/Scene002'
+
+import type { XRSystem } from 'webxr'
 
 const renderCanvas = ref<HTMLCanvasElement | undefined>()
 let sceneManager: SceneManager | undefined

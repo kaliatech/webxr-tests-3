@@ -1,12 +1,13 @@
 import { ArcRotateCamera } from '@babylonjs/core/Cameras/arcRotateCamera'
 import { Engine } from '@babylonjs/core/Engines/engine'
 import { Scene } from '@babylonjs/core/scene.js'
-import { XRSystem } from 'webxr'
 import { WebXRDefaultExperience } from '@babylonjs/core/XR/webXRDefaultExperience'
 import { WebXRFeatureName } from '@babylonjs/core/XR/webXRFeaturesManager'
 
 import { LogicalScene } from './LogicalScene'
 import { initDefaultCamera } from './default-camera'
+
+import type { XRSystem } from 'webxr'
 
 // Side Effect Imports for Babylon.js
 // Import any side effects at the game engine level that _might_ be needed by scenes.

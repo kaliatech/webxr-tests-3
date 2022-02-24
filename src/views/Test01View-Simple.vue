@@ -28,7 +28,8 @@
 </template>
 <script setup lang="ts">
 import { onUnmounted, reactive, ref } from 'vue'
-import { XRSystem } from 'webxr'
+
+import type { XRSystem } from 'webxr'
 
 import MainLayout from './layouts/MainLayout.vue'
 import WebxrSupportCheck from '../components/WebxrSupportCheck.vue'
