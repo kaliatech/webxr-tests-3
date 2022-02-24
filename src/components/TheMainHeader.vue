@@ -23,7 +23,7 @@
             <li class="nav-item dropdown">
               <a
                 id="navbarDropdown"
-                class="nav-link dropdown-toggle"
+                class="nav-link dropdown-toggle p-2"
                 href="#"
                 role="button"
                 data-bs-toggle="dropdown"
@@ -32,11 +32,11 @@
               >
                 Tests
               </a>
-              <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+              <div class="dropdown-menu p5" aria-labelledby="navbarDropdown">
                 <!--                <a class="dropdown-item" href="#">Test 1</a>-->
-                <router-link class="dropdown-item" to="/test1">Test 1 - Simple</router-link>
-                <router-link class="dropdown-item" to="/test2">Test 2 - Interactions</router-link>
-                <router-link class="dropdown-item" to="/test3">Test 3 - Transitions</router-link>
+                <router-link class="dropdown-item p-2" to="/test1">Test 1 - Simple</router-link>
+                <router-link class="dropdown-item p-2" to="/test2">Test 2 - Interactions</router-link>
+                <router-link class="dropdown-item p-2" to="/test3">Test 3 - Transitions</router-link>
                 <!--                <a class="dropdown-item" href="#">Another action</a>-->
                 <!--                <div class="dropdown-divider"></div>-->
                 <!--                <a class="dropdown-item" href="#">Something else here</a>-->

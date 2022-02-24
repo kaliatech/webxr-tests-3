@@ -3,13 +3,19 @@
     <div class="container">
       <div class="render-cont-outer">
         <div class="container">
+          <!--          <nav aria-label="breadcrumb">-->
+          <!--            <ol class="breadcrumb mb-1">-->
+          <!--              <li class="breadcrumb-item"><router-link to='/'>Home</router-link></li>-->
+          <!--              <li class="breadcrumb-item active" aria-current="page">Test 1</li>-->
+          <!--            </ol>-->
+          <!--          </nav>-->
           <div class="row">
             <div class="col">
               <h1>Test 1 - Simple WebXR Scene</h1>
               A simple scene showing mirrored ground and basic animation.
             </div>
           </div>
-          <div v-if='!data.xrChecked' class="row">
+          <div v-if="!data.xrChecked" class="row">
             <div class="col">
               <webxr-support-check mode="immersive-vr" @webxr-checked="onWebXrChecked" />
             </div>
@@ -60,7 +66,6 @@ function init(xrSystem: XRSystem) {
 onUnmounted(() => {
   sceneManager?.dispose(window)
 })
-
 </script>
 <!--
 <style lang="scss">

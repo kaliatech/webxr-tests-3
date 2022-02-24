@@ -5,7 +5,7 @@
         <div class="col-sm-2"></div>
         <div class="col-sm-8">
           <h2>WebXR Tests</h2>
-          <p>Tests using Babylon.js 5, Vite, Vue3, and TypeScript.</p>
+          <p>Tests using Babylon.js 5, Vite, Vue3, Bootstrap 5, and TypeScript.</p>
         </div>
         <div class="col-sm-2"></div>
       </div>
