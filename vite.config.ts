@@ -1,3 +1,5 @@
+import { fileURLToPath, URL } from 'url'
+
 import { defineConfig } from 'vite'
 import vue from '@vitejs/plugin-vue'
 import eslintPlugin from 'vite-plugin-eslint'
@@ -11,6 +13,15 @@ export default defineConfig({
     // https://github.com/gxmari007/vite-plugin-eslint/issues/17
     eslintPlugin({ cache: false }),
   ],
+  // As of 2022-02-23, doesn't seem to be working in IDEA, even with a jsconfig.json file added. So for now,
+  // seems safer to continue using relative paths.
+  // https://stackoverflow.com/questions/66043612/vue3-vite-project-alias-src-to-not-working
+  // https://stackoverflow.com/questions/66878723/how-to-setup-phpstorm-webstorm-to-work-with-vite-aliases
+  // resolve: {
+  //   alias: {
+  //     "@": fileURLToPath(new URL("./src", import.meta.url)),
+  //   }
+  // },
   server: {
     port: 3443,
     https: true,
