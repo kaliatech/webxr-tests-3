@@ -11,14 +11,18 @@ export function getDefaultEnvHelperOpts(): Partial<IEnvironmentHelperOptions> {
   return {
     skyboxSize: 20,
     skyboxColor: new Color3(0, 0, 0),
-    groundColor: new Color3(0.1, 0.1, 0.3),
+    groundColor: new Color3(0.01, 0.01, 0.2),
+    // groundShadowLevel: 0.5,
+    // enableGroundShadow: true,
     enableGroundMirror: true,
     createSkybox: true,
     groundSize: 20,
-    groundMirrorSizeRatio: 0.5,
+    //groundMirrorSizeRatio: 0.3,
     groundOpacity: 1.0,
-    groundMirrorBlurKernel: 32,
-    setupImageProcessing: true
+    groundMirrorBlurKernel: 64,
+    setupImageProcessing: true,
+    // cameraExposure: 0.8,
+    // cameraContrast: 1.5,
     //groundTexture: grndImg
   }
 }
