@@ -14,6 +14,7 @@ import { DefaultCollisionCoordinator } from '@babylonjs/core/Collisions/collisio
 import * as ColorMaterials from '../3d/materials/ColorMaterials'
 
 import { LogicalScene } from '../3d/LogicalScene.js'
+import { AxesWidget } from '../3d/objects/AxesWidget'
 
 export class Scene001 extends LogicalScene {
   private xSphere: Mesh | null = null
@@ -45,10 +46,16 @@ export class Scene001 extends LogicalScene {
     this.assetContainer.meshes.push(this.xSphere)
 
     const sphere3 = this.xSphere.clone('ySphere', null)
+    const axesWidget = new AxesWidget(scene, "ySphereAxisWidget", 1)
+    axesWidget.root.parent = sphere3
+    this.assetContainer.transformNodes.push(axesWidget.root)
+    this.assetContainer.meshes.push(...axesWidget.root.getChildMeshes(false))
+
     sphere3.position.x = 0
     sphere3.position.y = sphereD + sphereR
     sphere3.position.z = 0
     const gMat = new StandardMaterial('matB', scene)
+    gMat.alpha = 0.7
     gMat.diffuseColor = new Color3(0, 1.0, 0)
     this.mirroredMeshes.push(sphere3)
     sphere3.material = gMat
