@@ -28,10 +28,12 @@ import WebxrSupportCheck from '../components/WebxrSupportCheck.vue'
 
 import type { XRSystem } from 'webxr'
 
-import { SceneManager } from '../js/3d/SceneManager'
+import { SceneManager } from '../js/SceneManager'
 import { Scene004 } from '../js/scenes/Scene004'
+import { EventBus } from 'ts-bus'
 
 const renderCanvas = ref<HTMLCanvasElement | undefined>()
+const appBus: EventBus = new EventBus()
 let sceneManager: SceneManager | undefined
 
 const data = reactive({
@@ -49,10 +51,10 @@ function init(xrSystem: XRSystem) {
   if (!xrSystem || !renderCanvas.value) {
     return
   }
-  sceneManager = new SceneManager(renderCanvas.value, xrSystem, window)
+  sceneManager = new SceneManager(renderCanvas.value, xrSystem, appBus, window)
   sceneManager.initWebXr().then(() => {
     if (sceneManager) {
-      const scene = new Scene004(sceneManager.scene)
+      const scene = new Scene004(sceneManager.scene, appBus)
       sceneManager?.loadScene(scene)
     }
   })

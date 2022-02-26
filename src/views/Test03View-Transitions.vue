@@ -6,26 +6,25 @@
           <div class="row">
             <div class="col">
               <h1>Test 3 - WebXR Scene Transitions</h1>
-              <button
-                class="btn btn-primary mr-2"
-                :class="data.activeSceneNum === 1 ? 'btn-secondary' : ''"
-                @click="loadScene(1)"
-              >
+              <button class="btn mr-2" :class="data.scene1 === undefined ? 'btn-primary' : 'disabled'" @click="loadScene(1)">
                 Load Scene 1
               </button>
               <button
-                class="btn btn-primary m-2"
-                :class="data.activeSceneNum === 2 ? 'btn-secondary' : ''"
-                @click="loadScene(2)"
+                class="btn m-2"
+                :class="data.scene1 !== undefined ? 'btn-secondary' : 'disabled'"
+                @click="unloadScene(data.scene1 as LogicalScene)"
               >
-                Load Scene 002
+                Unload Scene 1
+              </button>
+              <button class="btn m-2" :class="data.scene2 === undefined ? 'btn-primary' : 'disabled'" @click="loadScene(2)">
+                Load Scene 2
               </button>
               <button
-                class="btn btn-primary m-2"
-                :class="data.activeSceneNum === undefined ? 'btn-secondary' : ''"
-                @click="unloadScene()"
+                class="btn m-2"
+                :class="data.scene2 !== undefined ? 'btn-secondary' : 'disabled'"
+                @click="unloadScene(data.scene2 as LogicalScene)"
               >
-                Unload Active Scene
+                Unload Scene 2
               </button>
             </div>
           </div>
@@ -48,21 +47,23 @@ import WebxrSupportCheck from '../components/WebxrSupportCheck.vue'
 
 import type { XRSystem } from 'webxr'
 
-import { SceneManager } from '../js/3d/SceneManager'
+import { SceneManager } from '../js/SceneManager'
 import { Scene002 } from '../js/scenes/Scene002'
 import { Scene001 } from '../js/scenes/Scene001'
-import { LogicalScene } from '../js/3d/LogicalScene'
+import { LogicalScene } from '../js/LogicalScene'
+import { EventBus } from 'ts-bus'
 
 const renderCanvas = ref<HTMLCanvasElement | undefined>()
+const appBus: EventBus = new EventBus()
 let sceneManager: SceneManager | undefined
 
 let scene1: Scene001 | undefined
 let scene2: Scene002 | undefined
-let activeScene: LogicalScene | undefined
 
 const data = reactive({
   xrChecked: false,
-  activeSceneNum: undefined as number | undefined,
+  scene1: undefined as (LogicalScene | undefined),
+  scene2: undefined as (LogicalScene | undefined),
 })
 
 function onWebXrChecked(xrSystem: XRSystem | undefined) {
@@ -76,7 +77,7 @@ function init(xrSystem: XRSystem) {
   if (!xrSystem || !renderCanvas.value) {
     return
   }
-  sceneManager = new SceneManager(renderCanvas.value, xrSystem, window)
+  sceneManager = new SceneManager(renderCanvas.value, xrSystem, appBus, window)
   sceneManager.initWebXr().then(() => {
     if (sceneManager) {
       // scene1 = new Scene001(sceneManager.scene)
@@ -86,12 +87,18 @@ function init(xrSystem: XRSystem) {
   })
 }
 
-function unloadScene() {
-  if (!sceneManager || !activeScene) return
+function unloadScene(scene?: LogicalScene) {
+  if (!sceneManager) return
 
-  sceneManager.unloadScene(activeScene)
-  activeScene = undefined
-  data.activeSceneNum = undefined
+  if (scene === data.scene1) {
+    data.scene1 = undefined
+  } else if (scene === data.scene2) {
+    data.scene2 = undefined
+  }
+
+  if (scene) {
+    sceneManager.unloadScene(scene)
+  }
 }
 
 function loadScene(sceneIdx: number) {
@@ -99,20 +106,16 @@ function loadScene(sceneIdx: number) {
 
   if (sceneIdx === 1) {
     if (!scene1) {
-      scene1 = new Scene001(sceneManager.scene)
+      scene1 = new Scene001(sceneManager.scene, appBus)
     }
-    activeScene = scene1
-    data.activeSceneNum = 1
+    data.scene1 = scene1
+    sceneManager.loadScene(scene1)
   } else if (sceneIdx === 2) {
     if (!scene2) {
-      scene2 = new Scene002(sceneManager.scene)
+      scene2 = new Scene002(sceneManager.scene, appBus)
     }
-    activeScene = scene2
-    data.activeSceneNum = 2
-  }
-
-  if (activeScene) {
-    sceneManager.loadScene(activeScene)
+    data.scene2 = scene2
+    sceneManager.loadScene(scene2)
   }
 }
 

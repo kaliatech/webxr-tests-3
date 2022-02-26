@@ -5,20 +5,26 @@ import { Nullable } from '@babylonjs/core/types'
 import { Observer } from '@babylonjs/core/Misc/observable'
 import { EnvironmentHelper } from '@babylonjs/core/Helpers/environmentHelper'
 //import { EnvironmentHelper } from '../3d/utils/customEnvHelper'
-import { initDefaultEnvHelper } from './default-environment'
+import { initDefaultEnvHelper } from './3d/default-environment'
+import { EventBus } from 'ts-bus'
+import { controllersChanged } from './AppBusEvents'
+import { Controllers } from '../types'
 
 export abstract class LogicalScene {
   public assetContainer: AssetContainer
   protected beforeRenderObv: Nullable<Observer<Scene>> = null
+  private controllerChangeUnsub: (() => void) | undefined
 
   protected mirroredMeshes: Mesh[] = []
 
-  protected envHelper: EnvironmentHelper | undefined
+  protected envHelper?: EnvironmentHelper
 
   protected elapsedTime = 0
   private lastFpsLogTime = 0
 
-  protected constructor(protected scene: Scene) {
+  private controllers?: Controllers
+
+  protected constructor(protected scene: Scene, protected appBus: EventBus) {
     this.assetContainer = new AssetContainer(scene)
   }
 
@@ -32,7 +38,7 @@ export abstract class LogicalScene {
     }
   }
 
-  load(): void {
+  load(controllers?: Controllers): void {
     this.assetContainer.addAllToScene()
 
     // Commented lines show alternate way to setup callbacks:
@@ -42,6 +48,22 @@ export abstract class LogicalScene {
 
     // (Re)Create environment
     this.envHelper = initDefaultEnvHelper(this.scene)
+
+    this.controllerChangeUnsub = this.appBus.subscribe(controllersChanged, (event) => {
+      // const { controllers } = event.payload
+      // console.log('leftController', event.payload.controllers.leftController)
+      // console.log('rightController', event.payload.controllers.rightController)
+      this.onControllersChange(event.payload.controllers)
+    })
+
+    if (controllers !== this.controllers) {
+      this.onControllersChange(controllers)
+    }
+  }
+
+  protected onControllersChange(controllers?: Controllers): void {
+    this.controllers = controllers
+    //console.log('onControllersChange', this.controllers)
   }
 
   // eslint-disable-next-line @typescript-eslint/no-empty-function
@@ -58,6 +80,8 @@ export abstract class LogicalScene {
   }
 
   unload(): void {
+    this.controllerChangeUnsub?.()
+
     if (this.beforeRenderObv) {
       this.scene.onBeforeRenderObservable.remove(this.beforeRenderObv)
       this.beforeRenderObv = null

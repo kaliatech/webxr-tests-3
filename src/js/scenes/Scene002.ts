@@ -12,13 +12,12 @@ import { Vector3 } from '@babylonjs/core/Maths/math.vector'
 
 // This adds ~500k (100k gzipped) to build
 //import * as GUI from '@babylonjs/gui'
-
 // This adds about ~300k
 import * as GUI from '@babylonjs/gui/2D'
 
-import { LogicalScene } from '../3d/LogicalScene.js'
+import { LogicalScene } from '../LogicalScene.js'
 import * as ColorMaterials from '../3d/materials/ColorMaterials'
-import { XmlLoader } from '@babylonjs/gui/2D'
+import { EventBus } from 'ts-bus'
 
 export class Scene002 extends LogicalScene {
   private highlightLayer: HighlightLayer | undefined
@@ -27,10 +26,8 @@ export class Scene002 extends LogicalScene {
 
   private pointerObv: Nullable<Observer<PointerInfo>> = null
 
-  constructor(scene: Scene) {
-    super(scene)
-
-    XmlLoader
+  constructor(scene: Scene, appBus: EventBus) {
+    super(scene, appBus)
 
     //TODO: Needed?
     //new DefaultCollisionCoordinator().init(scene)
@@ -81,8 +78,6 @@ export class Scene002 extends LogicalScene {
     sphere2.material = ColorMaterials.blue(scene)
     this.assetContainer.meshes.push(sphere2)
     this.mirroredMeshes.push(sphere2)
-
-    //this.scene.debugLayer.show({embedMode:true})
 
     this.highlightLayer = new HighlightLayer('hl1', scene)
 

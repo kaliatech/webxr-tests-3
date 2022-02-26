@@ -13,16 +13,17 @@ import { DefaultCollisionCoordinator } from '@babylonjs/core/Collisions/collisio
 
 import * as ColorMaterials from '../3d/materials/ColorMaterials'
 
-import { LogicalScene } from '../3d/LogicalScene.js'
+import { LogicalScene } from '../LogicalScene.js'
 import { AxesWidget } from '../3d/objects/AxesWidget'
+import { EventBus } from 'ts-bus'
 
 export class Scene001 extends LogicalScene {
   private xSphere: Mesh | null = null
   private axesViewer1: AxesViewer | undefined
   private axesViewer2: AxesViewer | undefined
 
-  constructor(scene: Scene) {
-    super(scene)
+  constructor(scene: Scene, appBus: EventBus) {
+    super(scene, appBus)
 
     const defaultColCoord = new DefaultCollisionCoordinator()
     defaultColCoord.init(scene)
@@ -46,7 +47,7 @@ export class Scene001 extends LogicalScene {
     this.assetContainer.meshes.push(this.xSphere)
 
     const sphere3 = this.xSphere.clone('ySphere', null)
-    const axesWidget = new AxesWidget(scene, "ySphereAxisWidget", 1)
+    const axesWidget = new AxesWidget(scene, 'ySphereAxisWidget', 1)
     axesWidget.root.parent = sphere3
     this.assetContainer.transformNodes.push(axesWidget.root)
     this.assetContainer.meshes.push(...axesWidget.root.getChildMeshes(false))
