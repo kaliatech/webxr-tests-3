@@ -42,12 +42,19 @@ export class AxesWidget {
     return this._root
   }
 
-  private _createYAxis(scene: Scene, parent:Node, length: number, lineLength: number, lineDiameter: number, arrowLength: number) : TransformNode {
+  private _createYAxis(
+    scene: Scene,
+    parent: Node,
+    length: number,
+    lineLength: number,
+    lineDiameter: number,
+    arrowLength: number,
+  ): TransformNode {
     const yAxis = new TransformNode('yAxis', scene, false)
     yAxis.parent = parent
 
     const line = MeshBuilder.CreateCylinder('line', { height: lineLength, diameter: lineDiameter }, scene)
-    line.position.y = lineLength/2
+    line.position.y = lineLength / 2
     line.parent = yAxis
 
     const arrow = MeshBuilder.CreateCylinder(
@@ -55,7 +62,7 @@ export class AxesWidget {
       { height: arrowLength, diameterBottom: lineDiameter * 5, diameterTop: 0 },
       scene,
     )
-    arrow.position.y = lineLength + arrowLength/2
+    arrow.position.y = lineLength + arrowLength / 2
     arrow.parent = yAxis
 
     return yAxis

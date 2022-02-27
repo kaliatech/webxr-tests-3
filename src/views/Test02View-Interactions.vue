@@ -9,7 +9,7 @@
               Hover pointer over spheres to trigger GUI. Click trigger input to move sphere up.
             </div>
           </div>
-          <div v-if='!data.xrChecked' class="row">
+          <div v-if="!data.xrChecked" class="row">
             <div class="col">
               <webxr-support-check mode="immersive-vr" @webxr-checked="onWebXrChecked" />
             </div>
@@ -33,7 +33,7 @@ import type { XRSystem } from 'webxr'
 import { EventBus } from 'ts-bus'
 
 const renderCanvas = ref<HTMLCanvasElement | undefined>()
-const appBus:EventBus = new EventBus()
+const appBus: EventBus = new EventBus()
 let sceneManager: SceneManager | undefined
 
 const data = reactive({
@@ -63,7 +63,6 @@ function init(xrSystem: XRSystem) {
 onUnmounted(() => {
   sceneManager?.dispose(window)
 })
-
 </script>
 <!--
 <style lang="scss">

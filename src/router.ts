@@ -13,7 +13,7 @@ const routes: Array<RouteRecordRaw> = [
   {
     path: '/test1',
     name: 'Test1',
-    component:() => import('./views/Test01View-Simple.vue'),
+    component: () => import('./views/Test01View-Simple.vue'),
   },
   {
     path: '/test2',
@@ -23,7 +23,7 @@ const routes: Array<RouteRecordRaw> = [
   {
     path: '/test3',
     name: 'Test3',
-    component:  () => import('./views/Test03View-Transitions.vue'),
+    component: () => import('./views/Test03View-Transitions.vue'),
   },
   {
     path: '/test4',

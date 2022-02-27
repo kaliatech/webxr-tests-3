@@ -4,26 +4,26 @@
  */
 /* eslint-disable */
 
-import { Observable } from "@babylonjs/core/Misc/observable";
-import { Nullable } from "@babylonjs/core/types";
-import { ArcRotateCamera } from "@babylonjs/core/Cameras/arcRotateCamera";
-import { Scene } from "@babylonjs/core/scene";
-import { Vector3 } from "@babylonjs/core/Maths/math.vector";
-import { Color3, Color4 } from '@babylonjs/core/Maths/math.color';
-import { AbstractMesh } from "@babylonjs/core/Meshes/abstractMesh";
-import { Mesh } from "@babylonjs/core/Meshes/mesh";
-import { BaseTexture } from "@babylonjs/core/Materials/Textures/baseTexture";
-import { Texture } from "@babylonjs/core/Materials/Textures/texture";
-import { MirrorTexture } from "@babylonjs/core/Materials/Textures/mirrorTexture";
-import { CubeTexture } from "@babylonjs/core/Materials/Textures/cubeTexture";
-import { BackgroundMaterial } from "@babylonjs/core/Materials/Background/backgroundMaterial";
-import { Constants } from "@babylonjs/core/Engines/constants";
+import { Observable } from '@babylonjs/core/Misc/observable'
+import { Nullable } from '@babylonjs/core/types'
+import { ArcRotateCamera } from '@babylonjs/core/Cameras/arcRotateCamera'
+import { Scene } from '@babylonjs/core/scene'
+import { Vector3 } from '@babylonjs/core/Maths/math.vector'
+import { Color3, Color4 } from '@babylonjs/core/Maths/math.color'
+import { AbstractMesh } from '@babylonjs/core/Meshes/abstractMesh'
+import { Mesh } from '@babylonjs/core/Meshes/mesh'
+import { BaseTexture } from '@babylonjs/core/Materials/Textures/baseTexture'
+import { Texture } from '@babylonjs/core/Materials/Textures/texture'
+import { MirrorTexture } from '@babylonjs/core/Materials/Textures/mirrorTexture'
+import { CubeTexture } from '@babylonjs/core/Materials/Textures/cubeTexture'
+import { BackgroundMaterial } from '@babylonjs/core/Materials/Background/backgroundMaterial'
+import { Constants } from '@babylonjs/core/Engines/constants'
 
-import "@babylonjs/core/Meshes/Builders/planeBuilder";
-import "@babylonjs/core/Meshes/Builders/boxBuilder";
-import { Plane } from '@babylonjs/core/Maths/math.plane';
-import { CreatePlane } from "@babylonjs/core/Meshes/Builders/planeBuilder";
-import { CreateBox } from "@babylonjs/core/Meshes/Builders/boxBuilder";
+import '@babylonjs/core/Meshes/Builders/planeBuilder'
+import '@babylonjs/core/Meshes/Builders/boxBuilder'
+import { Plane } from '@babylonjs/core/Maths/math.plane'
+import { CreatePlane } from '@babylonjs/core/Meshes/Builders/planeBuilder'
+import { CreateBox } from '@babylonjs/core/Meshes/Builders/boxBuilder'
 
 /**
  * Represents the different options available during the creation of
@@ -36,128 +36,128 @@ export interface IEnvironmentHelperOptions {
    * Specifies whether or not to create a ground.
    * True by default.
    */
-  createGround: boolean;
+  createGround: boolean
   /**
    * Specifies the ground size.
    * 15 by default.
    */
-  groundSize: number;
+  groundSize: number
   /**
    * The texture used on the ground for the main color.
    * Comes from the BabylonJS CDN by default.
    *
    * Remarks: Can be either a texture or a url.
    */
-  groundTexture: string | BaseTexture;
+  groundTexture: string | BaseTexture
   /**
    * The color mixed in the ground texture by default.
    * BabylonJS clearColor by default.
    */
-  groundColor: Color3;
+  groundColor: Color3
   /**
    * Specifies the ground opacity.
    * 1 by default.
    */
-  groundOpacity: number;
+  groundOpacity: number
   /**
    * Enables the ground to receive shadows.
    * True by default.
    */
-  enableGroundShadow: boolean;
+  enableGroundShadow: boolean
   /**
    * Helps preventing the shadow to be fully black on the ground.
    * 0.5 by default.
    */
-  groundShadowLevel: number;
+  groundShadowLevel: number
   /**
    * Creates a mirror texture attach to the ground.
    * false by default.
    */
-  enableGroundMirror: boolean;
+  enableGroundMirror: boolean
   /**
    * Specifies the ground mirror size ratio.
    * 0.3 by default as the default kernel is 64.
    */
-  groundMirrorSizeRatio: number;
+  groundMirrorSizeRatio: number
   /**
    * Specifies the ground mirror blur kernel size.
    * 64 by default.
    */
-  groundMirrorBlurKernel: number;
+  groundMirrorBlurKernel: number
   /**
    * Specifies the ground mirror visibility amount.
    * 1 by default
    */
-  groundMirrorAmount: number;
+  groundMirrorAmount: number
   /**
    * Specifies the ground mirror reflectance weight.
    * This uses the standard weight of the background material to setup the fresnel effect
    * of the mirror.
    * 1 by default.
    */
-  groundMirrorFresnelWeight: number;
+  groundMirrorFresnelWeight: number
   /**
    * Specifies the ground mirror Falloff distance.
    * This can helps reducing the size of the reflection.
    * 0 by Default.
    */
-  groundMirrorFallOffDistance: number;
+  groundMirrorFallOffDistance: number
   /**
    * Specifies the ground mirror texture type.
    * Unsigned Int by Default.
    */
-  groundMirrorTextureType: number;
+  groundMirrorTextureType: number
   /**
    * Specifies a bias applied to the ground vertical position to prevent z-fighting with
    * the shown objects.
    */
-  groundYBias: number;
+  groundYBias: number
 
   /**
    * Specifies whether or not to create a skybox.
    * True by default.
    */
-  createSkybox: boolean;
+  createSkybox: boolean
   /**
    * Specifies the skybox size.
    * 20 by default.
    */
-  skyboxSize: number;
+  skyboxSize: number
   /**
    * The texture used on the skybox for the main color.
    * Comes from the BabylonJS CDN by default.
    *
    * Remarks: Can be either a texture or a url.
    */
-  skyboxTexture: string | BaseTexture;
+  skyboxTexture: string | BaseTexture
   /**
    * The color mixed in the skybox texture by default.
    * BabylonJS clearColor by default.
    */
-  skyboxColor: Color3;
+  skyboxColor: Color3
 
   /**
    * The background rotation around the Y axis of the scene.
    * This helps aligning the key lights of your scene with the background.
    * 0 by default.
    */
-  backgroundYRotation: number;
+  backgroundYRotation: number
 
   /**
    * Compute automatically the size of the elements to best fit with the scene.
    */
-  sizeAuto: boolean;
+  sizeAuto: boolean
 
   /**
    * Default position of the rootMesh if autoSize is not true.
    */
-  rootPosition: Vector3;
+  rootPosition: Vector3
 
   /**
    * Sets up the image processing in the scene.
    * true by default.
    */
-  setupImageProcessing: boolean;
+  setupImageProcessing: boolean
 
   /**
    * The texture used as your environment texture in the scene.
@@ -165,31 +165,31 @@ export interface IEnvironmentHelperOptions {
    *
    * Remarks: Can be either a texture or a url.
    */
-  environmentTexture: string | BaseTexture;
+  environmentTexture: string | BaseTexture
 
   /**
    * The value of the exposure to apply to the scene.
    * 0.6 by default if setupImageProcessing is true.
    */
-  cameraExposure: number;
+  cameraExposure: number
 
   /**
    * The value of the contrast to apply to the scene.
    * 1.6 by default if setupImageProcessing is true.
    */
-  cameraContrast: number;
+  cameraContrast: number
 
   /**
    * Specifies whether or not tonemapping should be enabled in the scene.
    * true by default if setupImageProcessing is true.
    */
-  toneMappingEnabled: boolean;
+  toneMappingEnabled: boolean
 }
 
 interface ISceneSize {
-  groundSize: number;
-  skyboxSize: number;
-  rootPosition: Vector3;
+  groundSize: number
+  skyboxSize: number
+  rootPosition: Vector3
 }
 
 /**
@@ -198,21 +198,20 @@ interface ISceneSize {
  * It also helps with the default setup of your imageProcessing configuration.
  */
 export class EnvironmentHelper {
-
   /**
    * Default ground texture URL.
    */
-  private static _groundTextureCDNUrl = "https://assets.babylonjs.com/environments/backgroundGround.png";
+  private static _groundTextureCDNUrl = 'https://assets.babylonjs.com/environments/backgroundGround.png'
 
   /**
    * Default skybox texture URL.
    */
-  private static _skyboxTextureCDNUrl = "https://assets.babylonjs.com/environments/backgroundSkybox.dds";
+  private static _skyboxTextureCDNUrl = 'https://assets.babylonjs.com/environments/backgroundSkybox.dds'
 
   /**
    * Default environment texture URL.
    */
-  private static _environmentTextureCDNUrl = "https://assets.babylonjs.com/environments/environmentSpecular.env";
+  private static _environmentTextureCDNUrl = 'https://assets.babylonjs.com/environments/environmentSpecular.env'
 
   /**
    * Creates the default options for the helper.
@@ -251,63 +250,63 @@ export class EnvironmentHelper {
       cameraExposure: 0.8,
       cameraContrast: 1.2,
       toneMappingEnabled: true,
-    };
+    }
   }
 
-  private _rootMesh: Mesh | null = null;
+  private _rootMesh: Mesh | null = null
   /**
    * Gets the root mesh created by the helper.
    */
   public get rootMesh(): Mesh | null {
-    return this._rootMesh;
+    return this._rootMesh
   }
 
-  private _skybox: Nullable<Mesh> = null;
+  private _skybox: Nullable<Mesh> = null
   /**
    * Gets the skybox created by the helper.
    */
   public get skybox(): Nullable<Mesh> {
-    return this._skybox;
+    return this._skybox
   }
 
-  private _skyboxTexture: Nullable<BaseTexture> = null;
+  private _skyboxTexture: Nullable<BaseTexture> = null
   /**
    * Gets the skybox texture created by the helper.
    */
   public get skyboxTexture(): Nullable<BaseTexture> {
-    return this._skyboxTexture;
+    return this._skyboxTexture
   }
 
-  private _skyboxMaterial: Nullable<BackgroundMaterial> = null;
+  private _skyboxMaterial: Nullable<BackgroundMaterial> = null
   /**
    * Gets the skybox material created by the helper.
    */
   public get skyboxMaterial(): Nullable<BackgroundMaterial> {
-    return this._skyboxMaterial;
+    return this._skyboxMaterial
   }
 
-  private _ground: Nullable<Mesh> = null;
+  private _ground: Nullable<Mesh> = null
   /**
    * Gets the ground mesh created by the helper.
    */
   public get ground(): Nullable<Mesh> {
-    return this._ground;
+    return this._ground
   }
 
-  private _groundTexture: Nullable<BaseTexture> = null;
+  private _groundTexture: Nullable<BaseTexture> = null
   /**
    * Gets the ground texture created by the helper.
    */
   public get groundTexture(): Nullable<BaseTexture> {
-    return this._groundTexture;
+    return this._groundTexture
   }
 
-  private _groundMirror: Nullable<MirrorTexture> = null;
+  private _groundMirror: Nullable<MirrorTexture> = null
   /**
    * Gets the ground mirror created by the helper.
    */
   public get groundMirror(): Nullable<MirrorTexture> {
-    return this._groundMirror;
+    return this._groundMirror
   }
 
   /**
@@ -316,30 +315,30 @@ export class EnvironmentHelper {
    */
   public get groundMirrorRenderList(): Nullable<AbstractMesh[]> {
     if (this._groundMirror) {
-      return this._groundMirror.renderList;
+      return this._groundMirror.renderList
     }
-    return null;
+    return null
   }
 
-  private _groundMaterial: Nullable<BackgroundMaterial> = null;
+  private _groundMaterial: Nullable<BackgroundMaterial> = null
   /**
    * Gets the ground material created by the helper.
    */
   public get groundMaterial(): Nullable<BackgroundMaterial> {
-    return this._groundMaterial;
+    return this._groundMaterial
   }
 
   /**
    * Stores the creation options.
    */
-  private readonly _scene: Scene;
-  private _options: IEnvironmentHelperOptions;
+  private readonly _scene: Scene
+  private _options: IEnvironmentHelperOptions
 
   /**
    * This observable will be notified with any error during the creation of the environment,
    * mainly texture creation errors.
    */
-  public onErrorObservable: Observable<{ message?: string, exception?: any }>;
+  public onErrorObservable: Observable<{ message?: string; exception?: any }>
 
   /**
    * constructor
@@ -349,13 +348,13 @@ export class EnvironmentHelper {
   constructor(options: Partial<IEnvironmentHelperOptions>, scene: Scene) {
     this._options = {
       ...EnvironmentHelper._getDefaultOptions(),
-      ...options
-    };
-    this._scene = scene;
-    this.onErrorObservable = new Observable();
+      ...options,
+    }
+    this._scene = scene
+    this.onErrorObservable = new Observable()
 
-    this._setupBackground();
-    this._setupImageProcessing();
+    this._setupBackground()
+    this._setupImageProcessing()
   }
 
   /**
@@ -365,58 +364,58 @@ export class EnvironmentHelper {
   public updateOptions(options: Partial<IEnvironmentHelperOptions>) {
     const newOptions = {
       ...this._options,
-      ...options
-    };
+      ...options,
+    }
 
     if (this._ground && !newOptions.createGround) {
-      this._ground.dispose();
-      this._ground = null;
+      this._ground.dispose()
+      this._ground = null
     }
 
     if (this._groundMaterial && !newOptions.createGround) {
-      this._groundMaterial.dispose();
-      this._groundMaterial = null;
+      this._groundMaterial.dispose()
+      this._groundMaterial = null
     }
 
     if (this._groundTexture) {
       if (this._options.groundTexture != newOptions.groundTexture) {
-        this._groundTexture.dispose();
-        this._groundTexture = null;
+        this._groundTexture.dispose()
+        this._groundTexture = null
       }
     }
 
     if (this._skybox && !newOptions.createSkybox) {
-      this._skybox.dispose();
-      this._skybox = null;
+      this._skybox.dispose()
+      this._skybox = null
     }
 
     if (this._skyboxMaterial && !newOptions.createSkybox) {
-      this._skyboxMaterial.dispose();
-      this._skyboxMaterial = null;
+      this._skyboxMaterial.dispose()
+      this._skyboxMaterial = null
     }
 
     if (this._skyboxTexture) {
       if (this._options.skyboxTexture != newOptions.skyboxTexture) {
-        this._skyboxTexture.dispose();
-        this._skyboxTexture = null;
+        this._skyboxTexture.dispose()
+        this._skyboxTexture = null
       }
     }
 
     if (this._groundMirror && !newOptions.enableGroundMirror) {
-      this._groundMirror.dispose();
-      this._groundMirror = null;
+      this._groundMirror.dispose()
+      this._groundMirror = null
     }
 
     if (this._scene.environmentTexture) {
       if (this._options.environmentTexture != newOptions.environmentTexture) {
-        this._scene.environmentTexture.dispose();
+        this._scene.environmentTexture.dispose()
       }
     }
 
-    this._options = newOptions;
+    this._options = newOptions
 
-    this._setupBackground();
-    this._setupImageProcessing();
+    this._setupBackground()
+    this._setupImageProcessing()
   }
 
   /**
@@ -425,15 +424,15 @@ export class EnvironmentHelper {
    */
   public setMainColor(color: Color3): void {
     if (this.groundMaterial) {
-      this.groundMaterial.primaryColor = color;
+      this.groundMaterial.primaryColor = color
     }
 
     if (this.skyboxMaterial) {
-      this.skyboxMaterial.primaryColor = color;
+      this.skyboxMaterial.primaryColor = color
     }
 
     if (this.groundMirror) {
-      this.groundMirror.clearColor = new Color4(color.r, color.g, color.b, 1.0);
+      this.groundMirror.clearColor = new Color4(color.r, color.g, color.b, 1.0)
     }
   }
 
@@ -442,10 +441,10 @@ export class EnvironmentHelper {
    */
   private _setupImageProcessing(): void {
     if (this._options.setupImageProcessing) {
-      this._scene.imageProcessingConfiguration.contrast = this._options.cameraContrast;
-      this._scene.imageProcessingConfiguration.exposure = this._options.cameraExposure;
-      this._scene.imageProcessingConfiguration.toneMappingEnabled = this._options.toneMappingEnabled;
-      this._setupEnvironmentTexture();
+      this._scene.imageProcessingConfiguration.contrast = this._options.cameraContrast
+      this._scene.imageProcessingConfiguration.exposure = this._options.cameraExposure
+      this._scene.imageProcessingConfiguration.toneMappingEnabled = this._options.toneMappingEnabled
+      this._setupEnvironmentTexture()
     }
   }
 
@@ -454,16 +453,16 @@ export class EnvironmentHelper {
    */
   private _setupEnvironmentTexture(): void {
     if (this._scene.environmentTexture) {
-      return;
+      return
     }
 
     if (this._options.environmentTexture instanceof BaseTexture) {
-      this._scene.environmentTexture = this._options.environmentTexture;
-      return;
+      this._scene.environmentTexture = this._options.environmentTexture
+      return
     }
 
-    const environmentTexture = CubeTexture.CreateFromPrefilteredData(this._options.environmentTexture, this._scene);
-    this._scene.environmentTexture = environmentTexture;
+    const environmentTexture = CubeTexture.CreateFromPrefilteredData(this._options.environmentTexture, this._scene)
+    this._scene.environmentTexture = environmentTexture
   }
 
   /**
@@ -471,70 +470,70 @@ export class EnvironmentHelper {
    */
   private _setupBackground(): void {
     if (!this._rootMesh) {
-      this._rootMesh = new Mesh("BackgroundHelper", this._scene);
+      this._rootMesh = new Mesh('BackgroundHelper', this._scene)
     }
-    this._rootMesh.rotation.y = this._options.backgroundYRotation;
+    this._rootMesh.rotation.y = this._options.backgroundYRotation
 
-    const sceneSize = this._getSceneSize();
+    const sceneSize = this._getSceneSize()
     if (this._options.createGround) {
-      this._setupGround(sceneSize);
-      this._setupGroundMaterial();
-      this._setupGroundDiffuseTexture();
+      this._setupGround(sceneSize)
+      this._setupGroundMaterial()
+      this._setupGroundDiffuseTexture()
 
       if (this._options.enableGroundMirror) {
-        this._setupGroundMirrorTexture(sceneSize);
+        this._setupGroundMirrorTexture(sceneSize)
       }
-      this._setupMirrorInGroundMaterial();
+      this._setupMirrorInGroundMaterial()
     }
 
     if (this._options.createSkybox) {
-      this._setupSkybox(sceneSize);
-      this._setupSkyboxMaterial();
-      this._setupSkyboxReflectionTexture();
+      this._setupSkybox(sceneSize)
+      this._setupSkyboxMaterial()
+      this._setupSkyboxReflectionTexture()
     }
 
-    this._rootMesh.position.x = sceneSize.rootPosition.x;
-    this._rootMesh.position.z = sceneSize.rootPosition.z;
-    this._rootMesh.position.y = sceneSize.rootPosition.y;
+    this._rootMesh.position.x = sceneSize.rootPosition.x
+    this._rootMesh.position.z = sceneSize.rootPosition.z
+    this._rootMesh.position.y = sceneSize.rootPosition.y
   }
 
   /**
    * Get the scene sizes according to the setup.
    */
   private _getSceneSize(): ISceneSize {
-    let groundSize = this._options.groundSize;
-    let skyboxSize = this._options.skyboxSize;
-    let rootPosition = this._options.rootPosition;
-    if (!this._scene.meshes || this._scene.meshes.length === 1) { // 1 only means the root of the helper.
-      return { groundSize, skyboxSize, rootPosition };
+    let groundSize = this._options.groundSize
+    let skyboxSize = this._options.skyboxSize
+    let rootPosition = this._options.rootPosition
+    if (!this._scene.meshes || this._scene.meshes.length === 1) {
+      // 1 only means the root of the helper.
+      return { groundSize, skyboxSize, rootPosition }
     }
 
     const sceneExtends = this._scene.getWorldExtends((mesh) => {
-      return (mesh !== this._ground && mesh !== this._rootMesh && mesh !== this._skybox);
-    });
-    const sceneDiagonal = sceneExtends.max.subtract(sceneExtends.min);
+      return mesh !== this._ground && mesh !== this._rootMesh && mesh !== this._skybox
+    })
+    const sceneDiagonal = sceneExtends.max.subtract(sceneExtends.min)
 
     if (this._options.sizeAuto) {
-      if (this._scene.activeCamera instanceof ArcRotateCamera &&
-        this._scene.activeCamera.upperRadiusLimit) {
-        groundSize = this._scene.activeCamera.upperRadiusLimit * 2;
-        skyboxSize = groundSize;
+      if (this._scene.activeCamera instanceof ArcRotateCamera && this._scene.activeCamera.upperRadiusLimit) {
+        groundSize = this._scene.activeCamera.upperRadiusLimit * 2
+        skyboxSize = groundSize
       }
 
-      const sceneDiagonalLenght = sceneDiagonal.length();
+      const sceneDiagonalLenght = sceneDiagonal.length()
       if (sceneDiagonalLenght > groundSize) {
-        groundSize = sceneDiagonalLenght * 2;
-        skyboxSize = groundSize;
+        groundSize = sceneDiagonalLenght * 2
+        skyboxSize = groundSize
       }
 
       // 10 % bigger.
-      groundSize *= 1.1;
-      skyboxSize *= 1.5;
-      rootPosition = sceneExtends.min.add(sceneDiagonal.scale(0.5));
-      rootPosition.y = sceneExtends.min.y - this._options.groundYBias;
+      groundSize *= 1.1
+      skyboxSize *= 1.5
+      rootPosition = sceneExtends.min.add(sceneDiagonal.scale(0.5))
+      rootPosition.y = sceneExtends.min.y - this._options.groundYBias
     }
 
-    return { groundSize, skyboxSize, rootPosition };
+    return { groundSize, skyboxSize, rootPosition }
   }
 
   /**
@@ -542,13 +541,15 @@ export class EnvironmentHelper {
    */
   private _setupGround(sceneSize: ISceneSize): void {
     if (!this._ground || this._ground.isDisposed()) {
-      this._ground = CreatePlane("BackgroundPlane", { size: sceneSize.groundSize }, this._scene);
-      this._ground.rotation.x = Math.PI / 2; // Face up by default.
-      this._ground.parent = this._rootMesh;
-      this._ground.onDisposeObservable.add(() => { this._ground = null; });
+      this._ground = CreatePlane('BackgroundPlane', { size: sceneSize.groundSize }, this._scene)
+      this._ground.rotation.x = Math.PI / 2 // Face up by default.
+      this._ground.parent = this._rootMesh
+      this._ground.onDisposeObservable.add(() => {
+        this._ground = null
+      })
     }
 
-    this._ground.receiveShadows = this._options.enableGroundShadow;
+    this._ground.receiveShadows = this._options.enableGroundShadow
   }
 
   /**
@@ -556,17 +557,17 @@ export class EnvironmentHelper {
    */
   private _setupGroundMaterial(): void {
     if (!this._groundMaterial) {
-      this._groundMaterial = new BackgroundMaterial("BackgroundPlaneMaterial", this._scene);
+      this._groundMaterial = new BackgroundMaterial('BackgroundPlaneMaterial', this._scene)
     }
-    this._groundMaterial.alpha = this._options.groundOpacity;
-    this._groundMaterial.alphaMode = Constants.ALPHA_PREMULTIPLIED_PORTERDUFF;
-    this._groundMaterial.shadowLevel = this._options.groundShadowLevel;
-    this._groundMaterial.primaryColor = this._options.groundColor;
-    this._groundMaterial.useRGBColor = false;
-    this._groundMaterial.enableNoise = true;
+    this._groundMaterial.alpha = this._options.groundOpacity
+    this._groundMaterial.alphaMode = Constants.ALPHA_PREMULTIPLIED_PORTERDUFF
+    this._groundMaterial.shadowLevel = this._options.groundShadowLevel
+    this._groundMaterial.primaryColor = this._options.groundColor
+    this._groundMaterial.useRGBColor = false
+    this._groundMaterial.enableNoise = true
 
     if (this._ground) {
-      this._ground.material = this._groundMaterial;
+      this._ground.material = this._groundMaterial
     }
   }
 
@@ -575,50 +576,58 @@ export class EnvironmentHelper {
    */
   private _setupGroundDiffuseTexture(): void {
     if (!this._groundMaterial) {
-      return;
+      return
     }
 
     if (this._groundTexture) {
-      return;
+      return
     }
 
     if (this._options.groundTexture instanceof BaseTexture) {
-      this._groundMaterial.diffuseTexture = this._options.groundTexture;
-      return;
+      this._groundMaterial.diffuseTexture = this._options.groundTexture
+      return
     }
 
-    this._groundTexture = new Texture(this._options.groundTexture, this._scene, undefined, undefined, undefined, undefined, this._errorHandler);
-    this._groundTexture.gammaSpace = false;
-    this._groundTexture.hasAlpha = true;
-    this._groundMaterial.diffuseTexture = this._groundTexture;
+    this._groundTexture = new Texture(
+      this._options.groundTexture,
+      this._scene,
+      undefined,
+      undefined,
+      undefined,
+      undefined,
+      this._errorHandler,
+    )
+    this._groundTexture.gammaSpace = false
+    this._groundTexture.hasAlpha = true
+    this._groundMaterial.diffuseTexture = this._groundTexture
   }
 
   /**
    * Setup the ground mirror texture according to the specified options.
    */
   private _setupGroundMirrorTexture(sceneSize: ISceneSize): void {
-    let wrapping = Texture.CLAMP_ADDRESSMODE;
+    let wrapping = Texture.CLAMP_ADDRESSMODE
     if (!this._groundMirror) {
-      this._groundMirror = new MirrorTexture("BackgroundPlaneMirrorTexture",
+      this._groundMirror = new MirrorTexture(
+        'BackgroundPlaneMirrorTexture',
         { ratio: this._options.groundMirrorSizeRatio },
         this._scene,
         false,
         this._options.groundMirrorTextureType,
         Texture.BILINEAR_SAMPLINGMODE,
-        true);
-      this._groundMirror.mirrorPlane = new Plane(0, -1, 0, sceneSize.rootPosition.y);
-      this._groundMirror.anisotropicFilteringLevel = 1;
-      this._groundMirror.wrapU = wrapping;
-      this._groundMirror.wrapV = wrapping;
-      this._groundMirror.gammaSpace = false;
+        true,
+      )
+      this._groundMirror.mirrorPlane = new Plane(0, -1, 0, sceneSize.rootPosition.y)
+      this._groundMirror.anisotropicFilteringLevel = 1
+      this._groundMirror.wrapU = wrapping
+      this._groundMirror.wrapV = wrapping
+      this._groundMirror.gammaSpace = false
 
       if (this._groundMirror.renderList) {
         for (let i = 0; i < this._scene.meshes.length; i++) {
-          const mesh = this._scene.meshes[i];
-          if (mesh !== this._ground &&
-            mesh !== this._skybox &&
-            mesh !== this._rootMesh) {
-            this._groundMirror.renderList.push(mesh);
+          const mesh = this._scene.meshes[i]
+          if (mesh !== this._ground && mesh !== this._skybox && mesh !== this._rootMesh) {
+            this._groundMirror.renderList.push(mesh)
           }
         }
       }
@@ -637,8 +646,9 @@ export class EnvironmentHelper {
       this._options.groundColor.r,
       this._options.groundColor.g,
       this._options.groundColor.b,
-      1);
-    this._groundMirror.adaptiveBlurKernel = this._options.groundMirrorBlurKernel;
+      1,
+    )
+    this._groundMirror.adaptiveBlurKernel = this._options.groundMirrorBlurKernel
   }
 
   /**
@@ -646,11 +656,11 @@ export class EnvironmentHelper {
    */
   private _setupMirrorInGroundMaterial(): void {
     if (this._groundMaterial) {
-      this._groundMaterial.reflectionTexture = this._groundMirror;
-      this._groundMaterial.reflectionFresnel = true;
-      this._groundMaterial.reflectionAmount = this._options.groundMirrorAmount;
-      this._groundMaterial.reflectionStandardFresnelWeight = this._options.groundMirrorFresnelWeight;
-      this._groundMaterial.reflectionFalloffDistance = this._options.groundMirrorFallOffDistance;
+      this._groundMaterial.reflectionTexture = this._groundMirror
+      this._groundMaterial.reflectionFresnel = true
+      this._groundMaterial.reflectionAmount = this._options.groundMirrorAmount
+      this._groundMaterial.reflectionStandardFresnelWeight = this._options.groundMirrorFresnelWeight
+      this._groundMaterial.reflectionFalloffDistance = this._options.groundMirrorFallOffDistance
     }
   }
 
@@ -659,10 +669,16 @@ export class EnvironmentHelper {
    */
   private _setupSkybox(sceneSize: ISceneSize): void {
     if (!this._skybox || this._skybox.isDisposed()) {
-      this._skybox = CreateBox("BackgroundSkybox", { size: sceneSize.skyboxSize, sideOrientation: Mesh.BACKSIDE }, this._scene);
-      this._skybox.onDisposeObservable.add(() => { this._skybox = null; });
+      this._skybox = CreateBox(
+        'BackgroundSkybox',
+        { size: sceneSize.skyboxSize, sideOrientation: Mesh.BACKSIDE },
+        this._scene,
+      )
+      this._skybox.onDisposeObservable.add(() => {
+        this._skybox = null
+      })
     }
-    this._skybox.parent = this._rootMesh;
+    this._skybox.parent = this._rootMesh
   }
 
   /**
@@ -670,17 +686,17 @@ export class EnvironmentHelper {
    */
   private _setupSkyboxMaterial(): void {
     if (!this._skybox) {
-      return;
+      return
     }
 
     if (!this._skyboxMaterial) {
-      this._skyboxMaterial = new BackgroundMaterial("BackgroundSkyboxMaterial", this._scene);
+      this._skyboxMaterial = new BackgroundMaterial('BackgroundSkyboxMaterial', this._scene)
     }
-    this._skyboxMaterial.useRGBColor = false;
-    this._skyboxMaterial.primaryColor = this._options.skyboxColor;
-    this._skyboxMaterial.enableNoise = true;
+    this._skyboxMaterial.useRGBColor = false
+    this._skyboxMaterial.primaryColor = this._options.skyboxColor
+    this._skyboxMaterial.enableNoise = true
 
-    this._skybox.material = this._skyboxMaterial;
+    this._skybox.material = this._skyboxMaterial
   }
 
   /**
@@ -688,26 +704,34 @@ export class EnvironmentHelper {
    */
   private _setupSkyboxReflectionTexture(): void {
     if (!this._skyboxMaterial) {
-      return;
+      return
     }
 
     if (this._skyboxTexture) {
-      return;
+      return
     }
 
     if (this._options.skyboxTexture instanceof BaseTexture) {
-      this._skyboxMaterial.reflectionTexture = this._options.skyboxTexture;
-      return;
+      this._skyboxMaterial.reflectionTexture = this._options.skyboxTexture
+      return
     }
 
-    this._skyboxTexture = new CubeTexture(this._options.skyboxTexture, this._scene, undefined, undefined, undefined, undefined, this._errorHandler);
-    this._skyboxTexture.coordinatesMode = Texture.SKYBOX_MODE;
-    this._skyboxTexture.gammaSpace = false;
-    this._skyboxMaterial.reflectionTexture = this._skyboxTexture;
+    this._skyboxTexture = new CubeTexture(
+      this._options.skyboxTexture,
+      this._scene,
+      undefined,
+      undefined,
+      undefined,
+      undefined,
+      this._errorHandler,
+    )
+    this._skyboxTexture.coordinatesMode = Texture.SKYBOX_MODE
+    this._skyboxTexture.gammaSpace = false
+    this._skyboxMaterial.reflectionTexture = this._skyboxTexture
   }
 
   private _errorHandler = (message?: string, exception?: any) => {
-    this.onErrorObservable.notifyObservers({ message: message, exception: exception });
+    this.onErrorObservable.notifyObservers({ message: message, exception: exception })
   }
 
   /**
@@ -715,11 +739,11 @@ export class EnvironmentHelper {
    */
   public dispose(): void {
     if (this._groundMaterial) {
-      this._groundMaterial.dispose(true, true);
+      this._groundMaterial.dispose(true, true)
     }
     if (this._skyboxMaterial) {
-      this._skyboxMaterial.dispose(true, true);
+      this._skyboxMaterial.dispose(true, true)
     }
-    this._rootMesh?.dispose(false);
+    this._rootMesh?.dispose(false)
   }
 }

@@ -39,7 +39,7 @@ import { Scene001 } from '../js/scenes/Scene001'
 import { EventBus } from 'ts-bus'
 
 const renderCanvas = ref<HTMLCanvasElement | undefined>()
-const appBus:EventBus = new EventBus()
+const appBus: EventBus = new EventBus()
 let sceneManager: SceneManager | undefined
 
 const data = reactive({

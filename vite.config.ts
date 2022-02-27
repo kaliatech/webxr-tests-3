@@ -31,7 +31,7 @@ export default defineConfig({
     // https://github.com/vitejs/vite/issues/4403
     // This solved ERR_HTTP2_PROTOCOL_ERROR
     proxy: {
-      'https://localhost:3443': 'https://localhost:3443'
+      'https://localhost:3443': 'https://localhost:3443',
     },
 
     // https://github.com/vitejs/vite/pull/3895

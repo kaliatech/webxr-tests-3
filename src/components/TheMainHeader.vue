@@ -11,8 +11,7 @@
           data-bs-target="#navbarCollapse"
           aria-controls="navbarCollapse"
           aria-expanded="false"
-          aria-label="Toggle navigation"
-        >
+          aria-label="Toggle navigation">
           <span class="navbar-toggler-icon"></span>
         </button>
         <div id="navbarCollapse" class="collapse navbar-collapse">
@@ -28,8 +27,7 @@
                 role="button"
                 data-bs-toggle="dropdown"
                 aria-haspopup="true"
-                aria-expanded="false"
-              >
+                aria-expanded="false">
                 Tests
               </a>
               <div class="dropdown-menu p5" aria-labelledby="navbarDropdown">

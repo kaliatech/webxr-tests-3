@@ -1,4 +1,4 @@
-import { createEventDefinition } from "ts-bus";
+import { createEventDefinition } from 'ts-bus'
 import type { Controllers } from '../types'
 
 // export const controllersChanged = createEventDefinition<{
@@ -7,6 +7,5 @@ import type { Controllers } from '../types'
 // }>()("controllers.changed");
 
 export const controllersChanged = createEventDefinition<{
-  controllers:Controllers
-}>()("controllers.changed");
-
+  controllers: Controllers
+}>()('controllers.changed')

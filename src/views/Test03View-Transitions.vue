@@ -6,24 +6,28 @@
           <div class="row">
             <div class="col">
               <h1>Test 3 - WebXR Scene Transitions</h1>
-              <button class="btn mr-2" :class="data.scene1 === undefined ? 'btn-primary' : 'disabled'" @click="loadScene(1)">
+              <button
+                class="btn mr-2"
+                :class="data.scene1 === undefined ? 'btn-primary' : 'disabled'"
+                @click="loadScene(1)">
                 Load Scene 1
               </button>
               <button
                 class="btn m-2"
                 :class="data.scene1 !== undefined ? 'btn-secondary' : 'disabled'"
-                @click="unloadScene(data.scene1 as LogicalScene)"
-              >
+                @click="unloadScene(data.scene1 as LogicalScene)">
                 Unload Scene 1
               </button>
-              <button class="btn m-2" :class="data.scene2 === undefined ? 'btn-primary' : 'disabled'" @click="loadScene(2)">
+              <button
+                class="btn m-2"
+                :class="data.scene2 === undefined ? 'btn-primary' : 'disabled'"
+                @click="loadScene(2)">
                 Load Scene 2
               </button>
               <button
                 class="btn m-2"
                 :class="data.scene2 !== undefined ? 'btn-secondary' : 'disabled'"
-                @click="unloadScene(data.scene2 as LogicalScene)"
-              >
+                @click="unloadScene(data.scene2 as LogicalScene)">
                 Unload Scene 2
               </button>
             </div>
@@ -62,8 +66,8 @@ let scene2: Scene002 | undefined
 
 const data = reactive({
   xrChecked: false,
-  scene1: undefined as (LogicalScene | undefined),
-  scene2: undefined as (LogicalScene | undefined),
+  scene1: undefined as LogicalScene | undefined,
+  scene2: undefined as LogicalScene | undefined,
 })
 
 function onWebXrChecked(xrSystem: XRSystem | undefined) {

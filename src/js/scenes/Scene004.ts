@@ -17,8 +17,7 @@ import { Controllers } from '../../types'
 import { AxesWidget } from '../3d/objects/AxesWidget'
 
 export class Scene004 extends LogicalScene {
-
-  private leftMenu?:ControllerTrackingMenu
+  private leftMenu?: ControllerTrackingMenu
 
   private createVideoDome() {
     //const url = "https://yoda.blob.core.windows.net/videos/uptale360.mp4"
@@ -61,7 +60,7 @@ export class Scene004 extends LogicalScene {
     this.assetContainer.meshes.push(sphere)
 
     // Add 2 unit axes widget at origin
-    const axesWidget = new AxesWidget(scene, "axesWidget", 1)
+    const axesWidget = new AxesWidget(scene, 'axesWidget', 1)
     this.assetContainer.transformNodes.push(axesWidget.root)
     this.assetContainer.meshes.push(...axesWidget.root.getChildMeshes(false))
 
@@ -81,17 +80,14 @@ export class Scene004 extends LogicalScene {
     super.unload()
   }
 
-  onControllersChange(controllers:Controllers) {
+  onControllersChange(controllers: Controllers) {
     super.onControllersChange(controllers)
 
     if (controllers.leftController) {
       this.leftMenu = new ControllerTrackingMenu(this.scene, controllers.leftController)
-    }
-    else {
+    } else {
       //TODO: seems dispose will also dispose child materials?
       this.leftMenu?.dispose()
     }
-
   }
 }
-

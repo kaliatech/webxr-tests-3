@@ -9,7 +9,7 @@
               Immersive video quality tests. 360&deg; mono, 180&deg; mono, & 180&deg; stereo.
             </div>
           </div>
-          <div v-if='!data.xrChecked' class="row">
+          <div v-if="!data.xrChecked" class="row">
             <div class="col">
               <webxr-support-check mode="immersive-vr" @webxr-checked="onWebXrChecked" />
             </div>
@@ -63,7 +63,6 @@ function init(xrSystem: XRSystem) {
 onUnmounted(() => {
   sceneManager?.dispose(window)
 })
-
 </script>
 <!--
 <style lang="scss">

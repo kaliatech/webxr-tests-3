@@ -3,6 +3,8 @@
   "trailingComma": "all",
   "singleQuote": true,
   "printWidth": 120,
+  "bracketSameLine": true,
+  "htmlWhitespaceSensitivity": "ignore",
   "plugins": [
     "prettier-plugin-multiline-arrays"
   ]
