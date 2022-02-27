@@ -1,10 +1,8 @@
 import type { RouteRecordRaw } from 'vue-router'
 import { createRouter, createWebHistory, RouterOptions } from 'vue-router'
 import HomePage from './views/HomeView.vue'
-import Test01View from './views/Test01View-Simple.vue'
-import Test02View from './views/Test02View-Interactions.vue'
-import Test03View from './views/Test03View-Transitions.vue'
-import Test04View from './views/Test04View-Video.vue'
+
+// https://router.vuejs.org/guide/advanced/lazy-loading.html
 
 const routes: Array<RouteRecordRaw> = [
   {
@@ -15,22 +13,27 @@ const routes: Array<RouteRecordRaw> = [
   {
     path: '/test1',
     name: 'Test1',
-    component: Test01View,
+    component:() => import('./views/Test01View-Simple.vue'),
   },
   {
     path: '/test2',
     name: 'Test2',
-    component: Test02View,
+    component: () => import('./views/Test02View-Interactions.vue'),
   },
   {
     path: '/test3',
     name: 'Test3',
-    component: Test03View,
+    component:  () => import('./views/Test03View-Transitions.vue'),
   },
   {
     path: '/test4',
     name: 'Test4',
-    component: Test04View,
+    component: () => import('./views/Test04View-Video.vue'),
+  },
+  {
+    path: '/links',
+    name: 'Links',
+    component: () => import('./views/LinksView.vue'),
   },
 ] as Array<RouteRecordRaw>
 

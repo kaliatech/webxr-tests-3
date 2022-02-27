@@ -1,7 +1,7 @@
 <template>
   <header style="z-index: 1000">
     <!-- Fixed navbar -->
-    <nav class="navbar navbar-expand-md navbar-dark fixed-top bg-dark" style="z-index: 5000">
+    <nav class="navbar navbar-expand-md navbar-dark fixed-top bg-dark">
       <div class="container">
         <router-link class="navbar-brand" to="/">WebXR</router-link>
         <button
