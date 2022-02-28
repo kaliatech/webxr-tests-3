@@ -18,6 +18,12 @@
                   </a>
                 </li>
                 <li>
+                  <a href="https://brianzinn.github.io/react-babylonjs/?path=/story/gui--with-2-dui">
+                    https://brianzinn.github.io/react-babylonjs/?path=/story/gui--with-2-dui
+                  </a>
+                </li>
+
+                <li>
                   <a href="https://makepad.dev/">https://makepad.dev/</a>
                 </li>
               </ul>

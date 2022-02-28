@@ -22,7 +22,7 @@ export abstract class LogicalScene {
   protected elapsedTime = 0
   private lastFpsLogTime = 0
 
-  private controllers?: Controllers
+  private useGlobalEnvHelper = false
 
   protected constructor(protected scene: Scene, protected appBus: EventBus) {
     this.assetContainer = new AssetContainer(scene)
@@ -47,22 +47,23 @@ export abstract class LogicalScene {
     this.beforeRenderObv = this.scene.onBeforeRenderObservable.add(() => this.beforeRender())
 
     // (Re)Create environment
-    this.envHelper = initDefaultEnvHelper(this.scene)
+   this.envHelper = initDefaultEnvHelper(this.scene, this.useGlobalEnvHelper)
 
     this.controllerChangeUnsub = this.appBus.subscribe(controllersChanged, (event) => {
-      // const { controllers } = event.payload
-      // console.log('leftController', event.payload.controllers.leftController)
-      // console.log('rightController', event.payload.controllers.rightController)
       this.onControllersChange(event.payload.controllers)
     })
 
-    if (controllers !== this.controllers) {
-      this.onControllersChange(controllers)
-    }
+    this.onControllersChange(controllers)
   }
 
-  protected onControllersChange(controllers?: Controllers): void {
-    this.controllers = controllers
+  /**
+   * Will be called by scene.load and scene.unload.
+   * @param controllers
+   * @protected
+   */
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  onControllersChange(controllers?: Controllers): void {
+    //this.controllers = controllers
     //console.log('onControllersChange', this.controllers)
   }
 
@@ -82,12 +83,16 @@ export abstract class LogicalScene {
   unload(): void {
     this.controllerChangeUnsub?.()
 
+    this.onControllersChange()
+
     if (this.beforeRenderObv) {
       this.scene.onBeforeRenderObservable.remove(this.beforeRenderObv)
       this.beforeRenderObv = null
     }
     this.assetContainer.removeAllFromScene()
-    this.envHelper?.dispose()
+    if (!this.useGlobalEnvHelper) {
+      this.envHelper?.dispose()
+    }
   }
 
   dispose() {

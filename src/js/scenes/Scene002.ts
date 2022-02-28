@@ -79,8 +79,6 @@ export class Scene002 extends LogicalScene {
     this.assetContainer.meshes.push(sphere2)
     this.mirroredMeshes.push(sphere2)
 
-    this.highlightLayer = new HighlightLayer('hl1', scene)
-
     this.assetContainer.removeAllFromScene()
   }
 
@@ -170,20 +168,10 @@ export class Scene002 extends LogicalScene {
   load() {
     super.load()
 
-    const bgrndSkybox = this.scene.getMeshById('BackgroundSkybox')
-    if (bgrndSkybox) {
-      bgrndSkybox.isPickable = false
-      bgrndSkybox.enablePointerMoveEvents = false
-    }
-
-    const bgrndPlane = this.scene.getMeshById('BackgroundPlane')
-    if (bgrndPlane) {
-      bgrndPlane.isPickable = false
-      bgrndPlane.enablePointerMoveEvents = false
-    }
-
     //console.log('envHelper', this.envHelper)
     //if (this.floorMesh) this.floorMesh.checkCollisions = true
+
+    this.highlightLayer = new HighlightLayer('hl1', this.scene)
 
     this._setupPick(this.scene)
   }
@@ -194,10 +182,10 @@ export class Scene002 extends LogicalScene {
       this.scene.onPointerObservable.remove(this.pointerObv)
     }
 
-    // if (this.highlightLayer) {
-    //   this.highlightLayer.dispose()
-    //   this.highlightLayer = undefined
-    // }
+    if (this.highlightLayer) {
+       this.highlightLayer.dispose() // TODO: I think need to be careful with dispose. Maybe remove highlighted meshes?
+       this.highlightLayer = undefined
+    }
 
     // if (this.highlightedGuiPanel) {
     //   this.highlightedGuiPanel.dispose()

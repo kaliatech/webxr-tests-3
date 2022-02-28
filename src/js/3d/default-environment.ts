@@ -3,8 +3,33 @@ import { EnvironmentHelper, IEnvironmentHelperOptions } from '@babylonjs/core/He
 import { Color3 } from '@babylonjs/core/Maths/math.color'
 import { Scene } from '@babylonjs/core/scene.js'
 
-export function initDefaultEnvHelper(scene: Scene): EnvironmentHelper {
-  return new EnvironmentHelper(getDefaultEnvHelperOpts(), scene)
+const globalEnvHelpers: { [key: string] : EnvironmentHelper } = {}
+
+export function initDefaultEnvHelper(scene: Scene, global:boolean): EnvironmentHelper {
+  if (!global) {
+    return new EnvironmentHelper(getDefaultEnvHelperOpts(), scene)
+  }
+
+  let envHelper = globalEnvHelpers[scene.uid]
+  if (!envHelper) {
+    envHelper = new EnvironmentHelper(getDefaultEnvHelperOpts(), scene)
+
+    const bgrndSkybox = scene.getMeshById('BackgroundSkybox')
+    if (bgrndSkybox) {
+      bgrndSkybox.isPickable = false
+      bgrndSkybox.enablePointerMoveEvents = false
+    }
+
+    const bgrndPlane = scene.getMeshById('BackgroundPlane')
+    if (bgrndPlane) {
+      bgrndPlane.isPickable = false
+      bgrndPlane.enablePointerMoveEvents = false
+    }
+
+
+    globalEnvHelpers[scene.uid] = envHelper
+  }
+  return envHelper
 }
 
 export function getDefaultEnvHelperOpts(): Partial<IEnvironmentHelperOptions> {

@@ -6,30 +6,26 @@
           <div class="row">
             <div class="col">
               <h1>Test 3 - WebXR Scene Transitions</h1>
-              <button
-                class="btn mr-2"
-                :class="data.scene1 === undefined ? 'btn-primary' : 'disabled'"
-                @click="loadScene(1)">
-                Load Scene 1
-              </button>
-              <button
-                class="btn m-2"
-                :class="data.scene1 !== undefined ? 'btn-secondary' : 'disabled'"
-                @click="unloadScene(data.scene1 as LogicalScene)">
-                Unload Scene 1
-              </button>
-              <button
-                class="btn m-2"
-                :class="data.scene2 === undefined ? 'btn-primary' : 'disabled'"
-                @click="loadScene(2)">
-                Load Scene 2
-              </button>
-              <button
-                class="btn m-2"
-                :class="data.scene2 !== undefined ? 'btn-secondary' : 'disabled'"
-                @click="unloadScene(data.scene2 as LogicalScene)">
-                Unload Scene 2
-              </button>
+              <div class="d-flex">
+                <div
+                  v-for="(loaded, idx) in data.scenesLoaded"
+                  :key="`scene-${idx}`"
+                  class="d-flex flex-column"
+                  style="width: 10rem">
+                  <button
+                    class="btn m-1"
+                    :class="data.scenesLoaded[idx] === false ? 'btn-primary' : 'disabled'"
+                    @click="loadScene(idx)">
+                    Load Scene {{ idx + 1 }}
+                  </button>
+                  <button
+                    class="btn m-1"
+                    :class="data.scenesLoaded[idx] === true ? 'btn-secondary' : 'disabled'"
+                    @click="unloadScene(idx)">
+                    Upload Scene {{ idx + 1 }}
+                  </button>
+                </div>
+              </div>
             </div>
           </div>
           <div v-if="!data.xrChecked" class="row">
@@ -44,7 +40,7 @@
   </main-layout>
 </template>
 <script setup lang="ts">
-import { onUnmounted, reactive, ref } from 'vue'
+import { onBeforeMount, onUnmounted, reactive, ref } from 'vue'
 
 import MainLayout from './layouts/MainLayout.vue'
 import WebxrSupportCheck from '../components/WebxrSupportCheck.vue'
@@ -52,8 +48,9 @@ import WebxrSupportCheck from '../components/WebxrSupportCheck.vue'
 import type { XRSystem } from 'webxr'
 
 import { SceneManager } from '../js/SceneManager'
-import { Scene002 } from '../js/scenes/Scene002'
 import { Scene001 } from '../js/scenes/Scene001'
+import { Scene002 } from '../js/scenes/Scene002'
+import { Scene004 } from '../js/scenes/Scene004'
 import { LogicalScene } from '../js/LogicalScene'
 import { EventBus } from 'ts-bus'
 
@@ -61,13 +58,19 @@ const renderCanvas = ref<HTMLCanvasElement | undefined>()
 const appBus: EventBus = new EventBus()
 let sceneManager: SceneManager | undefined
 
-let scene1: Scene001 | undefined
-let scene2: Scene002 | undefined
+// lazy loaded scenes
+const scenes = new Array<LogicalScene | undefined>()
 
 const data = reactive({
   xrChecked: false,
-  scene1: undefined as LogicalScene | undefined,
-  scene2: undefined as LogicalScene | undefined,
+  scenesLoaded: [] as boolean[],
+})
+
+onBeforeMount(() => {
+  let numScenes = 3
+  for (let i = 0; i < numScenes; i++) {
+    data.scenesLoaded.push(false)
+  }
 })
 
 function onWebXrChecked(xrSystem: XRSystem | undefined) {
@@ -83,43 +86,48 @@ function init(xrSystem: XRSystem) {
   }
   sceneManager = new SceneManager(renderCanvas.value, xrSystem, appBus, window)
   sceneManager.initWebXr().then(() => {
-    if (sceneManager) {
-      // scene1 = new Scene001(sceneManager.scene)
-      // scene2 = new Scene002(sceneManager.scene)
-      //sceneManager?.loadScene(scene1)
-    }
+    // if (sceneManager) {
+    // scene1 = new Scene001(sceneManager.scene)
+    // scene2 = new Scene002(sceneManager.scene)
+    //sceneManager?.loadScene(scene1)
+    // }
   })
 }
 
-function unloadScene(scene?: LogicalScene) {
+function unloadScene(sceneIdx: number) {
   if (!sceneManager) return
 
-  if (scene === data.scene1) {
-    data.scene1 = undefined
-  } else if (scene === data.scene2) {
-    data.scene2 = undefined
-  }
-
-  if (scene) {
-    sceneManager.unloadScene(scene)
+  if (data.scenesLoaded[sceneIdx] === true) {
+    const scene = scenes[sceneIdx]
+    if (scene) {
+      sceneManager.unloadScene(scene)
+    }
+    data.scenesLoaded[sceneIdx] = false
   }
 }
 
 function loadScene(sceneIdx: number) {
   if (!sceneManager) return
 
-  if (sceneIdx === 1) {
-    if (!scene1) {
-      scene1 = new Scene001(sceneManager.scene, appBus)
+  let scene: Maybe<LogicalScene> = null
+
+  if (scenes[sceneIdx] === undefined) {
+    if (sceneIdx === 0) {
+      scene = new Scene001(sceneManager.scene, appBus)
+      scenes[sceneIdx] = scene
+    } else if (sceneIdx === 1) {
+      scene = new Scene002(sceneManager.scene, appBus)
+      scenes[sceneIdx] = scene
+    } else if (sceneIdx === 2) {
+      scene = new Scene004(sceneManager.scene, appBus)
+      scenes[sceneIdx] = scene
     }
-    data.scene1 = scene1
-    sceneManager.loadScene(scene1)
-  } else if (sceneIdx === 2) {
-    if (!scene2) {
-      scene2 = new Scene002(sceneManager.scene, appBus)
-    }
-    data.scene2 = scene2
-    sceneManager.loadScene(scene2)
+  } else {
+    scene = scenes[sceneIdx] as LogicalScene
+  }
+  if (scene) {
+    sceneManager.loadScene(scene)
+    data.scenesLoaded[sceneIdx] = true
   }
 }
 

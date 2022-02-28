@@ -159,7 +159,7 @@ export class SceneManager {
     }
   }
 
-  dispose(window?: Window) {
+  async dispose(window?: Window) {
     this.logicalScenes.forEach((logicalScene) => {
       logicalScene.dispose()
     })
@@ -170,7 +170,21 @@ export class SceneManager {
       this.webXrDefaultExp.input.onControllerRemovedObservable.remove(this.onControllerRemovedObv)
     }
     this.controllerChangeObservable.clear()
+    if (this.leftInputSource) {
+      this.leftInputSource.onMotionControllerInitObservable.clear()
+      this.leftInputSource.onMeshLoadedObservable.clear()
+    }
+    if (this.rightInputSource) {
+      this.rightInputSource.onMotionControllerInitObservable.clear()
+      this.rightInputSource.onMeshLoadedObservable.clear()
+    }
     window?.removeEventListener('resize', this.onResizeHandle)
+
+    // Must exit XR before calling dispose on engine, else errors
+    if (this.webXrDefaultExp) {
+      await this.webXrDefaultExp.baseExperience.exitXRAsync()
+    }
+
     this.babylonEngine.dispose()
   }
 
@@ -216,3 +230,4 @@ export class SceneManager {
     )
   }
 }
+
