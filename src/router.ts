@@ -18,7 +18,7 @@ const routes: Array<RouteRecordRaw> = [
   {
     path: '/test2',
     name: 'Test2',
-    component: () => import('./views/Test02View-Interactions.vue'),
+    component: () => import('./views/Test02View-PickingAndHighlights.vue'),
   },
   {
     path: '/test3',
@@ -29,6 +29,11 @@ const routes: Array<RouteRecordRaw> = [
     path: '/test4',
     name: 'Test4',
     component: () => import('./views/Test04View-Video.vue'),
+  },
+  {
+    path: '/test5',
+    name: 'Test5',
+    component: () => import('./views/Test05View-MenusAndUiPanels.vue'),
   },
   {
     path: '/links',

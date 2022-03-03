@@ -5,8 +5,8 @@
         <div class="container">
           <div class="row">
             <div class="col">
-              <h1>Test 2 - WebXR Interactions</h1>
-              Hover pointer over spheres to trigger GUI. Click trigger input to move sphere up.
+              <h1>Test 5 - Menus and UI Panels</h1>
+              Tests of interactive menus and UI panels.
             </div>
           </div>
           <div v-if="!data.xrChecked" class="row">
@@ -26,15 +26,13 @@ import { onUnmounted, reactive, ref } from 'vue'
 import MainLayout from './layouts/MainLayout.vue'
 import WebxrSupportCheck from '../components/WebxrSupportCheck.vue'
 
-import { SceneManager } from '../js/SceneManager'
-import { Scene002 } from '../js/scenes/Scene002'
-
 import type { XRSystem } from 'webxr'
-import { EventBus } from 'ts-bus'
+
+import { AppManager } from '../js/AppManager'
+import { Scene005 } from '../js/scenes/Scene005-MenusAndUiPanels'
 
 const renderCanvas = ref<HTMLCanvasElement | undefined>()
-const appBus: EventBus = new EventBus()
-let sceneManager: SceneManager | undefined
+let appManager: AppManager | undefined
 
 const data = reactive({
   xrChecked: false,
@@ -51,17 +49,17 @@ function init(xrSystem: XRSystem) {
   if (!xrSystem || !renderCanvas.value) {
     return
   }
-  sceneManager = new SceneManager(renderCanvas.value, xrSystem, appBus, window)
-  sceneManager.initWebXr().then(() => {
-    if (sceneManager) {
-      const scene = new Scene002(sceneManager.scene, appBus)
-      sceneManager?.loadScene(scene)
+  appManager = new AppManager(renderCanvas.value, xrSystem, window)
+  appManager.initWebXr().then(() => {
+    if (appManager) {
+      const scene = new Scene005(appManager)
+      appManager?.loadScene(scene)
     }
   })
 }
 
 onUnmounted(() => {
-  sceneManager?.dispose(window)
+  appManager?.dispose(window)
 })
 </script>
 <!--

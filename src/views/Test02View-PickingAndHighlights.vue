@@ -5,8 +5,8 @@
         <div class="container">
           <div class="row">
             <div class="col">
-              <h1>Test 4 - WebXR Immersive Video</h1>
-              Immersive video quality tests. 360&deg; mono, 180&deg; mono, & 180&deg; stereo.
+              <h1>Test 2 - WebXR Interactions</h1>
+              Hover pointer over spheres to trigger GUI. Click trigger input to move sphere up.
             </div>
           </div>
           <div v-if="!data.xrChecked" class="row">
@@ -26,10 +26,10 @@ import { onUnmounted, reactive, ref } from 'vue'
 import MainLayout from './layouts/MainLayout.vue'
 import WebxrSupportCheck from '../components/WebxrSupportCheck.vue'
 
-import type { XRSystem } from 'webxr'
-
 import { AppManager } from '../js/AppManager'
-import { Scene004PhotoAndVideos } from '../js/scenes/Scene004-PhotoAndVideos'
+import { Scene002PickingAndHighlights } from '../js/scenes/Scene002-PickingAndHighlights'
+
+import type { XRSystem } from 'webxr'
 
 const renderCanvas = ref<HTMLCanvasElement | undefined>()
 let appManager: AppManager | undefined
@@ -52,7 +52,7 @@ function init(xrSystem: XRSystem) {
   appManager = new AppManager(renderCanvas.value, xrSystem, window)
   appManager.initWebXr().then(() => {
     if (appManager) {
-      const scene = new Scene004PhotoAndVideos(appManager)
+      const scene = new Scene002PickingAndHighlights(appManager)
       appManager?.loadScene(scene)
     }
   })

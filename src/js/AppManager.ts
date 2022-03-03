@@ -1,10 +1,12 @@
 import { ArcRotateCamera } from '@babylonjs/core/Cameras/arcRotateCamera'
 import { Engine } from '@babylonjs/core/Engines/engine'
+import { EventBus } from 'ts-bus'
 import { Scene } from '@babylonjs/core/scene.js'
 import { WebXRDefaultExperience } from '@babylonjs/core/XR/webXRDefaultExperience'
 import { WebXRFeatureName } from '@babylonjs/core/XR/webXRFeaturesManager'
+import { TargetCamera } from '@babylonjs/core'
 import { Nullable } from '@babylonjs/core/types'
-import { Observable, Observer } from '@babylonjs/core/Misc/observable'
+import { Observer } from '@babylonjs/core/Misc/observable'
 import { WebXRInputSource } from '@babylonjs/core/XR/webXRInputSource'
 import { WebXRAbstractMotionController } from '@babylonjs/core/XR/motionController/webXRAbstractMotionController'
 
@@ -32,10 +34,9 @@ import '@babylonjs/core/Layers/effectLayerSceneComponent'
 // import '@babylonjs/core/Legacy/legacy'
 // import '@babylonjs/core/Debug/debugLayer'
 // import '@babylonjs/inspector'
-//
-import type { Controllers } from '../types'
-import { EventBus } from 'ts-bus'
-import { controllersChanged } from './AppBusEvents'
+
+import { ControllersChangedEvent } from './AppManagerEvents'
+import { DefaultCollisionCoordinator } from '@babylonjs/core/Collisions/collisionCoordinator'
 
 // Imports required for WebXRLayers and Multiview
 // Experimental and currently problematic.
@@ -44,35 +45,35 @@ import { controllersChanged } from './AppBusEvents'
 
 // ----------------------
 
-export class SceneManager {
+export class AppManager {
   babylonEngine: Engine
   scene: Scene
-  public controllerChangeObservable = new Observable<Controllers>()
-  protected defaultCamera: ArcRotateCamera | undefined
+
+  public appBus: EventBus = new EventBus()
+
   private onResizeHandle = this.onResize.bind(this)
+  private collisionCoord:DefaultCollisionCoordinator
+
+  protected defaultCamera: ArcRotateCamera
 
   private webXrDefaultExp: WebXRDefaultExperience | undefined
-  //private activeGameScene: LogicalScene | undefined
 
   private onControllerAddedObv: Nullable<Observer<WebXRInputSource>> = null
   private onControllerRemovedObv: Nullable<Observer<WebXRInputSource>> = null
   private leftInputSource: WebXRInputSource | undefined
-  private leftController: WebXRAbstractMotionController | undefined
+  public leftController: WebXRAbstractMotionController | undefined
   private rightInputSource: WebXRInputSource | undefined
-  private rightController: WebXRAbstractMotionController | undefined
-
-  private controllers?: Controllers
+  public rightController: WebXRAbstractMotionController | undefined
 
   private logicalScenes: LogicalScene[] = []
 
-  constructor(
-    private canvas: HTMLCanvasElement,
-    private xrSystem: XRSystem,
-    private appBus: EventBus,
-    private window?: Window,
-  ) {
+  constructor(private canvas: HTMLCanvasElement, private xrSystem: XRSystem, private window?: Window) {
     this.babylonEngine = new Engine(this.canvas, true, { stencil: true })
     this.scene = new Scene(this.babylonEngine)
+
+    //TODO: Research how this works, if it is expensive when not used, etc.
+    this.collisionCoord = new DefaultCollisionCoordinator()
+    this.collisionCoord.init(this.scene)
 
     // Debug/Inspector
     // this.scene.debugLayer.show({
@@ -110,6 +111,14 @@ export class SceneManager {
     })
   }
 
+  get camera(): TargetCamera {
+    if (this.webXrDefaultExp?.baseExperience?.camera) {
+      return this.webXrDefaultExp.baseExperience.camera
+    } else {
+      return this.defaultCamera
+    }
+  }
+
   _startRenderLoop() {
     this.babylonEngine.resize()
     this.babylonEngine.runRenderLoop(() => {
@@ -129,7 +138,7 @@ export class SceneManager {
     }
 
     // Load new scene
-    gameScene.load(this.controllers)
+    gameScene.load()
     this.logicalScenes.push(gameScene)
 
     // Re-enable teleportation with new floor meshes (if any)
@@ -169,7 +178,7 @@ export class SceneManager {
       this.webXrDefaultExp.input.onControllerAddedObservable.remove(this.onControllerAddedObv)
       this.webXrDefaultExp.input.onControllerRemovedObservable.remove(this.onControllerRemovedObv)
     }
-    this.controllerChangeObservable.clear()
+
     if (this.leftInputSource) {
       this.leftInputSource.onMotionControllerInitObservable.clear()
       this.leftInputSource.onMeshLoadedObservable.clear()
@@ -205,8 +214,9 @@ export class SceneManager {
               this.rightInputSource = controller
               this.rightController = motionController
             }
-            this.controllers = { leftController: this.leftController, rightController: this.rightController }
-            this.appBus.publish(controllersChanged({ controllers: this.controllers }))
+            this.appBus.publish(
+              ControllersChangedEvent({ leftController: this.leftController, rightController: this.rightController }),
+            )
           })
         })
       },
@@ -224,10 +234,10 @@ export class SceneManager {
           // eslint-disable-next-line no-console
           console.error('Unxpected input source removal.')
         }
-        this.controllers = { leftController: this.leftController, rightController: this.rightController }
-        this.appBus.publish(controllersChanged({ controllers: this.controllers }))
+        this.appBus.publish(
+          ControllersChangedEvent({ leftController: this.leftController, rightController: this.rightController }),
+        )
       },
     )
   }
 }
-

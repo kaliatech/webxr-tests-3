@@ -4,16 +4,22 @@ import { AssetContainer } from '@babylonjs/core/assetContainer'
 import { Nullable } from '@babylonjs/core/types'
 import { Observer } from '@babylonjs/core/Misc/observable'
 import { EnvironmentHelper } from '@babylonjs/core/Helpers/environmentHelper'
-//import { EnvironmentHelper } from '../3d/utils/customEnvHelper'
 import { initDefaultEnvHelper } from './3d/default-environment'
 import { EventBus } from 'ts-bus'
-import { controllersChanged } from './AppBusEvents'
-import { Controllers } from '../types'
+import { ControllersChangedEvent } from './AppManagerEvents'
+import { AppManager } from './AppManager'
+import { WebXRAbstractMotionController } from '@babylonjs/core/XR/motionController/webXRAbstractMotionController'
+import { LogicalSceneDisposingEvent, LogicalSceneUnloadingEvent } from './LogicalSceneEvents'
 
 export abstract class LogicalScene {
-  public assetContainer: AssetContainer
+  public scene: Scene
+
+  public sceneBus: EventBus
+  public sceneAssetContainer: AssetContainer
+
   protected beforeRenderObv: Nullable<Observer<Scene>> = null
-  private controllerChangeUnsub: (() => void) | undefined
+
+  private appBusUnsubs: { (): void }[] = []
 
   protected mirroredMeshes: Mesh[] = []
 
@@ -24,8 +30,10 @@ export abstract class LogicalScene {
 
   private useGlobalEnvHelper = false
 
-  protected constructor(protected scene: Scene, protected appBus: EventBus) {
-    this.assetContainer = new AssetContainer(scene)
+  protected constructor(public appManager: AppManager) {
+    this.scene = appManager.scene
+    this.sceneBus = new EventBus()
+    this.sceneAssetContainer = new AssetContainer(this.scene)
   }
 
   get floorMeshes(): Mesh[] {
@@ -38,8 +46,8 @@ export abstract class LogicalScene {
     }
   }
 
-  load(controllers?: Controllers): void {
-    this.assetContainer.addAllToScene()
+  load(): void {
+    this.sceneAssetContainer.addAllToScene()
 
     // Commented lines show alternate way to setup callbacks:
     //private beforeRenderHandle = this.beforeRender.bind(this)
@@ -47,22 +55,29 @@ export abstract class LogicalScene {
     this.beforeRenderObv = this.scene.onBeforeRenderObservable.add(() => this.beforeRender())
 
     // (Re)Create environment
-   this.envHelper = initDefaultEnvHelper(this.scene, this.useGlobalEnvHelper)
+    this.envHelper = initDefaultEnvHelper(this.scene, this.useGlobalEnvHelper)
 
-    this.controllerChangeUnsub = this.appBus.subscribe(controllersChanged, (event) => {
-      this.onControllersChange(event.payload.controllers)
-    })
+    this.appBusUnsubs.push(
+      this.appManager.appBus.subscribe(ControllersChangedEvent, (event) => {
+        this.onControllersChange(event.payload.leftController, event.payload.rightController)
+      }),
+    )
+    this.onControllersChange(this.appManager.leftController, this.appManager.rightController)
 
-    this.onControllersChange(controllers)
+    // this.appManager.appBus.subscribe(CameraChangedEvent, (event) => {
+    //   this.onCameraChange(event.payload.camera)
+    // })
   }
 
   /**
    * Will be called by scene.load and scene.unload.
-   * @param controllers
-   * @protected
    */
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  onControllersChange(controllers?: Controllers): void {
+  onControllersChange(
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    leftController?: WebXRAbstractMotionController,
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    rightController?: WebXRAbstractMotionController,
+  ): void {
     //this.controllers = controllers
     //console.log('onControllersChange', this.controllers)
   }
@@ -81,15 +96,19 @@ export abstract class LogicalScene {
   }
 
   unload(): void {
-    this.controllerChangeUnsub?.()
+    this.sceneBus.publish(LogicalSceneUnloadingEvent({ logicalScene: this }))
 
     this.onControllersChange()
+
+    this.appBusUnsubs.forEach((unsub) => unsub())
 
     if (this.beforeRenderObv) {
       this.scene.onBeforeRenderObservable.remove(this.beforeRenderObv)
       this.beforeRenderObv = null
     }
-    this.assetContainer.removeAllFromScene()
+
+    this.sceneAssetContainer.removeAllFromScene()
+
     if (!this.useGlobalEnvHelper) {
       this.envHelper?.dispose()
     }
@@ -97,6 +116,7 @@ export abstract class LogicalScene {
 
   dispose() {
     this.unload()
-    this.assetContainer.dispose()
+    this.sceneBus.publish(LogicalSceneDisposingEvent({ logicalScene: this }))
+    this.sceneAssetContainer.dispose()
   }
 }

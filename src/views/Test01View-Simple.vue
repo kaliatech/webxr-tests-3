@@ -34,13 +34,11 @@ import type { XRSystem } from 'webxr'
 import MainLayout from './layouts/MainLayout.vue'
 import WebxrSupportCheck from '../components/WebxrSupportCheck.vue'
 
-import { SceneManager } from '../js/SceneManager'
-import { Scene001 } from '../js/scenes/Scene001'
-import { EventBus } from 'ts-bus'
+import { AppManager } from '../js/AppManager'
+import { Scene001Simple } from '../js/scenes/Scene001-Simple'
 
 const renderCanvas = ref<HTMLCanvasElement | undefined>()
-const appBus: EventBus = new EventBus()
-let sceneManager: SceneManager | undefined
+let appManager: AppManager | undefined
 
 const data = reactive({
   xrChecked: false,
@@ -57,17 +55,17 @@ function init(xrSystem: XRSystem) {
   if (!xrSystem || !renderCanvas.value) {
     return
   }
-  sceneManager = new SceneManager(renderCanvas.value, xrSystem, appBus, window)
-  sceneManager.initWebXr().then(() => {
-    if (sceneManager) {
-      const scene = new Scene001(sceneManager.scene, appBus)
-      sceneManager?.loadScene(scene)
+  appManager = new AppManager(renderCanvas.value, xrSystem, window)
+  appManager.initWebXr().then(() => {
+    if (appManager) {
+      const scene = new Scene001Simple(appManager)
+      appManager?.loadScene(scene)
     }
   })
 }
 
 onUnmounted(() => {
-  sceneManager?.dispose(window)
+  appManager?.dispose(window)
 })
 </script>
 <!--

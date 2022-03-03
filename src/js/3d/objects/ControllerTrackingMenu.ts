@@ -17,7 +17,7 @@ export class ControllerTrackingMenu implements IDisposable {
     // // sphere2.position.y = sphereD
     // this.sphere.position.z = -0.231
     // this.sphere.material = ColorMaterials.blue(scene)
-    // //this.assetContainer.meshes.push(sphere2)
+    // //this.guiAssetContainer.meshes.push(sphere2)
     // //this.mirroredMeshes.push(sphere2)
     // this.sphere.parent = controller.rootMesh
 
@@ -41,16 +41,15 @@ export class ControllerTrackingMenu implements IDisposable {
 
     this.guiRoot.position.z = -0.15
     this.guiRoot.position.y = 0.175
-
   }
 
   unload() {
+    //console.log('ControllerTrackingMenu.unload')
     this.guiRoot.parent = null
     this.assetContainer.removeAllFromScene()
   }
 
   private async initGui(scene: Scene, plane: Mesh) {
-
     plane.rotation.y = Math.PI
     plane.bakeCurrentTransformIntoVertices()
 

@@ -17,74 +17,57 @@ import * as GUI from '@babylonjs/gui/2D'
 
 import { LogicalScene } from '../LogicalScene.js'
 import * as ColorMaterials from '../3d/materials/ColorMaterials'
-import { EventBus } from 'ts-bus'
+import { AppManager } from '../AppManager'
 
-export class Scene002 extends LogicalScene {
+export class Scene002PickingAndHighlights extends LogicalScene {
   private highlightLayer: HighlightLayer | undefined
   private highlightedGuiPanel: Mesh | undefined
   private highlightedMesh: AbstractMesh | undefined
 
   private pointerObv: Nullable<Observer<PointerInfo>> = null
 
-  constructor(scene: Scene, appBus: EventBus) {
-    super(scene, appBus)
-
-    //TODO: Needed?
-    //new DefaultCollisionCoordinator().init(scene)
-
-    //TODO: Needed?
-    //const dm = new DeviceSourceManager(scene.getEngine())
-
-    // // Add a camera for the 2D viewer
-    // const camera = new ArcRotateCamera('Camerab', -Math.PI / 2, Math.PI / 3, 7, new Vector3(0, 1, 0), scene)
-    // // camera.lowerBetaLimit = -Math.PI / 2 + 0.1
-    // // camera.upperBetaLimit = Math.PI / 2 + -0.1
-    // camera.upperRadiusLimit = 20
-    // camera.panningDistanceLimit = 20
-    // camera.checkCollisions = true // prevent rotating through floor, redundant with the beta limits though
-    // camera.collisionRadius = new Vector3(1.5, 1.5, 1.5) // arbitrary for now
-    // camera.wheelPrecision = 25.0
-    // camera.attachControl(true)
+  constructor(appManager: AppManager) {
+    super(appManager)
 
     // Add a simple light
-    const light = new HemisphericLight('light1b', new Vector3(0, 1, 0), scene)
+    const light = new HemisphericLight('light1b', new Vector3(0, 1, 0), this.scene)
     light.intensity = 0.7
-    this.assetContainer.lights.push(light)
+    this.sceneAssetContainer.lights.push(light)
 
     const sphereD = 1.0
 
     // Add three 1 unit spheres, X(R), Y(G), Z(B)
-    const sphere = MeshBuilder.CreateSphere('xSphere', { segments: 32, diameter: sphereD }, scene)
+    const sphere = MeshBuilder.CreateSphere('xSphere', { segments: 32, diameter: sphereD }, this.scene)
     sphere.position.x = sphereD * -2
     sphere.position.y = sphereD
-    sphere.material = ColorMaterials.red(scene)
+    sphere.material = ColorMaterials.red(this.scene)
     sphere.checkCollisions = true
     sphere.enablePointerMoveEvents = true
-    this.assetContainer.meshes.push(sphere)
+    this.sceneAssetContainer.meshes.push(sphere)
     this.mirroredMeshes.push(sphere)
 
     const sphere3 = sphere.clone('ySphere', null)
     sphere3.id = sphere3.name
     sphere3.position.x = 0
     sphere3.position.y = sphereD
-    sphere3.material = ColorMaterials.green(scene)
-    this.assetContainer.meshes.push(sphere3)
+    sphere3.material = ColorMaterials.green(this.scene)
+    this.sceneAssetContainer.meshes.push(sphere3)
     this.mirroredMeshes.push(sphere3)
 
     const sphere2 = sphere.clone('zSphere')
     sphere2.id = sphere2.name
     sphere2.position.x = sphereD * 2
     sphere2.position.y = sphereD
-    sphere2.material = ColorMaterials.blue(scene)
-    this.assetContainer.meshes.push(sphere2)
+    sphere2.material = ColorMaterials.blue(this.scene)
+    this.sceneAssetContainer.meshes.push(sphere2)
     this.mirroredMeshes.push(sphere2)
 
-    this.assetContainer.removeAllFromScene()
+    this.sceneAssetContainer.removeAllFromScene()
   }
 
   _createGui2D(scene: Scene, parent: Mesh, headerTxt: string): Mesh {
     const plane = MeshBuilder.CreatePlane('plane', { size: 4 }, scene)
-    this.assetContainer.meshes.push(plane)
+    this.sceneAssetContainer.meshes.push(plane)
 
     plane.isPickable = false
 
@@ -99,7 +82,7 @@ export class Scene002 extends LogicalScene {
     plane.position.z = -1.25
 
     const advancedTexture = GUI.AdvancedDynamicTexture.CreateForMesh(plane) as GUI.AdvancedDynamicTexture
-    this.assetContainer.textures.push(advancedTexture)
+    this.sceneAssetContainer.textures.push(advancedTexture)
 
     // if (advancedTexture.layer) advancedTexture.layer.layerMask = 2;
 
@@ -183,8 +166,8 @@ export class Scene002 extends LogicalScene {
     }
 
     if (this.highlightLayer) {
-       this.highlightLayer.dispose() // TODO: I think need to be careful with dispose. Maybe remove highlighted meshes?
-       this.highlightLayer = undefined
+      this.highlightLayer.dispose() // TODO: I think need to be careful with dispose. Maybe remove highlighted meshes?
+      this.highlightLayer = undefined
     }
 
     // if (this.highlightedGuiPanel) {

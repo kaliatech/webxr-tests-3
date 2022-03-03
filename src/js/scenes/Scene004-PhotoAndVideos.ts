@@ -1,6 +1,5 @@
 import { HemisphericLight } from '@babylonjs/core/Lights/hemisphericLight'
 import { MeshBuilder } from '@babylonjs/core/Meshes/meshBuilder'
-import { Scene } from '@babylonjs/core/scene.js'
 import { Vector3 } from '@babylonjs/core/Maths/math.vector'
 
 import { VideoDome } from '@babylonjs/core/Helpers/videoDome'
@@ -12,46 +11,42 @@ import { VideoDome } from '@babylonjs/core/Helpers/videoDome'
 
 import { LogicalScene } from '../LogicalScene.js'
 import * as ColorMaterials from '../3d/materials/ColorMaterials'
-import { EventBus } from 'ts-bus'
 import { ControllerTrackingMenu } from '../3d/objects/ControllerTrackingMenu'
-import { Controllers } from '../../types'
 import { AxesWidget } from '../3d/objects/AxesWidget'
 
-import { DefaultCollisionCoordinator } from '@babylonjs/core/Collisions/collisionCoordinator'
+import { AppManager } from '../AppManager'
+import { WebXRAbstractMotionController } from '@babylonjs/core/XR/motionController/webXRAbstractMotionController'
 
-export class Scene004 extends LogicalScene {
+export class Scene004PhotoAndVideos extends LogicalScene {
   private leftMenu?: ControllerTrackingMenu
   private videoDome?: VideoDome
 
-  constructor(scene: Scene, appBus: EventBus) {
-    super(scene, appBus)
-
-    //TODO: Research how this works, if it needs disposed, etc
-    new DefaultCollisionCoordinator().init(this.scene)
+  constructor(appManager: AppManager) {
+    super(appManager)
 
     // Add a simple light
-    const light = new HemisphericLight('light1b', new Vector3(0, 1, 0), scene)
+    const light = new HemisphericLight('light1b', new Vector3(0, 1, 0), this.scene)
     light.intensity = 0.7
-    this.assetContainer.lights.push(light)
+    this.sceneAssetContainer.lights.push(light)
 
     const sphereD = 1.0
 
     // Add 1 unit sphere at origin
-    const sphere = MeshBuilder.CreateSphere('originSphere', { segments: 32, diameter: sphereD }, scene)
+    const sphere = MeshBuilder.CreateSphere('originSphere', { segments: 32, diameter: sphereD }, this.scene)
     sphere.position.x = 1
     sphere.position.y = 0
     sphere.position.z = 1
-    sphere.material = ColorMaterials.red(scene)
+    sphere.material = ColorMaterials.red(this.scene)
     sphere.checkCollisions = true
-    this.assetContainer.meshes.push(sphere)
+    this.sceneAssetContainer.meshes.push(sphere)
 
     // Add 2 unit axes widget at origin
-    const axesWidget = new AxesWidget(scene, 'axesWidget', 1)
-    this.assetContainer.transformNodes.push(axesWidget.root)
-    this.assetContainer.meshes.push(...axesWidget.root.getChildMeshes(false))
+    const axesWidget = new AxesWidget(this.scene, 'axesWidget', 1)
+    this.sceneAssetContainer.transformNodes.push(axesWidget.root)
+    this.sceneAssetContainer.meshes.push(...axesWidget.root.getChildMeshes(false))
 
     this.createVideoDome()
-    this.assetContainer.removeAllFromScene()
+    this.sceneAssetContainer.removeAllFromScene()
   }
 
   private createVideoDome() {
@@ -69,8 +64,8 @@ export class Scene004 extends LogicalScene {
     this.videoDome = new VideoDome('videoDome', url, videoDomeOpts, this.scene)
     this.videoDome.videoMode = VideoDome.MODE_SIDEBYSIDE
     this.videoDome.halfDome = true
-    this.assetContainer.transformNodes.push(this.videoDome)
-    this.assetContainer.meshes.push(...this.videoDome.getChildMeshes())
+    this.sceneAssetContainer.transformNodes.push(this.videoDome)
+    this.sceneAssetContainer.meshes.push(...this.videoDome.getChildMeshes())
 
     //const url = "https://temp.kaliatech.com/2022/webxr-tests-3/videos/kandaovr/Dance_6k6k30_3dv.mp4"
     // const videoDome = new VideoDome("videoDome", url, videoDomeOpts, this.scene);
@@ -79,24 +74,29 @@ export class Scene004 extends LogicalScene {
 
   load() {
     super.load()
+    this.videoDome?.videoTexture?.video.play()
   }
 
   unload() {
     super.unload()
+
+    this.videoDome?.videoTexture?.video.pause()
   }
 
   /**
-   * Always called at end of scene load, and at beginning of scene unload (with undefined param).
-   *
-   * @param controllers
+   * Always called at end of this.scene load, and at beginning of this.scene unload (with undefined param).
+
    */
-  onControllersChange(controllers?: Controllers): void  {
-    super.onControllersChange(controllers)
-    if (controllers?.leftController) {
+  onControllersChange(
+    leftController?: WebXRAbstractMotionController,
+    rightController?: WebXRAbstractMotionController,
+  ): void {
+    super.onControllersChange(leftController, rightController)
+    if (leftController) {
       if (!this.leftMenu) {
         this.leftMenu = new ControllerTrackingMenu(this.scene)
       }
-      this.leftMenu.load(controllers.leftController)
+      this.leftMenu.load(leftController)
     } else {
       this.leftMenu?.unload()
     }

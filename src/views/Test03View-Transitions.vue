@@ -47,16 +47,14 @@ import WebxrSupportCheck from '../components/WebxrSupportCheck.vue'
 
 import type { XRSystem } from 'webxr'
 
-import { SceneManager } from '../js/SceneManager'
-import { Scene001 } from '../js/scenes/Scene001'
-import { Scene002 } from '../js/scenes/Scene002'
-import { Scene004 } from '../js/scenes/Scene004'
+import { AppManager } from '../js/AppManager'
+import { Scene001Simple } from '../js/scenes/Scene001-Simple'
+import { Scene002PickingAndHighlights } from '../js/scenes/Scene002-PickingAndHighlights'
+import { Scene004PhotoAndVideos } from '../js/scenes/Scene004-PhotoAndVideos'
 import { LogicalScene } from '../js/LogicalScene'
-import { EventBus } from 'ts-bus'
 
 const renderCanvas = ref<HTMLCanvasElement | undefined>()
-const appBus: EventBus = new EventBus()
-let sceneManager: SceneManager | undefined
+let appManager: AppManager | undefined
 
 // lazy loaded scenes
 const scenes = new Array<LogicalScene | undefined>()
@@ -84,55 +82,55 @@ function init(xrSystem: XRSystem) {
   if (!xrSystem || !renderCanvas.value) {
     return
   }
-  sceneManager = new SceneManager(renderCanvas.value, xrSystem, appBus, window)
-  sceneManager.initWebXr().then(() => {
-    // if (sceneManager) {
-    // scene1 = new Scene001(sceneManager.scene)
-    // scene2 = new Scene002(sceneManager.scene)
-    //sceneManager?.loadScene(scene1)
+  appManager = new AppManager(renderCanvas.value, xrSystem, window)
+  appManager.initWebXr().then(() => {
+    // if (appManager) {
+    // scene1 = new Scene001(appManager.scene)
+    // scene2 = new Scene002(appManager.scene)
+    //appManager?.loadScene(scene1)
     // }
   })
 }
 
 function unloadScene(sceneIdx: number) {
-  if (!sceneManager) return
+  if (!appManager) return
 
   if (data.scenesLoaded[sceneIdx] === true) {
     const scene = scenes[sceneIdx]
     if (scene) {
-      sceneManager.unloadScene(scene)
+      appManager.unloadScene(scene)
     }
     data.scenesLoaded[sceneIdx] = false
   }
 }
 
 function loadScene(sceneIdx: number) {
-  if (!sceneManager) return
+  if (!appManager) return
 
   let scene: Maybe<LogicalScene> = null
 
   if (scenes[sceneIdx] === undefined) {
     if (sceneIdx === 0) {
-      scene = new Scene001(sceneManager.scene, appBus)
+      scene = new Scene001Simple(appManager)
       scenes[sceneIdx] = scene
     } else if (sceneIdx === 1) {
-      scene = new Scene002(sceneManager.scene, appBus)
+      scene = new Scene002PickingAndHighlights(appManager)
       scenes[sceneIdx] = scene
     } else if (sceneIdx === 2) {
-      scene = new Scene004(sceneManager.scene, appBus)
+      scene = new Scene004PhotoAndVideos(appManager)
       scenes[sceneIdx] = scene
     }
   } else {
     scene = scenes[sceneIdx] as LogicalScene
   }
   if (scene) {
-    sceneManager.loadScene(scene)
+    appManager.loadScene(scene)
     data.scenesLoaded[sceneIdx] = true
   }
 }
 
 onUnmounted(() => {
-  sceneManager?.dispose(window)
+  appManager?.dispose(window)
 })
 </script>
 <!--
