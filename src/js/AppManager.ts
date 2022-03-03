@@ -4,11 +4,12 @@ import { EventBus } from 'ts-bus'
 import { Scene } from '@babylonjs/core/scene.js'
 import { WebXRDefaultExperience } from '@babylonjs/core/XR/webXRDefaultExperience'
 import { WebXRFeatureName } from '@babylonjs/core/XR/webXRFeaturesManager'
-import { TargetCamera, WebXRState } from '@babylonjs/core'
+import { TargetCamera } from '@babylonjs/core/Cameras/targetCamera'
 import { Nullable } from '@babylonjs/core/types'
 import { Observer } from '@babylonjs/core/Misc/observable'
 import { WebXRInputSource } from '@babylonjs/core/XR/webXRInputSource'
 import { WebXRAbstractMotionController } from '@babylonjs/core/XR/motionController/webXRAbstractMotionController'
+import { WebXRState } from '@babylonjs/core/XR/webXRTypes'
 
 import { LogicalScene } from './LogicalScene'
 import { initDefaultCamera } from './3d/default-camera'
@@ -116,6 +117,8 @@ export class AppManager {
 
   get camera(): TargetCamera {
     if (this.webXrDefaultExp?.baseExperience?.camera && this.webXrDefaultExp.baseExperience.state == WebXRState.IN_XR) {
+      //https://doc.babylonjs.com/divingDeeper/webXR/webXRCamera#current-users-height
+      //const userHeight = xrCamera.realWorldHeight;
       return this.webXrDefaultExp.baseExperience.camera
     } else {
       return this.defaultCamera

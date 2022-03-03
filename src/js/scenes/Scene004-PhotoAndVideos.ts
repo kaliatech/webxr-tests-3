@@ -22,7 +22,7 @@ export class Scene004PhotoAndVideos extends LogicalScene {
   private videoDome?: VideoDome
 
   constructor(appManager: AppManager) {
-    super(appManager)
+    super(appManager, false)
 
     // Add a simple light
     const light = new HemisphericLight('light1b', new Vector3(0, 1, 0), this.scene)

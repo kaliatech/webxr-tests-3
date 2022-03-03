@@ -23,7 +23,7 @@ export class Scene005 extends LogicalScene {
     // Add 1 unit sphere at origin
     const sphere = MeshBuilder.CreateSphere('originSphere', { segments: 32, diameter: sphereD }, this.scene)
     sphere.position.x = 1
-    sphere.position.y = 0
+    sphere.position.y = 1
     sphere.position.z = 1
     sphere.material = ColorMaterials.blue(this.scene)
     sphere.checkCollisions = true

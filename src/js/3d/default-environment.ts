@@ -5,6 +5,14 @@ import { Scene } from '@babylonjs/core/scene.js'
 
 const globalEnvHelpers: { [key: string] : EnvironmentHelper } = {}
 
+export function disposeDefaultEnvHelper(scene: Scene) {
+  const envHelper = globalEnvHelpers[scene.uid]
+  if (envHelper) {
+    envHelper.dispose()
+    delete globalEnvHelpers[scene.uid]
+  }
+}
+
 export function initDefaultEnvHelper(scene: Scene, global:boolean): EnvironmentHelper {
   if (!global) {
     return new EnvironmentHelper(getDefaultEnvHelperOpts(), scene)
@@ -26,6 +34,9 @@ export function initDefaultEnvHelper(scene: Scene, global:boolean): EnvironmentH
       bgrndPlane.enablePointerMoveEvents = false
     }
 
+    if (envHelper.ground) {
+      envHelper.ground.checkCollisions = true
+    }
 
     globalEnvHelpers[scene.uid] = envHelper
   }
@@ -34,14 +45,15 @@ export function initDefaultEnvHelper(scene: Scene, global:boolean): EnvironmentH
 
 export function getDefaultEnvHelperOpts(): Partial<IEnvironmentHelperOptions> {
   return {
-    skyboxSize: 20,
+    sizeAuto:false,
+    skyboxSize: 42,
     skyboxColor: new Color3(0, 0, 0),
     groundColor: new Color3(0.01, 0.01, 0.2),
     // groundShadowLevel: 0.5,
     // enableGroundShadow: true,
     enableGroundMirror: true,
     createSkybox: true,
-    groundSize: 20,
+    groundSize: 42,
     //groundMirrorSizeRatio: 0.3,
     groundOpacity: 1.0,
     groundMirrorBlurKernel: 64,

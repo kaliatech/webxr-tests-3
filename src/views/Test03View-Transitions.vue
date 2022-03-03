@@ -22,7 +22,7 @@
                     class="btn m-1"
                     :class="data.scenesLoaded[idx] === true ? 'btn-secondary' : 'disabled'"
                     @click="unloadScene(idx)">
-                    Upload Scene {{ idx + 1 }}
+                    Unload Scene {{ idx + 1 }}
                   </button>
                 </div>
               </div>
@@ -52,6 +52,7 @@ import { Scene001Simple } from '../js/scenes/Scene001-Simple'
 import { Scene002PickingAndHighlights } from '../js/scenes/Scene002-PickingAndHighlights'
 import { Scene004PhotoAndVideos } from '../js/scenes/Scene004-PhotoAndVideos'
 import { LogicalScene } from '../js/LogicalScene'
+import { disposeDefaultEnvHelper, initDefaultEnvHelper } from '../js/3d/default-environment'
 
 const renderCanvas = ref<HTMLCanvasElement | undefined>()
 let appManager: AppManager | undefined
@@ -101,6 +102,12 @@ function unloadScene(sceneIdx: number) {
       appManager.unloadScene(scene)
     }
     data.scenesLoaded[sceneIdx] = false
+
+    // Hack for this particular demo.
+    // TODO: Refactor for the notion of a shared/global environments. Some scenes need, some do not.
+    if (scene && data.scenesLoaded[0] === false && data.scenesLoaded[1] === false) {
+      disposeDefaultEnvHelper(scene.scene)
+    }
   }
 }
 
