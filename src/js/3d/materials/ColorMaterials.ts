@@ -28,3 +28,12 @@ export function blue(scene: Scene): StandardMaterial {
   }
   return (scene.getMaterialByName('blue-material') as StandardMaterial) ?? create(scene)
 }
+
+export function white(scene: Scene): StandardMaterial {
+  function create(scene: Scene) {
+    const m = new StandardMaterial('white-material', scene)
+    m.diffuseColor = Color3.White()
+    return m
+  }
+  return (scene.getMaterialByName('white-material') as StandardMaterial) ?? create(scene)
+}

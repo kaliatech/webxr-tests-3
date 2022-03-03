@@ -19,6 +19,7 @@ export function initDefaultCamera(scene: Scene): ArcRotateCamera {
   camera.panningDistanceLimit = 20
   camera.checkCollisions = true // prevent rotating through floor, redundant with the beta limits though
   camera.collisionRadius = new Vector3(1.5, 1.5, 1.5) // arbitrary for now
+  camera.minZ = 0.1
   camera.wheelPrecision = 25.0
   camera.attachControl(true)
   return camera

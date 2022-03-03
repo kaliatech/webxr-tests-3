@@ -4,7 +4,7 @@ import { EventBus } from 'ts-bus'
 import { Scene } from '@babylonjs/core/scene.js'
 import { WebXRDefaultExperience } from '@babylonjs/core/XR/webXRDefaultExperience'
 import { WebXRFeatureName } from '@babylonjs/core/XR/webXRFeaturesManager'
-import { TargetCamera } from '@babylonjs/core'
+import { TargetCamera, WebXRState } from '@babylonjs/core'
 import { Nullable } from '@babylonjs/core/types'
 import { Observer } from '@babylonjs/core/Misc/observable'
 import { WebXRInputSource } from '@babylonjs/core/XR/webXRInputSource'
@@ -34,7 +34,6 @@ import '@babylonjs/core/Layers/effectLayerSceneComponent'
 // import '@babylonjs/core/Legacy/legacy'
 // import '@babylonjs/core/Debug/debugLayer'
 // import '@babylonjs/inspector'
-
 import { ControllersChangedEvent } from './AppManagerEvents'
 import { DefaultCollisionCoordinator } from '@babylonjs/core/Collisions/collisionCoordinator'
 
@@ -104,6 +103,10 @@ export class AppManager {
       // )
       this.webXrDefaultExp = webXrDefaultExp
 
+      //TODO: Probably will need to add this to appBus
+      // webXrDefaultExp.baseExperience.onStateChangedObservable.add((state:WebXRState) => {
+      // })
+
       this._setupControllers(webXrDefaultExp)
 
       this._startRenderLoop()
@@ -112,7 +115,7 @@ export class AppManager {
   }
 
   get camera(): TargetCamera {
-    if (this.webXrDefaultExp?.baseExperience?.camera) {
+    if (this.webXrDefaultExp?.baseExperience?.camera && this.webXrDefaultExp.baseExperience.state == WebXRState.IN_XR) {
       return this.webXrDefaultExp.baseExperience.camera
     } else {
       return this.defaultCamera
