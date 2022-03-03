@@ -53,7 +53,9 @@ export abstract class LogicalScene {
     this.beforeRenderObv = this.scene.onBeforeRenderObservable.add(() => this.beforeRender())
 
     // (Re)Create environment
-    this.envHelper = initDefaultEnvHelper(this.scene, this.useGlobalEnvHelper)
+    if (this.useGlobalEnvHelper) {
+      this.envHelper = initDefaultEnvHelper(this.scene, this.useGlobalEnvHelper)
+    }
 
     this.appBusUnsubs.push(
       this.appManager.appBus.subscribe(ControllersChangedEvent, (event) => {
