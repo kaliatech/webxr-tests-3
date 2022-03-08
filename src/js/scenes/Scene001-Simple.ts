@@ -82,7 +82,7 @@ export class Scene001Simple extends LogicalScene {
     //   (1) - we init all scenes before the WebXR experience is initialized, or
     //   (2) - we build up a KeepAssets of all the things the WebXR experience creates, the default camera, etc.
     //this.guiAssetContainer.moveAllFromScene()
-    this.sceneAssetContainer.removeAllFromScene()
+    //this.sceneAssetContainer.removeAllFromScene()
   }
 
   load() {

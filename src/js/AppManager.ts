@@ -35,6 +35,7 @@ import '@babylonjs/core/Layers/effectLayerSceneComponent'
 // import '@babylonjs/core/Legacy/legacy'
 // import '@babylonjs/core/Debug/debugLayer'
 // import '@babylonjs/inspector'
+
 import { ControllersChangedEvent } from './AppManagerEvents'
 import { DefaultCollisionCoordinator } from '@babylonjs/core/Collisions/collisionCoordinator'
 

@@ -1,16 +1,15 @@
-import { IDisposable, Scene } from '@babylonjs/core/scene'
+import { Scene } from '@babylonjs/core/scene'
 import { WebXRAbstractMotionController } from '@babylonjs/core/XR/motionController/webXRAbstractMotionController'
-import { MeshBuilder } from '@babylonjs/core/Meshes/meshBuilder'
 import { Mesh } from '@babylonjs/core/Meshes/mesh'
 import * as GUI from '@babylonjs/gui/2D'
-import { AssetContainer } from '@babylonjs/core/assetContainer'
 import { Tools } from '@babylonjs/core/Misc/tools'
+import { GuiPanel } from './GuiPanel'
+import { LogicalScene } from '../../LogicalScene'
+import { ControllersChangedEvent } from '../../AppManagerEvents'
 
-export class ControllerTrackingMenu implements IDisposable {
-  private guiRoot: Mesh
-  private assetContainer: AssetContainer = new AssetContainer()
-
-  constructor(private scene: Scene) {
+export class ControllerTrackingMenu extends GuiPanel {
+  constructor(logicalScene: LogicalScene, name: string, protected msg: string) {
+    super(logicalScene, name, 0.3, 0.3)
     // this.sphere = MeshBuilder.CreateSphere('xSphere', { segments: 32, diameter: 0.2 }, scene)
     // this.sphere.id = this.sphere.name
     // // sphere2.position.x = sphereD * 2
@@ -21,56 +20,68 @@ export class ControllerTrackingMenu implements IDisposable {
     // //this.mirroredMeshes.push(sphere2)
     // this.sphere.parent = controller.rootMesh
 
-    this.guiRoot = MeshBuilder.CreatePlane('plane', { size: 0.4 }, scene)
-    this.assetContainer.meshes.push(this.guiRoot)
+    const appManager = logicalScene.appManager
 
     //TODO: Potential timing issue due to the async (prob not needed after removing the remote snippet load)
-    this.initGui(this.scene, this.guiRoot)
+    this.initGui(logicalScene.scene, this.guiPanel).then(() => {
+      this._onControllersChange(appManager.leftController, appManager.rightController)
+    })
+
+    this.appBusSubs.push(
+      appManager.appBus.subscribe(ControllersChangedEvent, (event) => {
+        this._onControllersChange(event.payload.leftController, event.payload.rightController)
+      }),
+    )
   }
 
-  load(controller: WebXRAbstractMotionController) {
-    this.assetContainer.addAllToScene()
-    this.guiRoot.parent = controller.rootMesh
+  _onSceneLoaded() {
+    super._onSceneLoaded()
+  }
+
+  _onSceneUnloading() {
+    this._onControllersChange()
+    super._onSceneUnloading()
+  }
+
+  _onControllersChange(
+    leftController?: WebXRAbstractMotionController,
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    rightController?: WebXRAbstractMotionController,
+  ): void {
+    if (!leftController) {
+      this.setParent(null)
+      if (this.guiPanelAssetContainerLoaded) {
+        this.guiPanelAssetContainer.removeAllFromScene()
+        this.guiPanelAssetContainerLoaded = false
+      }
+      return
+    }
+
     // if (this.scene.activeCamera)
     //   this.guiRoot.lookAt(this.scene.activeCamera.position)
-    this.guiRoot.position.z = 0
-    this.guiRoot.position.y = 0
 
-    this.guiRoot.rotation.x = Tools.ToRadians(-35)
-    //this.guiRoot.rotation.y = Tools.ToRadians(-10)
+    if (!this.guiPanelAssetContainerLoaded) {
+      this.guiPanelAssetContainer.addAllToScene()
+      this.guiPanelAssetContainerLoaded = true
+    }
 
-    this.guiRoot.position.z = -0.15
-    this.guiRoot.position.y = 0.175
-  }
+    this.parent = leftController.rootMesh
+    //this.setParent(leftController.rootMesh)
 
-  unload() {
-    //console.log('ControllerTrackingMenu.unload')
-    this.guiRoot.parent = null
-    this.assetContainer.removeAllFromScene()
+    this.rotation.x = Tools.ToRadians(-35)
+
+    this.position.x = -0.01
+    this.position.z = -0.1
+    this.position.y = 0.175
   }
 
   private async initGui(scene: Scene, plane: Mesh) {
     plane.rotation.y = Math.PI
     plane.bakeCurrentTransformIntoVertices()
 
-    //plane.rotation.x = Math.PI / 3
-
     const advancedTexture = GUI.AdvancedDynamicTexture.CreateForMesh(plane) as GUI.AdvancedDynamicTexture
     await advancedTexture.parseFromSnippetAsync('#MMWSUI#5')
     //advancedTexture.attachToMesh(plane)
-    this.assetContainer.textures.push(advancedTexture)
-
-    // Load a GUI from the snippet server.
-
-    //let advancedTexture = new GUI.AdvancedDynamicTexture.CreateFullscreenUI("GUI", true, scene);
-
-    // Set the ideal W and H if you wish to scale with the window.
-    // advancedTexture.idealWidth = 1024;
-    // advancedTexture.idealHeight = 1024;
-  }
-
-  dispose(): void {
-    //this.guiRoot?.getChildren().forEach((node) => node.dispose())
-    this.guiRoot?.dispose()
+    this.guiPanelAssetContainer.textures.push(advancedTexture)
   }
 }

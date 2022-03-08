@@ -61,8 +61,6 @@ export class Scene002PickingAndHighlights extends LogicalScene {
     sphere2.material = ColorMaterials.blue(this.scene)
     this.sceneAssetContainer.meshes.push(sphere2)
     this.mirroredMeshes.push(sphere2)
-
-    this.sceneAssetContainer.removeAllFromScene()
   }
 
   _createGui2D(scene: Scene, parent: Mesh, headerTxt: string): Mesh {

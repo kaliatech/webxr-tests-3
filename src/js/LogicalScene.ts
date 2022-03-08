@@ -6,20 +6,19 @@ import { Observer } from '@babylonjs/core/Misc/observable'
 import { EnvironmentHelper } from '@babylonjs/core/Helpers/environmentHelper'
 import { initDefaultEnvHelper } from './3d/default-environment'
 import { EventBus } from 'ts-bus'
-import { ControllersChangedEvent } from './AppManagerEvents'
 import { AppManager } from './AppManager'
-import { WebXRAbstractMotionController } from '@babylonjs/core/XR/motionController/webXRAbstractMotionController'
-import { LogicalSceneDisposingEvent, LogicalSceneUnloadingEvent } from './LogicalSceneEvents'
+import { LogicalSceneDisposingEvent, LogicalSceneLoadedEvent, LogicalSceneUnloadingEvent } from './LogicalSceneEvents'
 
 export abstract class LogicalScene {
   public scene: Scene
 
   public sceneBus: EventBus
   public sceneAssetContainer: AssetContainer
+  public sceneAssetContainerLoaded = true
 
   protected beforeRenderObv: Nullable<Observer<Scene>> = null
 
-  private appBusUnsubs: { (): void }[] = []
+  protected appBusUnsubs: { (): void }[] = []
 
   protected mirroredMeshes: Mesh[] = []
 
@@ -45,7 +44,10 @@ export abstract class LogicalScene {
   }
 
   load(): void {
-    this.sceneAssetContainer.addAllToScene()
+    if (!this.sceneAssetContainerLoaded) {
+      this.sceneAssetContainer.addAllToScene()
+      this.sceneAssetContainerLoaded = true
+    }
 
     // Commented lines show alternate way to setup callbacks:
     //private beforeRenderHandle = this.beforeRender.bind(this)
@@ -57,29 +59,11 @@ export abstract class LogicalScene {
       this.envHelper = initDefaultEnvHelper(this.scene, this.useGlobalEnvHelper)
     }
 
-    this.appBusUnsubs.push(
-      this.appManager.appBus.subscribe(ControllersChangedEvent, (event) => {
-        this.onControllersChange(event.payload.leftController, event.payload.rightController)
-      }),
-    )
-    this.onControllersChange(this.appManager.leftController, this.appManager.rightController)
-
     // this.appManager.appBus.subscribe(CameraChangedEvent, (event) => {
     //   this.onCameraChange(event.payload.camera)
     // })
-  }
 
-  /**
-   * Will be called by scene.load and scene.unload.
-   */
-  onControllersChange(
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    leftController?: WebXRAbstractMotionController,
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    rightController?: WebXRAbstractMotionController,
-  ): void {
-    //this.controllers = controllers
-    //console.log('onControllersChange', this.controllers)
+    this.sceneBus.publish(LogicalSceneLoadedEvent({ logicalScene: this }))
   }
 
   // eslint-disable-next-line @typescript-eslint/no-empty-function
@@ -98,8 +82,6 @@ export abstract class LogicalScene {
   unload(): void {
     this.sceneBus.publish(LogicalSceneUnloadingEvent({ logicalScene: this }))
 
-    this.onControllersChange()
-
     this.appBusUnsubs.forEach((unsub) => unsub())
 
     if (this.beforeRenderObv) {
@@ -107,7 +89,10 @@ export abstract class LogicalScene {
       this.beforeRenderObv = null
     }
 
-    this.sceneAssetContainer.removeAllFromScene()
+    if (this.sceneAssetContainerLoaded) {
+      this.sceneAssetContainer.removeAllFromScene()
+      this.sceneAssetContainerLoaded = false
+    }
 
     if (!this.useGlobalEnvHelper) {
       this.envHelper?.dispose()

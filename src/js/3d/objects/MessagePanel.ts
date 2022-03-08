@@ -17,6 +17,8 @@ export class MessagePanel extends GuiPanel {
     this.followBehavior.maximumDistance = 4
     this.followBehavior.orientToCameraDeadzoneDegrees = 30
 
+    this._init()
+
     // Not required because follow camera uses scene.activeCamera by default. Might be important if
     // we need to support simultaneous XR and inline UIs though. ...though watching XR state is then probably better.
     // private cameraUnsub: { (): void }
@@ -25,7 +27,17 @@ export class MessagePanel extends GuiPanel {
     // })
   }
 
-  async init(): Promise<void> {
+  _onSceneLoaded() {
+    super._onSceneLoaded()
+    this.followBehavior.attach(this.guiPanel)
+  }
+
+  _onSceneUnloading() {
+    super._onSceneUnloading()
+    this.followBehavior.detach()
+  }
+
+  private _init(): void {
     const advancedTexture = GUI.AdvancedDynamicTexture.CreateForMesh(
       this.guiPanel,
       1024,
@@ -58,32 +70,5 @@ export class MessagePanel extends GuiPanel {
     gridCont.addControl(header)
 
     advancedTexture.addControl(gridCont)
-
-    this.postInit()
-  }
-
-  protected postInit(): void {
-    if (this.loadRequested) {
-      this.load()
-    } else {
-      this.unload()
-    }
-  }
-
-  load(): void {
-    super.load()
-
-    this.followBehavior.attach(this.guiPanel)
-  }
-
-  unload(): void {
-    super.unload()
-
-    this.followBehavior.detach()
-  }
-
-  dispose(): void {
-    //this.cameraUnsub()
-    this.dispose()
   }
 }

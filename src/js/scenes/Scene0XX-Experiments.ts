@@ -22,8 +22,6 @@ export class Scene0XXExperiments extends LogicalScene {
     this.sceneAssetContainer.lights.push(light)
 
     this._initTree()
-
-    this.sceneAssetContainer.removeAllFromScene()
   }
 
   _initTree() {

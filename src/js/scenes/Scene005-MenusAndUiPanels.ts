@@ -8,6 +8,7 @@ import { AxesWidget } from '../3d/objects/AxesWidget'
 
 import { MessagePanel } from '../3d/objects/MessagePanel'
 import { AppManager } from '../AppManager'
+import { ControllerTrackingMenu } from '../3d/objects/ControllerTrackingMenu'
 
 export class Scene005 extends LogicalScene {
   constructor(appManager: AppManager) {
@@ -36,25 +37,10 @@ export class Scene005 extends LogicalScene {
 
     this.initLargeDialogPanel()
 
-    this.sceneAssetContainer.removeAllFromScene()
+    new ControllerTrackingMenu(this, "ControllerTrackingMenu", "Test")
   }
 
   initLargeDialogPanel() {
-    const msgPanel = new MessagePanel(this, 'Test005-Message-Panel', 'This is a test.')
-    msgPanel.init().then(() => {
-      msgPanel.load()
-    })
-  }
-
-  load() {
-    super.load()
-  }
-
-  unload() {
-    super.unload()
-  }
-
-  dispose() {
-    super.dispose()
+    new MessagePanel(this, 'Test005-Message-Panel', 'This is a test.')
   }
 }
