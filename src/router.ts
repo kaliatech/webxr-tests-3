@@ -36,14 +36,24 @@ const routes: Array<RouteRecordRaw> = [
     component: () => import('./views/Test05View-MenusAndUiPanels.vue'),
   },
   {
-    path: '/x',
-    name: 'Experiments',
-    component: () => import('./views/TestXXView-Experiments.vue'),
+    path: '/tests-future',
+    name: 'TestsFuture',
+    component: () => import('./views/TestFutureView.vue'),
   },
   {
-    path: '/links',
-    name: 'Links',
-    component: () => import('./views/LinksView.vue'),
+    path: '/experiment1',
+    name: 'Experiment01Trees',
+    component: () => import('./views/Experiment01View-Trees.vue'),
+  },
+  {
+    path: '/experiments-future',
+    name: 'ExperimentsFuture',
+    component: () => import('./views/ExperimentFutureView.vue'),
+  },
+  {
+    path: '/about',
+    name: 'About',
+    component: () => import('./views/AboutView.vue'),
   },
 ] as Array<RouteRecordRaw>
 

@@ -7,8 +7,6 @@ import { LogicalScene } from '../../LogicalScene'
 import { Vector3 } from '@babylonjs/core/Maths/math.vector'
 import { Tools } from '@babylonjs/core/Misc/tools'
 
-import { white } from '../materials/ColorMaterials'
-
 export abstract class GuiPanel extends TransformNode {
   protected loadRequested = false
   protected disposed = false

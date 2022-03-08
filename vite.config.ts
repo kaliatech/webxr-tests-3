@@ -1,6 +1,7 @@
 import { defineConfig } from 'vite'
 import vue from '@vitejs/plugin-vue'
 import eslintPlugin from 'vite-plugin-eslint'
+import svgLoader from 'vite-svg-loader'
 
 // https://vitejs.dev/config/
 export default defineConfig({
@@ -10,6 +11,8 @@ export default defineConfig({
     // https://stackoverflow.com/a/70662931/123378
     // https://github.com/gxmari007/vite-plugin-eslint/issues/17
     eslintPlugin({ cache: false }),
+    // https://github.com/jpkleemans/vite-svg-loader
+    svgLoader(),
   ],
   // As of 2022-02-23, doesn't seem to be working in IDEA, even with a jsconfig.json file added. So for now,
   // seems safer to continue using relative paths.

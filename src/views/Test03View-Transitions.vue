@@ -52,7 +52,7 @@ import { Scene001Simple } from '../js/scenes/Scene001-Simple'
 import { Scene002PickingAndHighlights } from '../js/scenes/Scene002-PickingAndHighlights'
 import { Scene004PhotoAndVideos } from '../js/scenes/Scene004-PhotoAndVideos'
 import { LogicalScene } from '../js/LogicalScene'
-import { disposeDefaultEnvHelper, initDefaultEnvHelper } from '../js/3d/default-environment'
+import { disposeDefaultEnvHelper } from '../js/3d/default-environment'
 
 const renderCanvas = ref<HTMLCanvasElement | undefined>()
 let appManager: AppManager | undefined

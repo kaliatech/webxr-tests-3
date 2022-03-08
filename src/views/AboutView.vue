@@ -31,6 +31,18 @@
                 <li>
                   <a href="https://makepad.dev/">https://makepad.dev/</a>
                 </li>
+                <li>
+                  <a href="https://360rumors.com/theta-x-review/">https://360rumors.com/theta-x-review/</a>
+                </li>
+                <li>
+                  <a href="https://www.youtube.com/watch?v=L7iP4zRD3cY">RED V-RAPTOR w/ Canon Dual Fisheye vs EOS R5</a>
+                </li>
+                <li>
+                  <a href="https://www.youtube.com/watch?v=DvJyepBjHLY">VR180 from 2X Insta360 Go</a>
+                </li>
+                <li>
+                  <a href="https://www.youtube.com/watch?v=LuRj5pX4nug">VR180 from 2X Insta360 Go, 22mm IPD test</a>
+                </li>
               </ul>
             </div>
           </div>
