@@ -9,7 +9,7 @@
               Hover pointer over spheres to trigger GUI. Click trigger input to move sphere up.
             </div>
           </div>
-          <div v-if="!data.xrChecked" class="row">
+          <div class="row">
             <div class="col">
               <webxr-support-check mode="immersive-vr" @webxr-checked="onWebXrChecked" />
             </div>
@@ -21,15 +21,13 @@
   </main-layout>
 </template>
 <script setup lang="ts">
-import { onUnmounted, reactive, ref } from 'vue'
+import { nextTick, onUnmounted, reactive, ref } from 'vue'
 
 import MainLayout from './layouts/MainLayout.vue'
 import WebxrSupportCheck from '../components/WebxrSupportCheck.vue'
 
 import { AppManager } from '../js/AppManager'
 import { Scene002PickingAndHighlights } from '../js/scenes/Scene002-PickingAndHighlights'
-
-import type { XRSystem } from 'webxr'
 
 const renderCanvas = ref<HTMLCanvasElement | undefined>()
 let appManager: AppManager | undefined
@@ -38,28 +36,27 @@ const data = reactive({
   xrChecked: false,
 })
 
-function onWebXrChecked(xrSystem: XRSystem | undefined) {
-  if (xrSystem) {
-    data.xrChecked = true
-    init(xrSystem)
-  }
+function onWebXrChecked() {
+  data.xrChecked = true
+  nextTick(() => {
+    init()
+  })
 }
 
-function init(xrSystem: XRSystem) {
-  if (!xrSystem || !renderCanvas.value) {
+function init() {
+  if (!renderCanvas.value) {
     return
   }
-  appManager = new AppManager(renderCanvas.value, xrSystem, window)
-  appManager.initWebXr().then(() => {
+  appManager = new AppManager(renderCanvas.value, window)
+  appManager.init().then(() => {
     if (appManager) {
-      const scene = new Scene002PickingAndHighlights(appManager)
-      appManager?.loadScene(scene)
+      appManager.loadScene(new Scene002PickingAndHighlights(appManager))
     }
   })
 }
 
 onUnmounted(() => {
-  appManager?.dispose(window)
+  appManager?.dispose()
 })
 </script>
 <!--

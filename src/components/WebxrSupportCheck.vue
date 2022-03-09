@@ -1,12 +1,12 @@
 <template>
   <p v-if="!data.asyncChecksDone">Checking WebXR support...</p>
-  <div v-if="data.asyncChecksDone && !data.isWebXrSupported" class="mt-2">
-    <div class="alert alert-danger" role="alert">
-      <h4>Error</h4>
-      <p>WebXR with immersive-vr sessions not supported by this browser.</p>
-      <p>
-        <strong>{{ data.errorMsg }}</strong>
-      </p>
+  <div v-if="data.asyncChecksDone && !data.isWebXrSupported" class="mt-1">
+    <div class="alert alert-danger mb-0" role="alert">
+<!--      <h4>Note</h4>-->
+      WebXR with '<strong>{{ mode }}</strong>' sessions not supported by this browser.
+      <!--      <p>-->
+      <!--        <strong>{{ data.errorMsg }}</strong>-->
+      <!--      </p>-->
     </div>
   </div>
 </template>
@@ -52,7 +52,7 @@ async function initAsync() {
     data.errorMsg = errorMsg
 
     //eslint-disable-next-line no-console
-    console.error(e)
+    //console.error(e)
   } finally {
     data.asyncChecksDone = true
     emit('webxrChecked', xrSystem, errorMsg)

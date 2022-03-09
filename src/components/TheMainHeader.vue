@@ -1,7 +1,7 @@
 <template>
   <header style="z-index: 1000">
     <!-- Fixed navbar -->
-    <nav class="navbar navbar-expand-md navbar-dark fixed-top bg-dark">
+    <nav class="navbar navbar-expand-md navbar-dark bg-dark" style="z-index: 1001">
       <div class="container">
         <router-link class="navbar-brand" to="/">WebXR</router-link>
         <button
@@ -98,9 +98,6 @@
       </div>
     </nav>
   </header>
-  <div>
-    <GithubIcon class="ms-2" width="3rem" height="3rem" />
-  </div>
 </template>
 <script setup lang="ts">
 import GithubIcon from '../../node_modules/bootstrap-icons/icons/github.svg?component'

@@ -9,7 +9,7 @@
               Immersive video quality tests. 360&deg; mono, 180&deg; mono, & 180&deg; stereo.
             </div>
           </div>
-          <div v-if="!data.xrChecked" class="row">
+          <div class="row">
             <div class="col">
               <webxr-support-check mode="immersive-vr" @webxr-checked="onWebXrChecked" />
             </div>
@@ -21,12 +21,10 @@
   </main-layout>
 </template>
 <script setup lang="ts">
-import { onUnmounted, reactive, ref } from 'vue'
+import { nextTick, onUnmounted, reactive, ref } from 'vue'
 
 import MainLayout from './layouts/MainLayout.vue'
 import WebxrSupportCheck from '../components/WebxrSupportCheck.vue'
-
-import type { XRSystem } from 'webxr'
 
 import { AppManager } from '../js/AppManager'
 import { Scene004PhotoAndVideos } from '../js/scenes/Scene004-PhotoAndVideos'
@@ -38,28 +36,29 @@ const data = reactive({
   xrChecked: false,
 })
 
-function onWebXrChecked(xrSystem: XRSystem | undefined) {
-  if (xrSystem) {
-    data.xrChecked = true
-    init(xrSystem)
-  }
+function onWebXrChecked() {
+  data.xrChecked = true
+
+  // Use nextTick because at this point canvas size is still zero
+  nextTick(() => {
+    init()
+  })
 }
 
-function init(xrSystem: XRSystem) {
-  if (!xrSystem || !renderCanvas.value) {
+function init() {
+  if (!renderCanvas.value) {
     return
   }
-  appManager = new AppManager(renderCanvas.value, xrSystem, window)
-  appManager.initWebXr().then(() => {
+  appManager = new AppManager(renderCanvas.value, window)
+  appManager.init().then(() => {
     if (appManager) {
-      const scene = new Scene004PhotoAndVideos(appManager)
-      appManager?.loadScene(scene)
+      appManager.loadScene(new Scene004PhotoAndVideos(appManager))
     }
   })
 }
 
 onUnmounted(() => {
-  appManager?.dispose(window)
+  appManager?.dispose()
 })
 </script>
 <!--

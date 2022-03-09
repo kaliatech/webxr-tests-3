@@ -15,8 +15,7 @@ import { WebXRState } from '@babylonjs/core/XR/webXRTypes'
 
 import { LogicalScene } from './LogicalScene'
 import { initDefaultCamera } from './3d/default-camera'
-
-import type { XRSystem } from 'webxr'
+import * as WebXRUtils from './3d/utils/WebXrUtils'
 
 // Side Effect Imports for Babylon.js
 // Import any side effects at the game engine level that _might_ be needed by scenes.
@@ -37,7 +36,6 @@ import '@babylonjs/core/Layers/effectLayerSceneComponent'
 // import '@babylonjs/core/Legacy/legacy'
 // import '@babylonjs/core/Debug/debugLayer'
 // import '@babylonjs/inspector'
-
 import { ControllersChangedEvent } from './AppManagerEvents'
 
 // Imports required for WebXRLayers and Multiview
@@ -54,7 +52,7 @@ export class AppManager {
   public appBus: EventBus = new EventBus()
 
   private onResizeHandle = this.onResize.bind(this)
-  private collisionCoord:DefaultCollisionCoordinator
+  private collisionCoord: DefaultCollisionCoordinator
 
   protected defaultCamera: ArcRotateCamera
 
@@ -69,10 +67,10 @@ export class AppManager {
 
   private logicalScenes: LogicalScene[] = []
 
-  constructor(private canvas: HTMLCanvasElement, private xrSystem: XRSystem, private window?: Window) {
+  constructor(private canvas: HTMLCanvasElement, private window?: Window) {
     this.babylonEngine = new Engine(this.canvas, true, { stencil: true })
     this.scene = new Scene(this.babylonEngine)
-    this.scene.clearColor = new Color4(0,0,0,1)
+    this.scene.clearColor = new Color4(0, 0, 0, 1)
 
     //TODO: Research how this works, if it is expensive when not used, etc.
     this.collisionCoord = new DefaultCollisionCoordinator()
@@ -93,8 +91,17 @@ export class AppManager {
     this.babylonEngine.resize(true)
   }
 
-  initWebXr(): Promise<WebXRDefaultExperience> {
-    return WebXRDefaultExperience.CreateAsync(this.scene, {
+  async init(): Promise<void> {
+    try {
+      await WebXRUtils.checkXrSupport(window?.navigator || navigator, 'immersive-vr')
+      await this._initWebXr()
+    } catch (err) {
+      this._initWithoutWebXr()
+    }
+  }
+
+  async _initWebXr(): Promise<void> {
+    return await WebXRDefaultExperience.CreateAsync(this.scene, {
       optionalFeatures: true,
     }).then((webXrDefaultExp) => {
       // Enable WebXRLayers and Multiview
@@ -114,8 +121,11 @@ export class AppManager {
       this._setupControllers(webXrDefaultExp)
 
       this._startRenderLoop()
-      return webXrDefaultExp
     })
+  }
+
+  _initWithoutWebXr(): void {
+    this._startRenderLoop()
   }
 
   get camera(): TargetCamera {
@@ -176,7 +186,7 @@ export class AppManager {
     }
   }
 
-  async dispose(window?: Window) {
+  async dispose() {
     this.logicalScenes.forEach((logicalScene) => {
       logicalScene.dispose()
     })
@@ -195,7 +205,7 @@ export class AppManager {
       this.rightInputSource.onMotionControllerInitObservable.clear()
       this.rightInputSource.onMeshLoadedObservable.clear()
     }
-    window?.removeEventListener('resize', this.onResizeHandle)
+    this.window?.removeEventListener('resize', this.onResizeHandle)
 
     // Must exit XR before calling dispose on engine, else errors
     if (this.webXrDefaultExp) {

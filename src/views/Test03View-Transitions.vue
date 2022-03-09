@@ -28,7 +28,7 @@
               </div>
             </div>
           </div>
-          <div v-if="!data.xrChecked" class="row">
+          <div class="row">
             <div class="col">
               <webxr-support-check mode="immersive-vr" @webxr-checked="onWebXrChecked" />
             </div>
@@ -40,12 +40,10 @@
   </main-layout>
 </template>
 <script setup lang="ts">
-import { onBeforeMount, onUnmounted, reactive, ref } from 'vue'
+import { nextTick, onBeforeMount, onUnmounted, reactive, ref } from 'vue'
 
 import MainLayout from './layouts/MainLayout.vue'
 import WebxrSupportCheck from '../components/WebxrSupportCheck.vue'
-
-import type { XRSystem } from 'webxr'
 
 import { AppManager } from '../js/AppManager'
 import { Scene001Simple } from '../js/scenes/Scene001-Simple'
@@ -72,25 +70,20 @@ onBeforeMount(() => {
   }
 })
 
-function onWebXrChecked(xrSystem: XRSystem | undefined) {
-  if (xrSystem) {
-    data.xrChecked = true
-    init(xrSystem)
-  }
-}
+function onWebXrChecked() {
+  data.xrChecked = true
 
-function init(xrSystem: XRSystem) {
-  if (!xrSystem || !renderCanvas.value) {
+  // Use nextTick because at this point canvas size is still zero
+  nextTick(() => {
+    init()
+  })
+}
+function init() {
+  if (!renderCanvas.value) {
     return
   }
-  appManager = new AppManager(renderCanvas.value, xrSystem, window)
-  appManager.initWebXr().then(() => {
-    // if (appManager) {
-    // scene1 = new Scene001(appManager.scene)
-    // scene2 = new Scene002(appManager.scene)
-    //appManager?.loadScene(scene1)
-    // }
-  })
+  appManager = new AppManager(renderCanvas.value, window)
+  appManager.init()
 }
 
 function unloadScene(sceneIdx: number) {
@@ -137,7 +130,7 @@ function loadScene(sceneIdx: number) {
 }
 
 onUnmounted(() => {
-  appManager?.dispose(window)
+  appManager?.dispose()
 })
 </script>
 <!--
