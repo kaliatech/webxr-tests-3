@@ -129,7 +129,6 @@ export class AppManager {
   }
 
   _startRenderLoop() {
-    this.babylonEngine.resize()
     this.babylonEngine.runRenderLoop(() => {
       this.scene.render()
     })
