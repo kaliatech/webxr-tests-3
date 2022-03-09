@@ -35,3 +35,8 @@ footer.home-footer {
   min-height: 15rem;
   min-width: 0;
 }
+
+// For Safari/iOS
+canvas.render-canvas:focus {
+  outline: none;
+}
