@@ -1,4 +1,6 @@
 import { ArcRotateCamera } from '@babylonjs/core/Cameras/arcRotateCamera'
+import { DefaultCollisionCoordinator } from '@babylonjs/core/Collisions/collisionCoordinator'
+import { Color4 } from '@babylonjs/core/Maths/math.color'
 import { Engine } from '@babylonjs/core/Engines/engine'
 import { EventBus } from 'ts-bus'
 import { Scene } from '@babylonjs/core/scene.js'
@@ -37,7 +39,6 @@ import '@babylonjs/core/Layers/effectLayerSceneComponent'
 // import '@babylonjs/inspector'
 
 import { ControllersChangedEvent } from './AppManagerEvents'
-import { DefaultCollisionCoordinator } from '@babylonjs/core/Collisions/collisionCoordinator'
 
 // Imports required for WebXRLayers and Multiview
 // Experimental and currently problematic.
@@ -71,6 +72,7 @@ export class AppManager {
   constructor(private canvas: HTMLCanvasElement, private xrSystem: XRSystem, private window?: Window) {
     this.babylonEngine = new Engine(this.canvas, true, { stencil: true })
     this.scene = new Scene(this.babylonEngine)
+    this.scene.clearColor = new Color4(0,0,0,1)
 
     //TODO: Research how this works, if it is expensive when not used, etc.
     this.collisionCoord = new DefaultCollisionCoordinator()

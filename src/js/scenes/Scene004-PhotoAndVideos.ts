@@ -15,12 +15,18 @@ import { AxesWidget } from '../3d/objects/AxesWidget'
 
 import { AppManager } from '../AppManager'
 import { MediaSelectorGui } from './scene004/MediaSelectorGui'
+import { Control } from '@babylonjs/gui/2D'
+
+import { MediaItem, mediaItems } from './scene004/MediaData'
+import { VideoDome2 } from '../3d/VideoDome2'
 
 export class Scene004PhotoAndVideos extends LogicalScene {
-
   private videoDome?: VideoDome
   private photoDome?: PhotoDome
+  private activeMediaIdx = -1
+
   private selectorGui: MediaSelectorGui
+  private mediaItems = mediaItems
 
   constructor(appManager: AppManager) {
     super(appManager, false)
@@ -47,9 +53,14 @@ export class Scene004PhotoAndVideos extends LogicalScene {
     this.sceneAssetContainer.meshes.push(...axesWidget.root.getChildMeshes(false))
 
     //this.createVideoDome()
-    this.createPhotoDome()
+    //this.createPhotoDome()
 
-    this.selectorGui = new MediaSelectorGui(this, 'Scene004MediaSelectorGui', 'test')
+    this.selectorGui = new MediaSelectorGui(
+      this,
+      'Scene004MediaSelectorGui',
+      this.mediaItems,
+      this.onMediaSelect.bind(this),
+    )
     //this.sceneAssetContainer.transformNodes.push(this.selectorGui)
     //this.selectorGui.getChildMeshes().forEach(mesh => this.sceneAssetContainer.meshes.push(mesh))
 
@@ -59,101 +70,95 @@ export class Scene004PhotoAndVideos extends LogicalScene {
     this.sceneAssetContainer.removeAllFromScene()
   }
 
-  private createPhotoDome() {
-    const photoDomeOpts = {
-      resolution: 32,
-      clickToPlay: true,
-      autoPlay: false,
+  private onMediaSelect(btn: Control) {
+    //TODO: Refactor to pass index (and mediaItem) to the addBtn
+    switch (btn.name) {
+      case 'photo1':
+        this._play(0)
+        break
+      case 'video1':
+        this._play(1)
+        break
+      case 'video2':
+        this._play(2)
+        break
     }
-
-    let url = ''
-
-    //url = "https://temp.kaliatech.com/2022/webxr-tests-3/videos/kaliatech/webxr-tests-3-002-photo/webxr-test-3-002-photo-048-insta360app-6080x3040-offset180-ps.jpg"
-    //url = "https://temp.kaliatech.com/2022/webxr-tests-3/videos/kaliatech/webxr-tests-3-002-photo/webxr-test-3-002-photo-042-insta360app-5760x2880.jpg"
-    url =
-      'https://temp.kaliatech.com/2022/webxr-tests-3/videos/kaliatech/webxr-tests-3-002-photo/webxr-test-3-002-photo-041-insta360app-5760x2880.jpg'
-
-    this.photoDome = new PhotoDome('photoDome', url, photoDomeOpts, this.scene)
-    this.photoDome.fovMultiplier = 2.5
-
-    this.sceneAssetContainer.transformNodes.push(this.photoDome)
-    this.sceneAssetContainer.meshes.push(...this.photoDome.getChildMeshes()) // TODO: required?
   }
 
-  private createVideoDome() {
+  _play(mediaIdx: number): void {
+    if (mediaIdx === this.activeMediaIdx) {
+      return
+    }
+
+    if (this.videoDome) {
+      this.videoDome.dispose()
+    }
+
+    if (this.photoDome) {
+      this.photoDome.dispose()
+    }
+
+    this.activeMediaIdx = mediaIdx
+    const mediaItem = this.mediaItems[mediaIdx]
+    if (!mediaItem) {
+      return
+    }
+
+    if (mediaItem.type === 'photo') {
+      this.createPhotoDome(mediaItem)
+    } else {
+      this.createVideoDome(mediaItem)
+    }
+  }
+
+  private createPhotoDome(mediaItem: MediaItem) {
+    const photoDomeOpts = {
+      resolution: 32,
+      clickToPlay: false,
+      autoPlay: true,
+    }
+    this.photoDome = new PhotoDome('photoDome', mediaItem.url.toString(), photoDomeOpts, this.scene)
+    //this.photoDome.fovMultiplier = 2.5
+
+    // this.sceneAssetContainer.transformNodes.push(this.photoDome)
+    // this.sceneAssetContainer.meshes.push(...this.photoDome.getChildMeshes()) // TODO: required?
+  }
+
+  private createVideoDome(mediaItem: MediaItem) {
     const videoDomeOpts = {
       resolution: 32,
-      clickToPlay: true,
+      clickToPlay: false,
       autoPlay: false,
     }
 
-    // 180 Video Tests
-    // const url = 'https://temp.kaliatech.com/2022/webxr-tests-3/videos/hughhou/output_zcam_180_3d.mp4'
-    //const url = 'https://temp.kaliatech.com/2022/webxr-tests-3/videos/hughhou/output_zcam_180_3d.mp4'
-    // this.videoDome = new VideoDome('videoDome', url, videoDomeOpts, this.scene)
-    // this.videoDome.videoMode = VideoDome.MODE_SIDEBYSIDE
-    // this.videoDome.halfDome = true
+    this.videoDome = new VideoDome2('videoDome', mediaItem.url.toString(), videoDomeOpts, this.scene)
+    this.videoDome.videoMode = mediaItem.videoMode || VideoDome.MODE_MONOSCOPIC
+    this.videoDome.halfDome = mediaItem.halfDome || false
 
-    // 360 Video Tests
-    //const url = "https://yoda.blob.core.windows.net/videos/uptale360.mp4"
-    //const url = "https://temp.kaliatech.com/2022/webxr-tests-3/videos/uptale360.mp4"
-    //const url = "https://temp.kaliatech.com/2022/webxr-tests-3/videos/hughhou/Insta360Titan-7680_60fps_H265_100Mbps_360.mp4"
-    let url = ''
+    // this.videoDome.videoTexture.video.addEventListener('canplay', () => {
+    //   this.videoDome?.videoTexture.video.play()
+    // })
+    // setTimeout(() => {
+    //   this.videoDome?.videoTexture.video.play()
+    // }, 1000)
 
-    //works on quest 2, not desktop
-    //url = 'https://temp.kaliatech.com/2022/webxr-tests-3/videos/kaliatech/webxr-tests-3-001-video/webxr-tests-3-video001-export-1-insta360-5760x2880-100Mbps-h265.mp4'
-    //url = 'https://temp.kaliatech.com/2022/webxr-tests-3/videos/kaliatech/webxr-tests-3-001-video/webxr-tests-3-video001-export-1-premiere-5760x2880-100Mbps-h265.mp4'
-    //url = 'https://temp.kaliatech.com/2022/webxr-tests-3/videos/kaliatech/webxr-tests-3-001-video/webxr-tests-3-video001-export-1-premiere-4096x2048-100Mbps-h265.mp4'
+    this.videoDome.onLoadObservable.add(() => {
+      this.videoDome?.videoTexture?.video.play()
+    })
 
-    //works on both
-    url =
-      'https://temp.kaliatech.com/2022/webxr-tests-3/videos/kaliatech/webxr-tests-3-001-video/webxr-tests-3-video001-export-1-premiere-4096x2048-60Mbps-h264.mp4'
-    url =
-      'https://temp.kaliatech.com/2022/webxr-tests-3/videos/kaliatech/webxr-tests-3-001-video/webxr-tests-3-video001-export-1-insta360-5760x2880-100Mbps-h264.mp4'
-    url =
-      'https://temp.kaliatech.com/2022/webxr-tests-3/videos/kaliatech/webxr-tests-3-001-video/webxr-tests-3-video001-export-1-premiere-5760x2880-100Mbps-h264.mp4'
-
-    this.videoDome = new VideoDome('videoDome', url, videoDomeOpts, this.scene)
-    this.videoDome.videoMode = VideoDome.MODE_MONOSCOPIC
-    this.videoDome.halfDome = false
     //this.videoDome.fovMultiplier = 0.8
 
-    this.sceneAssetContainer.transformNodes.push(this.videoDome)
-    this.sceneAssetContainer.meshes.push(...this.videoDome.getChildMeshes()) // TODO: required?
+    // this.sceneAssetContainer.transformNodes.push(this.videoDome)
+    // this.sceneAssetContainer.meshes.push(...this.videoDome.getChildMeshes()) // TODO: required?
 
     //const url = "https://temp.kaliatech.com/2022/webxr-tests-3/videos/kandaovr/Dance_6k6k30_3dv.mp4"
     // const videoDome = new VideoDome("videoDome", url, videoDomeOpts, this.scene);
     // videoDome.videoMode = VideoDome.MODE_TOPBOTTOM;
   }
 
-  load() {
-    super.load()
-    this.videoDome?.videoTexture?.video.play()
-  }
-
-  unload() {
-    super.unload()
-
-    this.videoDome?.videoTexture?.video.pause()
-  }
-
-  // _onControllersChange(
-  //   leftController?: WebXRAbstractMotionController,
-  //   rightController?: WebXRAbstractMotionController,
-  // ): void {
-  //   if (leftController) {
-  //     if (!this.leftMenu) {
-  //       this.leftMenu = new ControllerTrackingMenu(this.scene)
-  //     }
-  //     this.leftMenu.load(leftController)
-  //   } else {
-  //     this.leftMenu?.unload()
-  //   }
-  // }
-
   dispose() {
-    this.photoDome?.dispose()
-    this.videoDome?.dispose()
+    this.photoDome?.dispose(false, true)
+    this.videoDome?.dispose(false, true)
     super.dispose()
   }
 }
