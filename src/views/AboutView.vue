@@ -43,6 +43,14 @@
                 <li>
                   <a href="https://www.youtube.com/watch?v=LuRj5pX4nug">VR180 from 2X Insta360 Go, 22mm IPD test</a>
                 </li>
+                <li>
+                  <a href="https://www.youtube.com/watch?v=_4a-RnTLu-I">Create 6DoF Video from 3DoF VR180</a>
+                </li>
+                <li>
+                  <a href="https://www.babylonjs-playground.com/#ZM8UQE#4">PG - Top-Bottom</a>
+
+                </li>
+
               </ul>
             </div>
           </div>

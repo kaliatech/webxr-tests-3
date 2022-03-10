@@ -1,3 +1,5 @@
+import { VideoDome } from '@babylonjs/core/Helpers/videoDome'
+
 export declare type MediaItem = {
   id: string
   title: string
@@ -10,7 +12,7 @@ export declare type MediaItem = {
 const mediaItems: MediaItem[] = [
   {
     id: 'photo1',
-    title: 'Photo 1 (360° Mono)',
+    title: 'Photo 1 - Office (6k, 360° Mono)',
     type: 'photo',
     url: new URL(
       //'https://temp.kaliatech.com/2022/webxr-tests-3/videos/kaliatech/webxr-tests-3-002-photo/webxr-test-3-002-photo-041-insta360app-5760x2880.jpg',
@@ -19,19 +21,59 @@ const mediaItems: MediaItem[] = [
     ),
   },
   {
-    id: 'video1',
-    title: 'Video 1 (360° Mono)',
+    id: 'photo2',
+    title: 'Photo 2 - Falls (5k, 360° Mono)',
+    type: 'photo',
+    url: new URL(
+      'https://temp.kaliatech.com/2022/webxr-tests-3/videos/kaliatech/webxr-tests-3-004-photo/webxr-test-3-004-photo-pixel-park-5760x2880.jpg',
+    ),
+  },
+  {
+    id: 'video1-360-5k',
+    title: 'Video 1 - Office (5k, 100Mbps, 360° Mono)',
     type: 'video',
     url: new URL(
       'https://temp.kaliatech.com/2022/webxr-tests-3/videos/kaliatech/webxr-tests-3-001-video/webxr-tests-3-video001-export-1-premiere-5760x2880-100Mbps-h264.mp4',
     ),
   },
   {
-    id: 'video2',
-    title: 'Video 2 (180° Stereo)',
+    id: 'video1-360-4k',
+    title: 'Video 1 - Office (4k, 60Mbps, iOS)',
     type: 'video',
-    halfDome: true,
-    url: new URL('https://temp.kaliatech.com/2022/webxr-tests-3/videos/hughhou/output_zcam_180_3d.mp4'),
+    url: new URL('https://temp.kaliatech.com/2022/webxr-tests-3/videos/kaliatech/webxr-tests-3-001-video/webxr-tests-3-video001-export-1-premiere-4096x2048-60Mbps-h264.mp4'),
+  },
+  // {
+  //   id: 'video2-180-mono',
+  //   title: 'Video 2 (180° Stereo)',
+  //   type: 'video',
+  //   halfDome: true,
+  //   videoMode: VideoDome.MODE_SIDEBYSIDE,
+  //   url: new URL('https://temp.kaliatech.com/2022/webxr-tests-3/videos/hughhou/output_zcam_180_3d.mp4'),
+  // },
+  // {
+  //   id: 'video3-180-stereo',
+  //   title: 'Video 2 (180° Mono)',
+  //   type: 'video',
+  //   halfDome: true,
+  //   url: new URL('https://temp.kaliatech.com/2022/webxr-tests-3/videos/vuze/vuze-xr-sample-180stereo-TravelTheWorldInVR.mp4'),
+  // },
+  {
+    id: 'video4-180-stereo',
+    title: 'Video 4 - Canon (180° Stereo, Broken)',
+    type: 'video',
+    halfDome: false,
+    videoMode: VideoDome.MODE_SIDEBYSIDE,
+    //url: new URL('https://temp.kaliatech.com/2022/webxr-tests-3/videos/yt/8k-vr-demo-canon-dual-fisheye-3840p30-7680x3840.webm'),
+    url: new URL('https://temp.kaliatech.com/2022/webxr-tests-3/videos/yt/8k-vr-demo-canon-h265-25Mbps-5760x2880.mp4'),
+
+  },
+  {
+    id: 'video5-180-stereo',
+    title: 'Video 5 - Qporit? (180° Stereo, 2k)',
+    type: 'video',
+    halfDome: false,
+    videoMode: VideoDome.MODE_TOPBOTTOM,
+    url: new URL('https://temp.kaliatech.com/2022/webxr-tests-3/videos/tests/pg-ZM8UQE%234-180-top-bottom-1113774789-2160x2160.mp4'),
   },
 ]
 

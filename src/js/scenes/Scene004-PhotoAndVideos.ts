@@ -71,18 +71,7 @@ export class Scene004PhotoAndVideos extends LogicalScene {
   }
 
   private onMediaSelect(btn: Control) {
-    //TODO: Refactor to pass index (and mediaItem) to the addBtn
-    switch (btn.name) {
-      case 'photo1':
-        this._play(0)
-        break
-      case 'video1':
-        this._play(1)
-        break
-      case 'video2':
-        this._play(2)
-        break
-    }
+    this._play(btn.metadata.idx)
   }
 
   _play(mediaIdx: number): void {
@@ -129,6 +118,7 @@ export class Scene004PhotoAndVideos extends LogicalScene {
       resolution: 32,
       clickToPlay: false,
       autoPlay: false,
+      // useDirectMapping: false
     }
 
     this.videoDome = new VideoDome2('videoDome', mediaItem.url.toString(), videoDomeOpts, this.scene)
