@@ -15,7 +15,7 @@ import { AxesWidget } from '../3d/objects/AxesWidget'
 
 import { AppManager } from '../AppManager'
 import { MediaSelectorGui } from './scene004/MediaSelectorGui'
-import { Control } from '@babylonjs/gui/2D'
+import { Control } from '@babylonjs/gui/2D/controls/control'
 
 import { MediaItem, mediaItems } from './scene004/MediaData'
 import { VideoDome2 } from '../3d/VideoDome2'

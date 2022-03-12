@@ -6,9 +6,9 @@ import { LogicalScene } from '../LogicalScene.js'
 import * as ColorMaterials from '../3d/materials/ColorMaterials'
 import { AxesWidget } from '../3d/objects/AxesWidget'
 
-import { MessagePanel } from '../3d/objects/MessagePanel'
 import { AppManager } from '../AppManager'
 import { ControllerTrackingMenu } from '../3d/objects/ControllerTrackingMenu'
+import { InputTestGui } from './scene005/InputTestGui'
 
 export class Scene005 extends LogicalScene {
   constructor(appManager: AppManager) {
@@ -41,6 +41,6 @@ export class Scene005 extends LogicalScene {
   }
 
   initLargeDialogPanel() {
-    new MessagePanel(this, 'Test005-Message-Panel', 'This is a test.')
+    new InputTestGui(this, 'Test005-Message-Panel', 'This is a test.')
   }
 }
