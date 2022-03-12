@@ -200,6 +200,10 @@ export class Scene002PickingAndHighlights extends LogicalScene {
     }
 
     if (pickResult?.pickedMesh && !this.highlightedMesh) {
+      if (this.sceneAssetContainer.meshes.indexOf(pickResult.pickedMesh) === -1) {
+        return
+      }
+
       this.highlightLayer?.addMesh(pickResult.pickedMesh as Mesh, Color3.White())
       this.highlightedMesh = pickResult.pickedMesh
       this.highlightedGuiPanel = this._createGui2D(
@@ -213,7 +217,11 @@ export class Scene002PickingAndHighlights extends LogicalScene {
 
   _pick(pointerInfo: PointerInfo) {
     const pickResult = pointerInfo.pickInfo
-    if (pickResult?.hit && pickResult?.pickedMesh) {
+    if (
+      pickResult?.hit &&
+      pickResult?.pickedMesh &&
+      this.sceneAssetContainer.meshes.indexOf(pickResult.pickedMesh) !== -1
+    ) {
       pickResult.pickedMesh.position.y += 0.25
       //pickResult.pickedMesh.scaling = new Vector3(3, 1.1, 1.1)
     }

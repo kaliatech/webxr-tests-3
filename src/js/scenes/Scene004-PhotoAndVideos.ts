@@ -80,11 +80,13 @@ export class Scene004PhotoAndVideos extends LogicalScene {
     }
 
     if (this.videoDome) {
-      this.videoDome.dispose()
+      this.videoDome.dispose(false, true)
+      this.videoDome = undefined
     }
 
     if (this.photoDome) {
-      this.photoDome.dispose()
+      this.photoDome.dispose(false, true)
+      this.photoDome = undefined
     }
 
     this.activeMediaIdx = mediaIdx
@@ -110,7 +112,7 @@ export class Scene004PhotoAndVideos extends LogicalScene {
     //this.photoDome.fovMultiplier = 2.5
 
     // this.sceneAssetContainer.transformNodes.push(this.photoDome)
-    // this.sceneAssetContainer.meshes.push(...this.photoDome.getChildMeshes()) // TODO: required?
+    // this.sceneAssetContainer.meshes.push(...this.photoDome.getChildMeshes())
   }
 
   private createVideoDome(mediaItem: MediaItem) {
@@ -144,6 +146,11 @@ export class Scene004PhotoAndVideos extends LogicalScene {
     //const url = "https://temp.kaliatech.com/2022/webxr-tests-3/videos/kandaovr/Dance_6k6k30_3dv.mp4"
     // const videoDome = new VideoDome("videoDome", url, videoDomeOpts, this.scene);
     // videoDome.videoMode = VideoDome.MODE_TOPBOTTOM;
+  }
+
+  unload() {
+    this._play(-1)
+    super.unload()
   }
 
   dispose() {
