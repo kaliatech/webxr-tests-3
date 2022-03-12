@@ -5,9 +5,19 @@ import { Control } from '@babylonjs/gui/2D'
 import { LogicalScene } from '../../LogicalScene'
 import { FollowBehavior } from '@babylonjs/core/Behaviors/Meshes/followBehavior'
 import { MediaItem } from './MediaData'
+import { ControllersChangedEvent } from '../../AppManagerEvents'
+import { WebXRAbstractMotionController } from '@babylonjs/core/XR/motionController/webXRAbstractMotionController'
+import { Nullable } from '@babylonjs/core/types'
+import { Observer } from '@babylonjs/core/Misc/observable'
+import { WebXRControllerComponent } from '@babylonjs/core/XR/motionController/webXRControllerComponent'
+import { KeyboardEventTypes, KeyboardInfo } from '@babylonjs/core/Events/keyboardEvents'
 
 export class MediaSelectorGui extends GuiPanel {
   private followBehavior: FollowBehavior
+
+  private keyboardObv: Nullable<Observer<KeyboardInfo>> = null
+  private rightControllerObv: Nullable<Observer<WebXRControllerComponent>> = null
+  private leftControllerObv: Nullable<Observer<WebXRControllerComponent>> = null
 
   constructor(
     logicalScene: LogicalScene,
@@ -53,26 +63,93 @@ export class MediaSelectorGui extends GuiPanel {
     ) as GUI.AdvancedDynamicTexture
     this.guiPanelAssetContainer.textures.push(advancedTexture)
 
+    // gridCont.background = "white"
+    // gridCont.alpha = 0.6
+    //https://www.babylonjs-playground.com/#XCPP9Y#829
+
     const gridCont = new GUI.Grid()
     gridCont.addColumnDefinition(1)
     this.mediaItems.forEach(() => {
       gridCont.addRowDefinition(0.5)
     })
 
-    // gridCont.background = "white"
-    // gridCont.alpha = 0.6
-
-    //https://www.babylonjs-playground.com/#XCPP9Y#829
-
-    // this._addBtn(gridCont, pxHeight, 'photo1', 'Photo 1 (360° Mono)', 0, 0)
-    // this._addBtn(gridCont, pxHeight, 'video1', 'Video 1 (360° Mono)', 1, 0)
-    // this._addBtn(gridCont, pxHeight, 'video2', 'Video 2 (180° Stereo)', 2, 0)
-    //
     this.mediaItems.forEach((mediaItem, idx) => {
       this._addBtn(gridCont, pxHeight, mediaItem.id, mediaItem.title, idx, 0, onClick)
     })
 
+    gridCont.addRowDefinition(0.5)
+    this._addBtn(
+      gridCont,
+      pxHeight,
+      'close-btn',
+      'Close Menu (Press A or X to reopen)',
+      this.mediaItems.length,
+      0,
+      () => {
+        this.setEnabled(false)
+        //this._onSceneUnloading()
+      },
+    )
+
+    const appManager = this.logicalScene.appManager
+    this.appBusSubs.push(
+      appManager.appBus.subscribe(ControllersChangedEvent, (event) => {
+        this._onControllersChange(event.payload.leftController, event.payload.rightController)
+      }),
+    )
+    this._onControllersChange(appManager.leftController, appManager.rightController)
+
+    this.keyboardObv = this.logicalScene.scene.onKeyboardObservable.add((kbInfo) => {
+      switch (kbInfo.type) {
+        case KeyboardEventTypes.KEYDOWN:
+          if (
+            kbInfo.event.key == 'a' ||
+            kbInfo.event.key == 'x' ||
+            kbInfo.event.key == 'X' ||
+            kbInfo.event.key == 'A'
+          ) {
+            this._toggleActive()
+          }
+          break
+      }
+    })
+
     advancedTexture.addControl(gridCont)
+  }
+
+  _onControllersChange(
+    leftController?: WebXRAbstractMotionController,
+    rightController?: WebXRAbstractMotionController,
+  ): void {
+    if (leftController && !this.leftControllerObv) {
+      //console.log('left', leftController.getComponentIds())
+      const btn = leftController.getComponent('x-button')
+      //console.log('x-button', btn)
+      this.leftControllerObv = btn.onButtonStateChangedObservable.add(() => {
+        if (btn.pressed) {
+          this._toggleActive()
+        }
+      })
+    } else if (!leftController && this.leftControllerObv) {
+      this.leftControllerObv.unregisterOnNextCall = true
+      this.leftControllerObv = null
+    }
+
+    if (rightController && !this.rightControllerObv) {
+      const btn = rightController.getComponent('a-button')
+      this.rightControllerObv = btn.onButtonStateChangedObservable.add(() => {
+        if (btn.pressed) {
+          this._toggleActive()
+        }
+      })
+    } else if (!rightController && this.rightControllerObv) {
+      this.rightControllerObv.unregisterOnNextCall = true
+      this.rightControllerObv = null
+    }
+  }
+
+  _toggleActive() {
+    this.setEnabled(!this.isEnabled())
   }
 
   private _addBtn(
@@ -91,10 +168,9 @@ export class MediaSelectorGui extends GuiPanel {
     // cont.addControl(btnBg, row, col)
 
     const btn = new GUI.Button(name)
-    btn.metadata = {idx:row}
+    btn.metadata = { idx: row }
     //const btn = GUI.Button.CreateSimpleButton("SimpleBtn", txt)
     btn.width = 1
-    console.log(this.width)
     // //rect.height =
     btn.background = ''
     btn.background = 'rgba(255,255,255,1)'

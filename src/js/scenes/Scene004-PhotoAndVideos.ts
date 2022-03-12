@@ -67,7 +67,7 @@ export class Scene004PhotoAndVideos extends LogicalScene {
     // this.selectorGui.init().then(() => {
     //   this.selectorGui.load()
     // })
-    this.sceneAssetContainer.removeAllFromScene()
+    //this.sceneAssetContainer.removeAllFromScene()
   }
 
   private onMediaSelect(btn: Control) {
