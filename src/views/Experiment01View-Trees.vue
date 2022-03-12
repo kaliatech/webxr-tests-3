@@ -11,8 +11,10 @@
           <!--          </nav>-->
           <div class="row">
             <div class="col">
-              <h1>Test 1 - Simple WebXR Scene</h1>
-              A simple scene showing mirrored ground and basic animation.
+              <h1>Experiment 1 - Simple Tree Generation</h1>
+              Simplistic tree generation using
+              <a href="https://doc.babylonjs.com/extensions/treeGenerators/spsTreeGenerator">SPS Tree Generator</a>
+              .
             </div>
           </div>
           <div class="row">

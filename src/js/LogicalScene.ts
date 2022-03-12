@@ -74,7 +74,7 @@ export abstract class LogicalScene {
 
     if (this.elapsedTime - this.lastFpsLogTime > 5000) {
       // eslint-disable-next-line no-console
-      console.log(engine.getFps().toFixed() + ' fps')
+      // console.log(engine.getFps().toFixed() + ' fps')
       this.lastFpsLogTime = this.elapsedTime
     }
   }
