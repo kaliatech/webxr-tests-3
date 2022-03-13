@@ -35,7 +35,7 @@ these demos are primarily meant to be viewed within a VR headset. Testing was do
 Meta Quest 2.
 
 Additional notes and thoughts here:
- - _TODO_
+ - https://kaliatech.com/blog/2022-webxr-tests
 
 ### Screenhots
 

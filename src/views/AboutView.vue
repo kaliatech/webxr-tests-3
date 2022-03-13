@@ -12,7 +12,7 @@
                 and developers might find a few items of interest there.
               </p>
               <p>
-                I wrote up thoughts and findings from developing these tests here, including what I think about WebXR:
+                Thoughts and findings from developing these tests:
               </p>
               <ul>
                 <li>
@@ -20,7 +20,7 @@
                 </li>
               </ul>
               <p>
-                I have a number of other more advanced ideas and experiments I'd like to try, but I don't know if I'll
+                I have a number of other ideas and experiments I'd like to try, but I don't know if I'll
                 add to this site or create new ones. For anyone that finds tests of this sort interesting, be sure to
                 also check out these sites:
               </p>
@@ -28,7 +28,7 @@
               <ul>
                 <li>
                   <a href="https://immersive-web.github.io/webxr-samples/">
-                    Immersive Web Wroking Group - WebXR Samples
+                    Immersive Web Working Group - WebXR Samples
                   </a>
                 </li>
                 <li>
