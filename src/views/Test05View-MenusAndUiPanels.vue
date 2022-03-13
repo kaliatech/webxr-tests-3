@@ -28,6 +28,9 @@ import WebxrSupportCheck from '../components/WebxrSupportCheck.vue'
 
 import { AppManager } from '../js/AppManager'
 import { Scene005 } from '../js/scenes/Scene005-MenusAndUiPanels'
+import { useTitle } from '@vueuse/core'
+
+useTitle('Test 5 - WebXR | Kaliatech')
 
 const renderCanvas = ref<HTMLCanvasElement | undefined>()
 let appManager: AppManager | undefined

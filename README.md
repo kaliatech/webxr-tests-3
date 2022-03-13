@@ -30,7 +30,7 @@ Test and verify WebXR functionality using Babylon.js 5. Key features tested:
  - PBR Materials
  - Etc
 
-Note that while most of the functionlity works across all browsers and devices (even Safari/iOS),
+While most of the functionality works across all browsers and devices, including Safari/iOS,
 these demos are primarily meant to be viewed within a VR headset. Testing was done with
 Meta Quest 2.
 
@@ -45,7 +45,7 @@ Browsers all the way down...
 Not the most exiting demo, but it _does_ work...
 ![webxr-3-tests-1](https://imgur.com/jyjx6v4.jpg)
 
-2D UI and VR isn't the best fit, but sometimes necessary...
+2D UI in VR...
 ![webxr-3-tests-1](https://imgur.com/OXLXYVR.jpg)
 
 Immersive photos and videos...

@@ -59,7 +59,7 @@ const mediaItems: MediaItem[] = [
   // },
   {
     id: 'video4-180-stereo',
-    title: 'Video 4 - Canon (180° Stereo, Broken)',
+    title: 'Video 4 - Canon (180° Stereo, Broken!)',
     type: 'video',
     halfDome: false,
     videoMode: VideoDome.MODE_SIDEBYSIDE,
@@ -69,7 +69,7 @@ const mediaItems: MediaItem[] = [
   },
   {
     id: 'video5-180-stereo',
-    title: 'Video 5 - Qporit? (180° Stereo, 2k)',
+    title: 'Video 5 - Qporit? (360° Stereo, 2k)',
     type: 'video',
     halfDome: false,
     videoMode: VideoDome.MODE_TOPBOTTOM,

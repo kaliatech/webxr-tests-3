@@ -5,7 +5,7 @@
         <div class="container">
           <div class="row">
             <div class="col">
-              <h1>Test 3 - WebXR Scene Transitions</h1>
+              <h1>Test 3 - WebXR Scene Loading/Unloading</h1>
               <div class="d-flex">
                 <div
                   v-for="(loaded, idx) in data.scenesLoaded"
@@ -41,6 +41,7 @@
 </template>
 <script setup lang="ts">
 import { nextTick, onBeforeMount, onUnmounted, reactive, ref } from 'vue'
+import { useTitle } from '@vueuse/core'
 
 import MainLayout from './layouts/MainLayout.vue'
 import WebxrSupportCheck from '../components/WebxrSupportCheck.vue'
@@ -51,6 +52,8 @@ import { Scene002PickingAndHighlights } from '../js/scenes/Scene002-PickingAndHi
 import { Scene004PhotoAndVideos } from '../js/scenes/Scene004-PhotoAndVideos'
 import { LogicalScene } from '../js/LogicalScene'
 import { disposeDefaultEnvHelper } from '../js/3d/default-environment'
+
+useTitle('Test 3 - WebXR | Kaliatech')
 
 const renderCanvas = ref<HTMLCanvasElement | undefined>()
 let appManager: AppManager | undefined

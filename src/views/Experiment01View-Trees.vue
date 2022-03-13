@@ -30,12 +30,15 @@
 </template>
 <script setup lang="ts">
 import { nextTick, onUnmounted, reactive, ref } from 'vue'
+import { useTitle } from '@vueuse/core'
 
 import MainLayout from './layouts/MainLayout.vue'
 import WebxrSupportCheck from '../components/WebxrSupportCheck.vue'
 
 import { AppManager } from '../js/AppManager'
 import { Scene0XXExperiments } from '../js/scenes/Scene0XX-Experiments'
+
+useTitle('Trees Experiment - WebXR | Kaliatech')
 
 const renderCanvas = ref<HTMLCanvasElement | undefined>()
 let appManager: AppManager | undefined

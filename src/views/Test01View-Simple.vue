@@ -28,12 +28,14 @@
 </template>
 <script setup lang="ts">
 import { nextTick, onUnmounted, reactive, ref } from 'vue'
-
+import { useTitle } from '@vueuse/core'
 import MainLayout from './layouts/MainLayout.vue'
 import WebxrSupportCheck from '../components/WebxrSupportCheck.vue'
 
 import { AppManager } from '../js/AppManager'
 import { Scene001Simple } from '../js/scenes/Scene001-Simple'
+
+useTitle('Test 1 - WebXR | Kaliatech')
 
 const renderCanvas = ref<HTMLCanvasElement | undefined>()
 let appManager: AppManager | undefined

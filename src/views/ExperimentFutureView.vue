@@ -21,4 +21,6 @@
 </template>
 <script setup lang="ts">
 import MainLayout from './layouts/MainLayout.vue'
+import { useTitle } from '@vueuse/core'
+useTitle('Future Experiments - WebXR | Kaliatech')
 </script>

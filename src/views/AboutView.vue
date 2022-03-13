@@ -48,7 +48,9 @@
                 </li>
                 <li>
                   <a href="https://www.babylonjs-playground.com/#ZM8UQE#4">PG - Top-Bottom</a>
-
+                </li>
+                <li>
+                  <a href="https://canvatorium.vercel.app/">Canvatorium by @vrhermit/@radicalappdev</a>
                 </li>
 
               </ul>
@@ -61,4 +63,8 @@
 </template>
 <script setup lang="ts">
 import MainLayout from './layouts/MainLayout.vue'
+import { useTitle } from '@vueuse/core'
+
+useTitle('About - WebXR | Kaliatech')
+
 </script>
