@@ -24,12 +24,17 @@ package-lock.json text -diff
 # LFS support (optional)      #
 # If using, best to do it at beginning
 # of a project before any LFS files added.
+# Note that default build images of AWS
+# Amplify do not support LFS.
 # Macro for files that should use Git LFS.
 #[attr]lfs -text filter=lfs diff=lfs merge=lfs
 # Binary
 # Explicit examples here as a convenience
 # if LFS were to be used. In that case,
 # would switch from 'binary' to 'lfs'.
+# Misc
+*.binary          binary
+*.bin             binary
 # 3D
 *.glb             binary
 # Graphics
