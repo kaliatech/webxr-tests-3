@@ -4,13 +4,11 @@
       <div class="row">
         <div class="col-12 col-lg-10 col-xl-8">
           <h2>WebXR Tests</h2>
-          <p>
-            Tests using Babylon.js 5, Vite, Vue3, Bootstrap 5, and TypeScript.
-          </p>
+          <p>Tests using Babylon.js 5, Vite, Vue3, Bootstrap 5, and TypeScript.</p>
 
           <p>
             While most of the functionality works across all browsers and devices, including Safari/iOS, these demos are
-            primarily meant to be viewed within a VR headset. Testing was done with Meta Quest 2.
+            primarily meant to be viewed within a VR headset. Testing was done with a Meta Quest 2.
           </p>
 
           <h3>Purpose</h3>
@@ -25,6 +23,43 @@
             <li>PBR Materials</li>
             <li>Etc</li>
           </ul>
+
+          <h3>Tests</h3>
+          <ul>
+            <li>
+              <a href="test1">Test 1</a>
+              - Simple XR Setup
+            </li>
+            <li>
+              <a href="test2">Test 2</a>
+              - Picking & Highlight Layers
+            </li>
+            <li>
+              <a href="test3">Test 3</a>
+              - Scene Loading/Unloading
+            </li>
+            <li>
+              <a href="test4">Test 4</a>
+              - Photo & Video (non-layer)
+            </li>
+            <li>
+              <a href="test5">Test 5</a>
+              - Menus & UIs (non-layer)
+            </li>
+            <li>
+              <a href="test6">Test 6</a>
+              - PBR Materials and Models
+            </li>
+          </ul>
+
+          Experiments
+          <ul>
+            <li>
+              <a href="experiment1">Experiment 1</a>
+              - Trees
+            </li>
+          </ul>
+
 
           <h3>Screenshots</h3>
 
@@ -53,9 +88,7 @@
               class="img-fluid rounded-3"
               alt="Screenshot - UI and Input in VR"
               src="https://camo.githubusercontent.com/5d9e249866c8739af4ba0947152db67a2ce0dca3d09b69f5bb8e160461c0588a/68747470733a2f2f696d6775722e636f6d2f4f584c585956522e6a7067" />
-            <figcaption class="figure-caption text-center">
-              2D UI in VR
-            </figcaption>
+            <figcaption class="figure-caption text-center">2D UI in VR</figcaption>
           </figure>
 
           <figure class="figure">
