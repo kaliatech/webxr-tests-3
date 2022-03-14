@@ -25,7 +25,7 @@ export class MediaSelectorGui extends GuiPanel {
     protected mediaItems: MediaItem[],
     onClick: (btn: Control) => void,
   ) {
-    super(logicalScene, name, 3.75, 1.4)
+    super(logicalScene, name, 1.4, 1)
 
     this.guiPanel.position.z = logicalScene.appManager.camera.position.z + 3
 
@@ -183,7 +183,7 @@ export class MediaSelectorGui extends GuiPanel {
     btn.paddingTop = '10px'
     cont.addControl(btn, row, col)
 
-    const fontSize = pxHeight / 8 + 'px'
+    const fontSize = pxHeight / 16 + 'px'
     const btnTxt = new GUI.TextBlock()
     btnTxt.text = txt
     //header.height = txtHeight
