@@ -18,6 +18,8 @@ import { MediaSelectorGui } from './scene004/MediaSelectorGui'
 import { Control } from '@babylonjs/gui/2D/controls/control'
 
 import { MediaItem, mediaItems } from './scene004/MediaData'
+//import { VideoDome2 } from '../3d/VideoDome2'
+import { TextureDome } from '@babylonjs/core/Helpers/textureDome'
 import { VideoDome2 } from '../3d/VideoDome2'
 
 export class Scene004PhotoAndVideos extends LogicalScene {
@@ -103,29 +105,30 @@ export class Scene004PhotoAndVideos extends LogicalScene {
   }
 
   private createPhotoDome(mediaItem: MediaItem) {
-    const photoDomeOpts = {
+    this.photoDome = new PhotoDome('photoDome', mediaItem.url.toString(), {
       resolution: 32,
       clickToPlay: false,
       autoPlay: true,
-    }
-    this.photoDome = new PhotoDome('photoDome', mediaItem.url.toString(), photoDomeOpts, this.scene)
-    //this.photoDome.fovMultiplier = 2.5
+      halfDomeMode: mediaItem.halfDome || false,
+      // useDirectMapping: false
+    }, this.scene)
+    // this.photoDome.fovMultiplier = 2.5
+    this.photoDome.imageMode = mediaItem.imageMode || TextureDome.MODE_MONOSCOPIC
 
     // this.sceneAssetContainer.transformNodes.push(this.photoDome)
     // this.sceneAssetContainer.meshes.push(...this.photoDome.getChildMeshes())
   }
 
+
   private createVideoDome(mediaItem: MediaItem) {
-    const videoDomeOpts = {
+    this.videoDome = new VideoDome2('videoDome', mediaItem.url.toString(), {
       resolution: 32,
       clickToPlay: false,
-      autoPlay: false,
+      autoPlay: true,
+      halfDomeMode: mediaItem.halfDome || false,
       // useDirectMapping: false
-    }
-
-    this.videoDome = new VideoDome2('videoDome', mediaItem.url.toString(), videoDomeOpts, this.scene)
+    }, this.scene)
     this.videoDome.videoMode = mediaItem.videoMode || VideoDome.MODE_MONOSCOPIC
-    this.videoDome.halfDome = mediaItem.halfDome || false
 
     // this.videoDome.videoTexture.video.addEventListener('canplay', () => {
     //   this.videoDome?.videoTexture.video.play()
@@ -134,9 +137,9 @@ export class Scene004PhotoAndVideos extends LogicalScene {
     //   this.videoDome?.videoTexture.video.play()
     // }, 1000)
 
-    this.videoDome.onLoadObservable.add(() => {
-      this.videoDome?.videoTexture?.video.play()
-    })
+    // this.videoDome.onLoadObservable.add(() => {
+    //   this.videoDome?.videoTexture?.video.play()
+    // })
 
     //this.videoDome.fovMultiplier = 0.8
 
