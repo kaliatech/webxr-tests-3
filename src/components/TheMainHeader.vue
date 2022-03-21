@@ -38,6 +38,7 @@
                 <router-link class="dropdown-item p-2" to="/test4">Test 4 - Photo & Video (non-layer)</router-link>
                 <router-link class="dropdown-item p-2" to="/test5">Test 5 - Menus &amp; UIs (non-layer)</router-link>
                 <router-link class="dropdown-item p-2" to="/test6">Test 6 - PBR Materials</router-link>
+                <router-link class="dropdown-item p-2" to="/test7">Test 7 - WebXR Layers</router-link>
                 <div class="dropdown-divider"></div>
                 <!--                <router-link class="dropdown-item p-2" to="/">Test 6 - PBR Materials</router-link>-->
                 <!--                <router-link class="dropdown-item p-2" to="/">Test 7 - WebXR Layers - UI</router-link>-->

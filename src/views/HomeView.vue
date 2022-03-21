@@ -50,9 +50,13 @@
               <a href="test6">Test 6</a>
               - PBR Materials and Models
             </li>
+            <li>
+              <a href="test7">Test 7</a>
+              - WebXR Layers
+            </li>
           </ul>
 
-          Experiments
+          <h3>Experiments</h3>
           <ul>
             <li>
               <a href="experiment1">Experiment 1</a>

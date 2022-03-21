@@ -5,7 +5,9 @@ import { Engine } from '@babylonjs/core/Engines/engine'
 import { EventBus } from 'ts-bus'
 import { Scene } from '@babylonjs/core/scene.js'
 import { WebXRDefaultExperience } from '@babylonjs/core/XR/webXRDefaultExperience'
-import { WebXRFeatureName } from '@babylonjs/core/XR/webXRFeaturesManager'
+import { WebXRFeatureName, WebXRFeaturesManager } from '@babylonjs/core/XR/webXRFeaturesManager'
+import { WebXRLayers } from '@babylonjs/core/XR/features/WebXRLayers'
+import { WebXRDomOverlay } from '@babylonjs/core/XR/features/WebXRDOMOverlay'
 import { TargetCamera } from '@babylonjs/core/Cameras/targetCamera'
 import { Nullable } from '@babylonjs/core/types'
 import { Observer } from '@babylonjs/core/Misc/observable'
@@ -40,8 +42,9 @@ import { ControllersChangedEvent, WebXRStateChangedEvent } from './AppManagerEve
 
 // Imports required for WebXRLayers and Multiview
 // Experimental and currently problematic.
-//import '@babylonjs/core/XR/features/WebXRLayers'
-//import '@babylonjs/core/Engines/Extensions/engine.multiview'
+import '@babylonjs/core/XR/features/WebXRLayers'
+import '@babylonjs/core/XR/features/WebXRDOMOverlay'
+import '@babylonjs/core/Engines/Extensions/engine.videoTexture.js'
 
 // ----------------------
 
@@ -56,7 +59,7 @@ export class AppManager {
 
   protected defaultCamera: ArcRotateCamera
 
-  private webXrDefaultExp: WebXRDefaultExperience | undefined
+  public webXrDefaultExp: WebXRDefaultExperience | undefined
   public webXrStateObv: Nullable<Observer<WebXRState>> = null
 
   private onControllerAddedObv: Nullable<Observer<WebXRInputSource>> = null
@@ -105,7 +108,9 @@ export class AppManager {
     return await WebXRDefaultExperience.CreateAsync(this.scene, {
       optionalFeatures: true,
     }).then((webXrDefaultExp) => {
-      // Enable WebXRLayers and Multiview
+      console.log('wtf')
+
+      this.webXrDefaultExp = webXrDefaultExp
 
      this.webXrStateObv = webXrDefaultExp.baseExperience.onStateChangedObservable.add((state:WebXRState) => {
         //console.log('webXrOnStateChange', WebXRState[state])
@@ -114,6 +119,7 @@ export class AppManager {
        )
       })
 
+      //Enable WebXRLayers and Multiview
       // webXrDefaultExp.baseExperience.featuresManager.enableFeature(
       //   WebXRFeatureName.LAYERS,
       //   'latest',
@@ -121,8 +127,38 @@ export class AppManager {
       //   true,
       //   false,
       // )
-      this.webXrDefaultExp = webXrDefaultExp
+      try {
+        webXrDefaultExp.baseExperience.featuresManager.enableFeature(
+          WebXRFeatureName.LAYERS,
+          'latest',
+          {},
+          true,
+          false,
+        )
+      } catch (err) {
+        console.error('error enabling feature', err)
+      }
 
+
+
+      // try {
+      //   const webXRDomOverlay = webXrDefaultExp.baseExperience.featuresManager.enableFeature(
+      //     WebXRFeatureName.DOM_OVERLAY,
+      //     'latest',
+      //     {},
+      //     true,
+      //     false,
+      //   )
+      //   console.log('webXRDomOverlay', webXRDomOverlay)
+      // } catch (err) {
+      //   console.error('error enabling feature', err)
+      // }
+
+      // const availFeatures = WebXRFeaturesManager.GetAvailableFeatures()
+      // console.log('availFeatures', availFeatures)
+      //
+      // const enabledFeatures = webXrDefaultExp.baseExperience.featuresManager.getEnabledFeatures()
+      // console.log('enabledFeatures', enabledFeatures)
 
       this._setupControllers(webXrDefaultExp)
 
