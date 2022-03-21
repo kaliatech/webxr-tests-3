@@ -1,15 +1,12 @@
 import { createEventDefinition } from 'ts-bus'
 
-// export const controllersChanged = createEventDefinition<{
-//   leftController: WebXRAbstractMotionController | undefined
-//   rightController: WebXRAbstractMotionController | undefined
-// }>()("controllers.changed");
-
 import { WebXRAbstractMotionController } from '@babylonjs/core/XR/motionController/webXRAbstractMotionController'
 import { TargetCamera } from '@babylonjs/core/Cameras/targetCamera'
+import { WebXRState } from '@babylonjs/core/XR/webXRTypes'
 
-// export const XRStateEvent = createEventDefinition<{
-// }>()('xr.state')
+export const WebXRStateChangedEvent = createEventDefinition<{
+  state:WebXRState
+}>()('xr.state')
 
 export const ControllersChangedEvent = createEventDefinition<{
   leftController?: WebXRAbstractMotionController,

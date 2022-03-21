@@ -36,7 +36,7 @@ import '@babylonjs/core/Layers/effectLayerSceneComponent'
 // import '@babylonjs/core/Legacy/legacy'
 // import '@babylonjs/core/Debug/debugLayer'
 // import '@babylonjs/inspector'
-import { ControllersChangedEvent } from './AppManagerEvents'
+import { ControllersChangedEvent, WebXRStateChangedEvent } from './AppManagerEvents'
 
 // Imports required for WebXRLayers and Multiview
 // Experimental and currently problematic.
@@ -57,6 +57,7 @@ export class AppManager {
   protected defaultCamera: ArcRotateCamera
 
   private webXrDefaultExp: WebXRDefaultExperience | undefined
+  public webXrStateObv: Nullable<Observer<WebXRState>> = null
 
   private onControllerAddedObv: Nullable<Observer<WebXRInputSource>> = null
   private onControllerRemovedObv: Nullable<Observer<WebXRInputSource>> = null
@@ -105,6 +106,14 @@ export class AppManager {
       optionalFeatures: true,
     }).then((webXrDefaultExp) => {
       // Enable WebXRLayers and Multiview
+
+     this.webXrStateObv = webXrDefaultExp.baseExperience.onStateChangedObservable.add((state:WebXRState) => {
+        //console.log('webXrOnStateChange', WebXRState[state])
+       this.appBus.publish(
+         WebXRStateChangedEvent({ state }),
+       )
+      })
+
       // webXrDefaultExp.baseExperience.featuresManager.enableFeature(
       //   WebXRFeatureName.LAYERS,
       //   'latest',
@@ -114,9 +123,6 @@ export class AppManager {
       // )
       this.webXrDefaultExp = webXrDefaultExp
 
-      //TODO: Probably will need to add this to appBus
-      // webXrDefaultExp.baseExperience.onStateChangedObservable.add((state:WebXRState) => {
-      // })
 
       this._setupControllers(webXrDefaultExp)
 
@@ -187,6 +193,10 @@ export class AppManager {
   }
 
   async dispose() {
+    if (this.webXrDefaultExp) {
+      await this.webXrDefaultExp.baseExperience.exitXRAsync()
+      this.webXrDefaultExp.baseExperience.onStateChangedObservable.remove(this.webXrStateObv)
+    }
     this.logicalScenes.forEach((logicalScene) => {
       logicalScene.dispose()
     })
