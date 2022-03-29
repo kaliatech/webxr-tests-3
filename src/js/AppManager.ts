@@ -37,10 +37,6 @@ import '@babylonjs/core/Animations/animatable'
 import '@babylonjs/core/Materials/Textures/Loaders'
 import '@babylonjs/core/Layers/effectLayerSceneComponent'
 
-// Imports required for debug/inspector
-// import '@babylonjs/core/Legacy/legacy'
-// import '@babylonjs/core/Debug/debugLayer'
-// import '@babylonjs/inspector'
 import { ControllersChangedEvent, WebXRStateChangedEvent } from './AppManagerEvents'
 
 // Imports required for WebXRLayers and Multiview
@@ -82,11 +78,20 @@ export class AppManager {
     this.collisionCoord = new DefaultCollisionCoordinator()
     this.collisionCoord.init(this.scene)
 
-    // Debug/Inspector
-    // this.scene.debugLayer.show({
-    //   embedMode: true,
-    //   overlay: true,
-    // })
+    const DEBUG = false
+    if (DEBUG) {
+      void Promise.all([
+        import('@babylonjs/core/Legacy/legacy'),
+        import('@babylonjs/core/Debug/debugLayer'),
+        import('@babylonjs/inspector'),
+      ]).then(() =>
+        this.scene.debugLayer.show({
+          handleResize: true,
+          embedMode: true,
+          overlay: true,
+        }),
+      )
+    }
 
     this.defaultCamera = initDefaultCamera(this.scene)
 
