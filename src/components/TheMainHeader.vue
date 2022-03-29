@@ -75,11 +75,7 @@
               <a class="nav-link ml-auto p-0" href="https://github.com/kaliatech/webxr-tests-3">
                 <!--                <i class="bi-github" role="img" aria-label="GitHub"></i>-->
                 <!--                <svg :src="githubIcon" class="icon text-success" role="img" aria-label="GitHub" />-->
-                <GithubIcon
-                  class="icon ms-2"
-                  viewBox="0 0 16 16"
-                  role="img"
-                  aria-label="GitHub" />
+                <GithubIcon class="icon ms-2" viewBox="0 0 16 16" role="img" aria-label="GitHub" />
               </a>
             </li>
           </ul>
