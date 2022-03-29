@@ -51,6 +51,11 @@ const routes: Array<RouteRecordRaw> = [
     component: () => import('./views/Experiment01View-Trees.vue'),
   },
   {
+    path: '/experiment2',
+    name: 'Experiment022DCanvasParticles',
+    component: () => import('./views/Experiment02View-2DCanvasParticles.vue'),
+  },
+  {
     path: '/experiments-future',
     name: 'ExperimentsFuture',
     component: () => import('./views/ExperimentFutureView.vue'),

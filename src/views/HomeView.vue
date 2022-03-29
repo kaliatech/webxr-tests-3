@@ -52,11 +52,15 @@
             </li>
           </ul>
 
-          Experiments
+          <h3>Experiments</h3>
           <ul>
             <li>
               <a href="experiment1">Experiment 1</a>
               - Trees
+            </li>
+            <li>
+              <a href="experiment2">Experiment 2</a>
+              - 2D Canvas Particles
             </li>
           </ul>
 

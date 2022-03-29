@@ -16,7 +16,7 @@ export abstract class LogicalScene {
   public sceneAssetContainer: AssetContainer
   public sceneAssetContainerLoaded = true
 
-  protected beforeRenderObv: Nullable<Observer<Scene>> = null
+  private beforeRenderObv: Nullable<Observer<Scene>> = null
 
   protected appBusUnsubs: { (): void }[] = []
 

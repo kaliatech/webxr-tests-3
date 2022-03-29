@@ -60,6 +60,7 @@
               </a>
               <div class="dropdown-menu p5" aria-labelledby="navbarDropdown-experiments">
                 <router-link class="dropdown-item p-2" to="/experiment1">Experiment 1 - Trees</router-link>
+                <router-link class="dropdown-item p-2" to="/experiment2">Experiment 2 - 2D Canvas Particles</router-link>
                 <div class="dropdown-divider"></div>
                 <router-link class="dropdown-item p-2" to="/experiments-future">Future Experiments (Maybe)</router-link>
               </div>
