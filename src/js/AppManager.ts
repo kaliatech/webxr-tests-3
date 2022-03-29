@@ -28,6 +28,11 @@ import '@babylonjs/loaders/glTF'
 //  "Uncaught (in promise) Build of NodeMaterial failed: input rgba from block FragmentOutput[FragmentOutputBlock] is not connected and is not optional."
 import '@babylonjs/core/Materials/Node/Blocks'
 
+// Needed in recent 5-rc releases, else:
+//  "TypeError: sceneToRenderTo.beginAnimation is not a function
+//     at WebXRMotionControllerTeleportation2._createDefaultTargetMesh (WebXRControllerTeleportation.ts:751:29)"
+import '@babylonjs/core/Animations/animatable'
+
 // Miscellaneous side effects required by various scenes
 import '@babylonjs/core/Materials/Textures/Loaders'
 import '@babylonjs/core/Layers/effectLayerSceneComponent'
@@ -107,11 +112,9 @@ export class AppManager {
     }).then((webXrDefaultExp) => {
       // Enable WebXRLayers and Multiview
 
-     this.webXrStateObv = webXrDefaultExp.baseExperience.onStateChangedObservable.add((state:WebXRState) => {
+      this.webXrStateObv = webXrDefaultExp.baseExperience.onStateChangedObservable.add((state: WebXRState) => {
         //console.log('webXrOnStateChange', WebXRState[state])
-       this.appBus.publish(
-         WebXRStateChangedEvent({ state }),
-       )
+        this.appBus.publish(WebXRStateChangedEvent({ state }))
       })
 
       // webXrDefaultExp.baseExperience.featuresManager.enableFeature(
@@ -122,7 +125,6 @@ export class AppManager {
       //   false,
       // )
       this.webXrDefaultExp = webXrDefaultExp
-
 
       this._setupControllers(webXrDefaultExp)
 
