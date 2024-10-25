@@ -52,7 +52,7 @@
             </li>
           </ul>
 
-          Experiments
+          <h3>Experiments</h3>
           <ul>
             <li>
               <a href="experiment1">Experiment 1</a>
@@ -60,22 +60,18 @@
             </li>
           </ul>
 
-
           <h3>Screenshots</h3>
 
           <figure class="figure">
             <img
               class="img-fluid rounded-3"
               alt="Screenshot - Browser view in Quest 2"
-              src="https://camo.githubusercontent.com/665c454c060f0edddb11fb2d6b57c64f01a012d6faea6c66ba4cd560528bc453/68747470733a2f2f696d6775722e636f6d2f306431577942692e6a7067" />
+              src="/docs/i/scrshot-010-simple.jpg" />
             <figcaption class="figure-caption text-center">Browsers all the way down</figcaption>
           </figure>
 
           <figure class="figure">
-            <img
-              class="img-fluid rounded-3"
-              alt="Screenshot - Simple Scene"
-              src="https://camo.githubusercontent.com/366314a7154291ed9bba02c1c9af118198abc5fa2ae2b59a9777b54148d458ca/68747470733a2f2f696d6775722e636f6d2f6a796a783676342e6a7067" />
+            <img class="img-fluid rounded-3" alt="Screenshot - Simple Scene" src="/docs/i/scrshot-020-works.jpg" />
             <figcaption class="figure-caption text-center">
               Not the most exiting demo, but it
               <em>does</em>
@@ -84,18 +80,12 @@
           </figure>
 
           <figure class="figure">
-            <img
-              class="img-fluid rounded-3"
-              alt="Screenshot - UI and Input in VR"
-              src="https://camo.githubusercontent.com/5d9e249866c8739af4ba0947152db67a2ce0dca3d09b69f5bb8e160461c0588a/68747470733a2f2f696d6775722e636f6d2f4f584c585956522e6a7067" />
+            <img class="img-fluid rounded-3" alt="Screenshot - UI and Input in VR" src="/docs/i/scrshot-030-ui.jpg" />
             <figcaption class="figure-caption text-center">2D UI in VR</figcaption>
           </figure>
 
           <figure class="figure">
-            <img
-              class="img-fluid rounded-3"
-              alt="Screenshot - 360 Photo"
-              src="https://camo.githubusercontent.com/89ecec60a4c10119f881a992391b26983a28d88086f6edcbe479cb83d81e5d29/68747470733a2f2f696d6775722e636f6d2f77536448544c342e6a7067" />
+            <img class="img-fluid rounded-3" alt="Screenshot - 360 Photo" src="/docs/i/scrshot-040-photo.jpg" />
             <figcaption class="figure-caption text-center">Immersive photos and videos</figcaption>
           </figure>
 
@@ -103,7 +93,7 @@
             <img
               class="img-fluid rounded-3"
               alt="Screenshot - PBR and high fidelity models"
-              src="https://camo.githubusercontent.com/ec1ce23e34865705665592463dab9e3911dca595e45db37ffa21e4de18990154/68747470733a2f2f696d6775722e636f6d2f41714a535145432e6a7067" />
+              src="/docs/i/scrshot-050-pbr.jpg" />
             <figcaption class="figure-caption text-center">PBR and high fidelity models</figcaption>
           </figure>
         </div>
