@@ -27,7 +27,10 @@ export abstract class LogicalScene {
   protected elapsedTime = 0
   private lastFpsLogTime = 0
 
-  protected constructor(public appManager: AppManager, private useGlobalEnvHelper = true) {
+  protected constructor(
+    public appManager: AppManager,
+    private useGlobalEnvHelper = true,
+  ) {
     this.scene = appManager.scene
     this.sceneBus = new EventBus()
     this.sceneAssetContainer = new AssetContainer(this.scene)

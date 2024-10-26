@@ -18,7 +18,7 @@ export function initDefaultCamera(scene: Scene): ArcRotateCamera {
   // camera.lowerBetaLimit = -Math.PI / 6 - 0.1
   // camera.upperBetaLimit = Math.PI + -0.1
   camera.lowerBetaLimit = Tools.ToRadians(-89)
-  camera.upperBetaLimit = Tools.ToRadians(115)// past 90 allows us to look up with default camera
+  camera.upperBetaLimit = Tools.ToRadians(115) // past 90 allows us to look up with default camera
   camera.upperRadiusLimit = 20
   camera.panningDistanceLimit = 20
   camera.checkCollisions = true // prevent rotating through floor, can be redundant with the beta limits though

@@ -69,7 +69,10 @@ export class AppManager {
 
   private logicalScenes: LogicalScene[] = []
 
-  constructor(private canvas: HTMLCanvasElement, private window?: Window) {
+  constructor(
+    private canvas: HTMLCanvasElement,
+    private window?: Window,
+  ) {
     this.babylonEngine = new Engine(this.canvas, true, { stencil: true })
     this.scene = new Scene(this.babylonEngine)
     this.scene.clearColor = new Color4(0, 0, 0, 1)

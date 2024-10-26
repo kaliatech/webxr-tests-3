@@ -105,13 +105,18 @@ export class Scene004PhotoAndVideos extends LogicalScene {
   }
 
   private createPhotoDome(mediaItem: MediaItem) {
-    this.photoDome = new PhotoDome('photoDome', mediaItem.url.toString(), {
-      resolution: 32,
-      clickToPlay: false,
-      autoPlay: true,
-      halfDomeMode: mediaItem.halfDome || false,
-      // useDirectMapping: false
-    }, this.scene)
+    this.photoDome = new PhotoDome(
+      'photoDome',
+      mediaItem.url.toString(),
+      {
+        resolution: 32,
+        clickToPlay: false,
+        autoPlay: true,
+        halfDomeMode: mediaItem.halfDome || false,
+        // useDirectMapping: false
+      },
+      this.scene,
+    )
     // this.photoDome.fovMultiplier = 2.5
     this.photoDome.imageMode = mediaItem.imageMode || TextureDome.MODE_MONOSCOPIC
 
@@ -119,15 +124,19 @@ export class Scene004PhotoAndVideos extends LogicalScene {
     // this.sceneAssetContainer.meshes.push(...this.photoDome.getChildMeshes())
   }
 
-
   private createVideoDome(mediaItem: MediaItem) {
-    this.videoDome = new VideoDome2('videoDome', mediaItem.url.toString(), {
-      resolution: 32,
-      clickToPlay: false,
-      autoPlay: true,
-      halfDomeMode: mediaItem.halfDome || false,
-      // useDirectMapping: false
-    }, this.scene)
+    this.videoDome = new VideoDome2(
+      'videoDome',
+      mediaItem.url.toString(),
+      {
+        resolution: 32,
+        clickToPlay: false,
+        autoPlay: true,
+        halfDomeMode: mediaItem.halfDome || false,
+        // useDirectMapping: false
+      },
+      this.scene,
+    )
     this.videoDome.videoMode = mediaItem.videoMode || VideoDome.MODE_MONOSCOPIC
 
     // this.videoDome.videoTexture.video.addEventListener('canplay', () => {

@@ -11,7 +11,11 @@ import * as ColorMaterials from '../materials/ColorMaterials'
 export class AxesWidget {
   private readonly _root: TransformNode | undefined
 
-  constructor(scene: Scene, public name = 'axesWidget', public length = 1) {
+  constructor(
+    scene: Scene,
+    public name = 'axesWidget',
+    public length = 1,
+  ) {
     this._root = new TransformNode(name, scene, false)
 
     const lineDiameter = this.length * 0.02

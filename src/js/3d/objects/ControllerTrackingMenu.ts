@@ -8,7 +8,11 @@ import { LogicalScene } from '../../LogicalScene'
 import { ControllersChangedEvent } from '../../AppManagerEvents'
 
 export class ControllerTrackingMenu extends GuiPanel {
-  constructor(logicalScene: LogicalScene, name: string, protected msg: string) {
+  constructor(
+    logicalScene: LogicalScene,
+    name: string,
+    protected msg: string,
+  ) {
     super(logicalScene, name, 0.3, 0.3)
     // this.sphere = MeshBuilder.CreateSphere('xSphere', { segments: 32, diameter: 0.2 }, scene)
     // this.sphere.id = this.sphere.name

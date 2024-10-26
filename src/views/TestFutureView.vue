@@ -21,5 +21,4 @@ import MainLayout from './layouts/MainLayout.vue'
 import { useTitle } from '@vueuse/core'
 
 useTitle('Future Tests - WebXR | Kaliatech')
-
 </script>

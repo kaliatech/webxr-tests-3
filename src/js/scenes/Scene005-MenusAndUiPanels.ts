@@ -37,7 +37,7 @@ export class Scene005 extends LogicalScene {
 
     this.initLargeDialogPanel()
 
-    new ControllerTrackingMenu(this, "ControllerTrackingMenu", "Test")
+    new ControllerTrackingMenu(this, 'ControllerTrackingMenu', 'Test')
   }
 
   initLargeDialogPanel() {

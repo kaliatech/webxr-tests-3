@@ -2,8 +2,10 @@
   <p v-if="!data.asyncChecksDone">Checking WebXR support...</p>
   <div v-if="data.asyncChecksDone && !data.isWebXrSupported" class="mt-1">
     <div class="alert alert-danger mb-0" role="alert">
-<!--      <h4>Note</h4>-->
-      WebXR with '<strong>{{ mode }}</strong>' sessions not supported by this browser.
+      <!--      <h4>Note</h4>-->
+      WebXR with '
+      <strong>{{ mode }}</strong>
+      ' sessions not supported by this browser.
       <!--      <p>-->
       <!--        <strong>{{ data.errorMsg }}</strong>-->
       <!--      </p>-->

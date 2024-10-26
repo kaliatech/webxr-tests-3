@@ -3,7 +3,7 @@ import { EnvironmentHelper, IEnvironmentHelperOptions } from '@babylonjs/core/He
 import { Color3 } from '@babylonjs/core/Maths/math.color'
 import { Scene } from '@babylonjs/core/scene.js'
 
-const globalEnvHelpers: { [key: string] : EnvironmentHelper } = {}
+const globalEnvHelpers: { [key: string]: EnvironmentHelper } = {}
 
 export function disposeDefaultEnvHelper(scene: Scene) {
   const envHelper = globalEnvHelpers[scene.uid]
@@ -13,7 +13,7 @@ export function disposeDefaultEnvHelper(scene: Scene) {
   }
 }
 
-export function initDefaultEnvHelper(scene: Scene, global:boolean): EnvironmentHelper {
+export function initDefaultEnvHelper(scene: Scene, global: boolean): EnvironmentHelper {
   if (!global) {
     return new EnvironmentHelper(getDefaultEnvHelperOpts(), scene)
   }
@@ -45,7 +45,7 @@ export function initDefaultEnvHelper(scene: Scene, global:boolean): EnvironmentH
 
 export function getDefaultEnvHelperOpts(): Partial<IEnvironmentHelperOptions> {
   return {
-    sizeAuto:false,
+    sizeAuto: false,
     skyboxSize: 42,
     skyboxColor: new Color3(0, 0, 0),
     groundColor: new Color3(0.01, 0.01, 0.2),

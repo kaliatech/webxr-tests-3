@@ -1,9 +1,9 @@
 @charset "UTF-8";
 $font-size-base: 0.9rem;
 
-$h1-font-size:                $font-size-base * 1.75;
-$h2-font-size:                $font-size-base * 1.5;
-$h3-font-size:                $font-size-base * 1.25;
+$h1-font-size: $font-size-base * 1.75;
+$h2-font-size: $font-size-base * 1.5;
+$h3-font-size: $font-size-base * 1.25;
 
 @import '../../node_modules/bootstrap/scss/_functions.scss';
 @import '../../node_modules/bootstrap/scss/_variables.scss';

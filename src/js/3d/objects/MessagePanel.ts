@@ -6,7 +6,11 @@ import { FollowBehavior } from '@babylonjs/core/Behaviors/Meshes/followBehavior'
 export class MessagePanel extends GuiPanel {
   private followBehavior: FollowBehavior
 
-  constructor(logicalScene: LogicalScene, name: string, protected msg: string) {
+  constructor(
+    logicalScene: LogicalScene,
+    name: string,
+    protected msg: string,
+  ) {
     super(logicalScene, name)
 
     this.followBehavior = new FollowBehavior()

@@ -32,7 +32,7 @@ export class VideoDome2 extends VideoDome {
     const videoEl = this.videoTexture.video
 
     // eslint-disable-next-line
-    this._scene.onPointerUp = ():void => {}
+    this._scene.onPointerUp = (): void => {}
 
     if (videoEl) {
       // Remove any <source> elements, etc.
@@ -53,7 +53,7 @@ export class VideoDome2 extends VideoDome {
     super.dispose(doNotRecurse, disposeMaterialAndTextures)
 
     if (videoEl) {
-       videoEl.remove()
+      videoEl.remove()
     }
   }
 }

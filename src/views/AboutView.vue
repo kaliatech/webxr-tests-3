@@ -27,8 +27,8 @@
               <div>
                 <ul>
                   <li>
-                    <a href="https://canvatorium.vercel.app/">Canvatorium</a> by @vrhermit
-                    (
+                    <a href="https://canvatorium.vercel.app/">Canvatorium</a>
+                    by @vrhermit (
                     <a href="https://github.com/vrhermit/Canvatorium">source</a>
                     )
                     <ul>
@@ -39,7 +39,8 @@
                     </ul>
                   </li>
                   <li>
-                    <a href="https://immersive-web.github.io/webxr-samples/">WebXR Samples</a> by Immersive Web Working Group
+                    <a href="https://immersive-web.github.io/webxr-samples/">WebXR Samples</a>
+                    by Immersive Web Working Group
                   </li>
                 </ul>
               </div>
