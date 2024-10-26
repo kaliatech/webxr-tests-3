@@ -64,4 +64,4 @@ A simpler repo showing the minimal setup for using Babylon.js and Vite for WebXR
   - https://github.com/kaliatech/babylon-docs-vite-webxr
 
 The Vue example does not use reactivity for Babylon.js. There are other projects showing how to do that if interested,
-and even more examples of that if you prefer React over Vue. ...but why would you? :)
+with both Vue and React.
