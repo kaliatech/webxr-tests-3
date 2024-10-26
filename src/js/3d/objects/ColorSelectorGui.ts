@@ -1,21 +1,18 @@
-import { IDisposable, Scene } from '@babylonjs/core/scene'
+import { Scene } from '@babylonjs/core/scene'
 import { AssetContainer } from '@babylonjs/core/assetContainer'
 import * as GUI from '@babylonjs/gui/2D'
 
 import { MeshBuilder } from '@babylonjs/core/Meshes/meshBuilder'
 import { Mesh } from '@babylonjs/core/Meshes/mesh'
 
-class ColorSelectorGui {
-
+export class ColorSelectorGui {
   protected loadRequested = false
   protected disposed = false
 
-  private guiPanel:Mesh
-  private assetContainer:AssetContainer
+  private guiPanel: Mesh
+  private assetContainer: AssetContainer
 
-  constructor(private scene:Scene) {
-
-
+  constructor(private scene: Scene) {
     this.assetContainer = new AssetContainer(scene)
 
     this.guiPanel = MeshBuilder.CreatePlane('plane', { size: 0.4 }, scene)
@@ -35,23 +32,21 @@ class ColorSelectorGui {
     //advancedTexture.attachToMesh(plane)
     this.assetContainer.textures.push(advancedTexture)
 
-    if(this.loadRequested) {
+    if (this.loadRequested) {
       this.load()
-    }
-    else {
+    } else {
       this.unload()
     }
   }
 
-  load():void {
+  load(): void {
     this.loadRequested = true
     this.assetContainer.addAllToScene()
   }
 
-  unload():void {
+  unload(): void {
     this.loadRequested = false
     this.assetContainer.removeAllFromScene()
-
   }
 
   dispose(): void {
@@ -59,5 +54,4 @@ class ColorSelectorGui {
     this.assetContainer.dispose()
     this.guiPanel?.dispose()
   }
-
 }
