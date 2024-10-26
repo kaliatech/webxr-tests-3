@@ -16,7 +16,7 @@
               <p>These are my notes and thoughts related to these tests:</p>
               <ul>
                 <li>
-                  <a href="https://kaliatech.com/blog/2022/webxr-tests">https://kaliatech.com/blog/2022/webxr-tests</a>
+                  <a href="https://kaliatech.com/blog/2022/20220311-webxr-tests">https://kaliatech.com/blog/2022/20220311-webxr-tests</a>
                 </li>
               </ul>
               <p>
