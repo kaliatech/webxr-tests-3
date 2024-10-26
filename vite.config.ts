@@ -3,6 +3,8 @@ import vue from '@vitejs/plugin-vue'
 import eslintPlugin from 'vite-plugin-eslint'
 import svgLoader from 'vite-svg-loader'
 
+import basicSsl from '@vitejs/plugin-basic-ssl'
+
 // https://vitejs.dev/config/
 export default defineConfig({
   plugins: [
@@ -13,6 +15,7 @@ export default defineConfig({
     eslintPlugin({ cache: false }),
     // https://github.com/jpkleemans/vite-svg-loader
     svgLoader(),
+    basicSsl(),
   ],
   // As of 2022-02-23, doesn't seem to be working in IDEA, even with a jsconfig.json file added. So for now,
   // seems safer to continue using relative paths.
@@ -25,7 +28,6 @@ export default defineConfig({
   // },
   server: {
     port: 3443,
-    https: true,
     // Uncomment to allow access from network (or use `npm run dev -- -- host=0.0.0.0`)
     // host: '0.0.0.0',
 
